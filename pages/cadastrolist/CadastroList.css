@@ -1,0 +1,94 @@
+.cadastro-list-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Cada item da lista */
+.cadastro-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+/* Ao passar o mouse */
+.cadastro-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Container para informações do cadastro */
+.cadastro-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Nome em destaque */
+.cadastro-nome {
+    font-weight: bold;
+    font-size: 18px;
+    color: #007bff;
+}
+
+/* Estilo para o CPF e o email */
+.cadastro-cpf, .cadastro-email {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Container para os botões */
+.cadastro-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Botões */
+.cadastro-actions button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.cadastro-actions button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo para o botão de atualizar */
+.cadastro-actions button:first-child {
+    background-color: #28a745;
+}
+
+.cadastro-actions button:first-child:hover {
+    background-color: #218838;
+}
+
+/* Estilo responsivo para dispositivos móveis */
+@media (max-width: 768px) {
+    .cadastro-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cadastro-actions {
+        width: 100%;
+        justify-content: space-around;
+        margin-top: 10px;
+    }
+
+    .cadastro-actions button {
+        width: 45%;
+    }
+}

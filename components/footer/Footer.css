@@ -1,0 +1,33 @@
+.footer-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+    height: auto; /* Ajuste a altura automática ao conteúdo */
+    padding-bottom: 20px;
+    padding-left: 100px;
+    background-color: #320D43;
+    align-items: center; /* Centralize verticalmente os itens */
+}
+
+.frame {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 190px;
+    margin: 10px;
+    padding: 8px;
+    border: 1px solid #ffffff;
+    justify-content: center;
+}
+
+p {
+    font-size: 14px;
+    color: #ffffff;
+    margin: 0; /* Remove o padding padrão dos parágrafos */
+}
+
+h5 {
+    font-size: 18px;
+    color: #ffffff;
+}

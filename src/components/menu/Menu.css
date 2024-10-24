@@ -1,0 +1,115 @@
+.menu-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 98%;
+  height: 120px;
+  padding: 0 20px;
+  border-bottom: 2px solid #7852a5;
+}
+
+.logo {
+  display: flex;
+  width: 120px;
+  height: auto;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 30px;
+}
+
+li {
+  display: inline;
+}
+
+a {
+  color: #7852a5;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #4e327a;
+}
+
+/* Responsividade para tablets */
+@media (max-width: 1024px) {
+  .menu-container {
+    height: auto;
+    padding: 15px 20px;
+  }
+
+  .logo {
+    width: 100px;
+  }
+
+  nav {
+    padding: 10px;
+  }
+
+  ul {
+    gap: 20px;
+  }
+
+  a {
+    font-size: 17px;
+  }
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .menu-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .logo {
+    margin-bottom: 15px;
+  }
+
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  a {
+    font-size: 20px;
+  }
+}
+
+/* Responsividade para telas menores (celulares) */
+@media (max-width: 480px) {
+  .menu-container {
+    padding: 10px;
+  }
+
+  .logo {
+    width: 90px;
+  }
+
+  ul {
+    gap: 10px;
+  }
+
+  a {
+    font-size: 18px;
+  }
+}

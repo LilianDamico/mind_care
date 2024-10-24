@@ -1,0 +1,75 @@
+/* Estilos gerais do formulário */
+form {
+  display: flex; /* Usando flexbox para organização */
+  flex-direction: column; /* Itens em coluna */
+  margin: 20px; /* Margem ao redor do formulário */
+  padding: 20px; /* Espaçamento interno do formulário */
+  border: 1px solid #ccc; /* Borda do formulário */
+  border-radius: 5px; /* Cantos arredondados */
+  background-color: #f9f9f9; /* Cor de fundo do formulário */
+}
+
+input, textarea, button {
+  margin-bottom: 15px; /* Espaçamento entre os elementos */
+  padding: 10px; /* Espaçamento interno dos elementos */
+  border: 1px solid #ccc; /* Borda dos elementos */
+  border-radius: 5px; /* Cantos arredondados */
+  font-size: 16px; /* Tamanho da fonte */
+}
+
+/* Estilo para o botão de cadastrar */
+button[type="submit"] {
+  background-color: #007bff; /* Cor de fundo do botão */
+  color: white; /* Cor do texto */
+  cursor: pointer; /* Cursor em ponteiro ao passar o mouse */
+}
+
+/* Estilo para o botão deletar */
+button[type="button"].delete {
+  background-color: red; /* Cor de fundo do botão deletar */
+  color: white; /* Cor do texto */
+}
+
+/* Estilos de alerta */
+.alert {
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px; /* Espaço abaixo do alerta */
+}
+
+.alert-success {
+  background-color: #d4edda; /* Cor de fundo do sucesso */
+  color: #155724; /* Cor do texto de sucesso */
+}
+
+.alert-danger {
+  background-color: #f8d7da; /* Cor de fundo do erro */
+  color: #721c24; /* Cor do texto de erro */
+}
+
+/* Estilo da lista de cadastros */
+ul {
+  list-style-type: none; /* Remove os marcadores da lista */
+  padding: 0; /* Remove o preenchimento */
+}
+
+li {
+  display: flex; /* Usando flexbox para a lista */
+  justify-content: space-between; /* Espaço entre os itens */
+  align-items: center; /* Centraliza os itens verticalmente */
+  padding: 10px; /* Espaçamento interno da lista */
+  border: 1px solid #ccc; /* Borda da lista */
+  border-radius: 5px; /* Cantos arredondados */
+  margin-bottom: 10px; /* Espaçamento entre os itens da lista */
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  form {
+      margin: 10px; /* Reduzir margem em telas pequenas */
+  }
+
+  input, textarea, button {
+      font-size: 14px; /* Reduzir o tamanho da fonte em telas pequenas */
+  }
+}

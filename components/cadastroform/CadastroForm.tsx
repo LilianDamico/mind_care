@@ -36,7 +36,7 @@ const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
     const [alertMessage, setAlertMessage] = useState<string>('');
     const [alertType, setAlertType] = useState<string>(''); // 'success' ou 'error'
     
-    const apiUrl = 'http://localhost:8081/cadastros'; // URL da API
+    const apiUrl = 'https://vercel.com/liliandamicos-projects/api-node'; // URL da API
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

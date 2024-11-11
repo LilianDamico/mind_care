@@ -1,0 +1,65 @@
+.navbar-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 120px;
+  justify-content: space-between;
+  border-bottom: 2px solid black;
+}
+
+.logo {
+  display: flex;
+  width: 5vh; /* Considere usar unidades mais apropriadas, como 'rem' ou 'em' para responsividade */
+  height: 5vh;
+  margin: 3vh;
+}
+
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center; /* Para centralizar verticalmente */
+  margin: 50px;
+  width: 300px;
+  height: 50px;  
+}
+
+.signin {
+  display: flex;
+  width: 80px;
+  height: 35px;
+  margin: 15px;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border: 1px solid #7852A5;
+  cursor: pointer; 
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.signup {
+  display: flex;
+  width: 80px;
+  height: 35px;
+  margin: 15px;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  background-color: #7852A5;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 5px;
+  border: 1px solid #fff;
+}
+
+
+
+.artigo p {
+  margin: 10px;
+  color: #CA419C;
+  text-align: center; /* Para centralizar o texto */
+  cursor: pointer; /* Para indicar que é clicável */
+}

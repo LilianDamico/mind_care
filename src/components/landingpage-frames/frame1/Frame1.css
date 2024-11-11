@@ -1,0 +1,95 @@
+.frame1-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); 
+    gap: 30vh; 
+    width: 100%; 
+    height: 70vh; 
+    margin-left: 20px;
+    padding: 35px;
+    justify-content: left;
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.text-container h1, h2, h3 {
+    display: flex;
+    color: #7852A5;
+    font-family: 'pangram', sans-serif;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+.text-container p {
+    display: flex;
+    justify-content: left;
+    font-family: 'pangram', sans-serif;
+    padding: 10px;
+    margin-left: 10px;
+    text-align: justify;
+    letter-spacing: 1px;
+}
+
+.button-box {
+    display: flex;
+    flex-direction: row;
+    width: 250px;
+    height: 80px;
+    margin: 60px;
+    justify-content: space-between; /* Alinha os botões lado a lado */
+}
+
+.inscrever {
+    display: flex;
+    background-color: #7852A5;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 50px;
+    margin: 20px;
+    color: white;
+    border: 1px solid #7852A5;
+    box-shadow: 6px 3px 3px grey;
+    border-radius: 5px;
+}
+
+.login {
+    display: flex;
+    width: 80px;
+    height: 50px;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    background-color: white;
+    border: 1px solid #7852A5;
+    box-shadow: 6px 3px 3px grey;
+    border-radius: 5px;
+    color: #7852A5; /* Cor do texto do botão */
+    font-weight: bold; /* Torna o texto mais visível */
+    transition: background-color 0.3s ease; /* Animação suave ao passar o mouse */
+}
+
+.login:hover {
+    background-color: #7852A5; /* Muda a cor de fundo quando o mouse passa sobre o botão */
+    color: white; /* Muda a cor do texto para branco */
+}
+
+.image-box {
+    display: flex; 
+    width: 100%;
+    height: 500px; 
+    justify-content: center; 
+    align-items: center; 
+    overflow: hidden; 
+    margin: 50px;
+    margin-right: 160px;
+}
+
+.image-box img {
+    max-width: 100%; 
+    max-height: 100%; 
+    object-fit: cover;
+}

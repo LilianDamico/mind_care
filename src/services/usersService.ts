@@ -1,23 +1,19 @@
-import { apiUrl } from './api'; 
+import axios from 'axios';
 
 
-export const getUser = async (id: string) => {
-  try {
-    const response = await apiUrl.get(`/users/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao obter os dados do usuário:', error);
-    throw error;
-  }
-};
+const API_URL = 'https://api-node-e3xo.onrender.com'; 
 
 
 export const createUser = async (userData: any) => {
   try {
-    const response = await apiUrl.post('/users', userData);
-    return response.data;
+    const response = await axios.post(`${API_URL}/users`, userData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data; 
   } catch (error) {
-    console.error('Erro ao cadastrar o usuário:', error);
+    console.error('Erro ao enviar dados para o backend:', error);
     throw error;
   }
 };

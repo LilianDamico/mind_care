@@ -41,7 +41,8 @@ const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) 
         comentarios,
       };
 
-      const response = await createUser(userData); // Envia os dados para a API
+      // Envia os dados para a API
+      const response = await createUser(userData);
 
       if (response.error) {
         setError(response.message); // Exibe a mensagem de erro
@@ -59,6 +60,7 @@ const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) 
       <form onSubmit={handleSubmit}>
         <h1>Cadastro de Usuário</h1>
         {error && <p className="error-message">{error}</p>}
+        {/* Campos do Formulário */}
         <div className="form-group">
           <label htmlFor="nome">Nome:</label>
           <input

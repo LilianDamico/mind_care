@@ -1,153 +1,171 @@
 import React, { useState } from 'react';
-import { createUser } from '../../services/usersService'; 
+import { createUser } from '../services/usersService'; // Certifique-se de que o caminho está correto
 import './CadastroForm.css';
 
-interface CadastroFormProps {
-  onCadastroSuccess: () => void; 
-}
+const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) => {
+  // Definindo os estados para armazenar os valores do formulário
+  const [nome, setNome] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [endereco, setEndereco] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [profissao, setProfissao] = useState('');
+  const [especialidade, setEspecialidade] = useState('');
+  const [registro, setRegistro] = useState('');
+  const [comentarios, setComentarios] = useState('');
+  const [error, setError] = useState('');
 
-const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
-  // Estados para armazenar os dados do formulário
-  const [formData, setFormData] = useState({
-    nome: '',
-    cpf: '',
-    email: '',
-    senha: '',
-    endereco: '',
-    telefone: '',
-    profissao: '',
-    especialidade: '',
-    registro: '',
-    comentarios: '',
-  });
+  // Função para enviar os dados do formulário
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+    // Validação simples para garantir que os campos obrigatórios estão preenchidos
+    if (!nome || !cpf || !email || !senha || !telefone || !profissao) {
+      setError('Todos os campos obrigatórios devem ser preenchidos');
+      return;
+    }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     try {
-      const response = await createUser(formData);
-      setSuccessMessage('Usuário criado com sucesso!');
-      setErrorMessage('');
-      console.log('Usuário criado:', response);
-      onCadastroSuccess(); 
-    } catch (error) {
-      setErrorMessage('Erro ao criar o usuário.');
-      setSuccessMessage('');
-      console.error(error);
+      // Criar o usuário chamando o serviço
+      const userData = {
+        nome,
+        cpf,
+        email,
+        senha,
+        endereco,
+        telefone,
+        profissao,
+        especialidade,
+        registro,
+        comentarios,
+      };
+
+      const response = await createUser(userData); // Envia os dados para a API
+
+      if (response.error) {
+        setError(response.message); // Exibe a mensagem de erro
+      } else {
+        onCadastroSuccess(); // Chama o callback após o sucesso
+      }
+    } catch (err) {
+      console.error('Erro ao cadastrar usuário:', err);
+      setError('Ocorreu um erro ao criar o usuário. Tente novamente.');
     }
   };
 
   return (
-    <div className="cadastro-form">
-      <h2>Cadastro de Usuário</h2>
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      {successMessage && <div className="success-message">{successMessage}</div>}
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
+        <h1>Cadastro de Usuário</h1>
+        {error && <p className="error-message">{error}</p>}
         <div className="form-group">
-          <label>Nome:</label>
+          <label htmlFor="nome">Nome:</label>
           <input
             type="text"
-            name="nome"
-            value={formData.nome}
-            onChange={handleInputChange}
+            id="nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
             required
           />
         </div>
+
         <div className="form-group">
-          <label>CPF:</label>
+          <label htmlFor="cpf">CPF:</label>
           <input
             type="text"
-            name="cpf"
-            value={formData.cpf}
-            onChange={handleInputChange}
-            required
+            id="cpf"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
             maxLength={11}
+            required
           />
         </div>
+
         <div className="form-group">
-          <label>Email:</label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
+
         <div className="form-group">
-          <label>Senha:</label>
+          <label htmlFor="senha">Senha:</label>
           <input
             type="password"
-            name="senha"
-            value={formData.senha}
-            onChange={handleInputChange}
+            id="senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
             required
-            minLength={6}
           />
         </div>
+
         <div className="form-group">
-          <label>Endereço:</label>
+          <label htmlFor="endereco">Endereço:</label>
           <input
             type="text"
-            name="endereco"
-            value={formData.endereco}
-            onChange={handleInputChange}
+            id="endereco"
+            value={endereco}
+            onChange={(e) => setEndereco(e.target.value)}
           />
         </div>
+
         <div className="form-group">
-          <label>Telefone:</label>
+          <label htmlFor="telefone">Telefone:</label>
           <input
             type="text"
-            name="telefone"
-            value={formData.telefone}
-            onChange={handleInputChange}
+            id="telefone"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)}
+            maxLength={11}
+            required
           />
         </div>
+
         <div className="form-group">
-          <label>Profissão:</label>
+          <label htmlFor="profissao">Profissão:</label>
           <input
             type="text"
-            name="profissao"
-            value={formData.profissao}
-            onChange={handleInputChange}
+            id="profissao"
+            value={profissao}
+            onChange={(e) => setProfissao(e.target.value)}
+            required
           />
         </div>
+
         <div className="form-group">
-          <label>Especialidade:</label>
+          <label htmlFor="especialidade">Especialidade:</label>
           <input
             type="text"
-            name="especialidade"
-            value={formData.especialidade}
-            onChange={handleInputChange}
+            id="especialidade"
+            value={especialidade}
+            onChange={(e) => setEspecialidade(e.target.value)}
           />
         </div>
+
         <div className="form-group">
-          <label>Registro:</label>
+          <label htmlFor="registro">Registro:</label>
           <input
             type="text"
-            name="registro"
-            value={formData.registro}
-            onChange={handleInputChange}
+            id="registro"
+            value={registro}
+            onChange={(e) => setRegistro(e.target.value)}
           />
         </div>
+
         <div className="form-group">
-          <label>Comentários:</label>
+          <label htmlFor="comentarios">Comentários:</label>
           <textarea
-            name="comentarios"
-            value={formData.comentarios}
-            onChange={handleInputChange}
+            id="comentarios"
+            value={comentarios}
+            onChange={(e) => setComentarios(e.target.value)}
           />
         </div>
+
         <button type="submit">Cadastrar</button>
       </form>
     </div>

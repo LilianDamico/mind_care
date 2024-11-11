@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUser } from '../services/usersService'; // Certifique-se de que o caminho está correto
+import { createUser } from '../../services/usersService'; // Certifique-se de que o caminho está correto
 import './CadastroForm.css';
 
 const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) => {

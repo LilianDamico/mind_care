@@ -1,7 +1,7 @@
 // api.ts
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL; 
+const baseURL = process.env.REACT_APP_API_URL || 'https://api-node-s6yp.onrender.com/users'; 
 
 export const apiUrl = axios.create({
   baseURL,
@@ -10,7 +10,7 @@ export const apiUrl = axios.create({
   },
 });
 
-// Para ambiente local
+
 const baseURLLocal = process.env.REACT_APP_API_URL_LOCAL || 'http://localhost:8081';
 
 export const apiUrlLocal = axios.create({

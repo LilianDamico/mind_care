@@ -67,9 +67,9 @@
     border: 1px solid #7852A5;
     box-shadow: 6px 3px 3px grey;
     border-radius: 5px;
-    color: #7852A5; /* Cor do texto do botão */
-    font-weight: bold; /* Torna o texto mais visível */
-    transition: background-color 0.3s ease; /* Animação suave ao passar o mouse */
+    color: #7852A5;
+    font-weight: bold; 
+    transition: background-color 0.3s ease; 
 }
 
 .login:hover {

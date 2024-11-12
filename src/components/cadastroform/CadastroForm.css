@@ -1,30 +1,43 @@
-.cadastro-form {
-  max-width: 600px;
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 700px;
+  height: 800px;
   margin: 0 auto;
+  margin-top: 50px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
 }
 
-.cadastro-form h2 {
+.form-container h2 {
   text-align: center;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 30px;
+  margin-left: 30%;
+  padding: 20px;
 }
 
 .form-group {
+  display: flex;
+  width: 600px;
   margin-bottom: 15px;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 5px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 10px;
   font-weight: bold;
 }
 
 .form-group input,
 .form-group textarea {
-  width: 100%;
+  width: 600px;
+  height: 40px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -36,7 +49,9 @@
 }
 
 button {
-  width: 100%;
+  width: 150px;
+  margin-left: 40%;
+  height: 50px;
   padding: 10px;
   font-size: 16px;
   background-color: #4CAF50;

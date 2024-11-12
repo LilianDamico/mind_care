@@ -58,7 +58,7 @@ const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) 
   return (
     <div className="form-container">
       <form onSubmit={handleSubmit}>
-        <h1>Cadastro de Usuário</h1>
+        <h2>Cadastro de Usuário</h2>
         {error && <p className="error-message">{error}</p>}
         {/* Campos do Formulário */}
         <div className="form-group">

@@ -4,7 +4,7 @@ import CadastroForm from './components/cadastroform/CadastroForm';
 import Landingpage from './pages/Landingpage';
 
 const App: React.FC = () => {
-  // Função que será chamada quando o cadastro for bem-sucedido
+
   const handleCadastroSuccess = () => {
     alert('Cadastro realizado com sucesso!');
   };

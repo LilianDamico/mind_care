@@ -1,7 +1,7 @@
 // api.ts
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL || 'https://api-node-e3xo.onrender.com'; // URL padrão remota
+const baseURL = process.env.REACT_APP_API_URL; 
 
 export const apiUrl = axios.create({
   baseURL,

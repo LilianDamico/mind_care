@@ -98,14 +98,15 @@ const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) 
         <div className="form-group">
           <label htmlFor="senha">Senha:</label>
           <input
-            type="password"
-            id="senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            required
+          type="password"
+          id="senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
+          autoComplete="current-password" 
           />
         </div>
-
+        
         <div className="form-group">
           <label htmlFor="endereco">Endereço:</label>
           <input

@@ -24,7 +24,8 @@
   height: 50px;  
 }
 
-.signin {
+
+.signin-button {
   display: flex;
   width: 80px;
   height: 35px;
@@ -33,13 +34,14 @@
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  border: 1px solid #7852A5;
-  cursor: pointer; 
-  text-decoration: none;
+  color:#7852A5;
+  cursor: pointer;
+  text-decoration-line: none;
   border-radius: 5px;
+  border: 1px solid #7852A5;
 }
 
-.signup {
+.signup-button {
   display: flex;
   width: 80px;
   height: 35px;
@@ -58,8 +60,10 @@
 
 
 .artigo p {
+  display: flex;
+  text-decoration: none;
   margin: 10px;
   color: #CA419C;
-  text-align: center; /* Para centralizar o texto */
-  cursor: pointer; /* Para indicar que é clicável */
+  text-align: center;
+  cursor: pointer;
 }

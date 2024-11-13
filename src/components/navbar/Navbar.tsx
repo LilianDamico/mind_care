@@ -11,11 +11,11 @@ export const Navbar: React.FC = () => {
       </div>
       <div className='menu'>
         <div className='artigo'><Link to="/"><p>Artigos</p></Link></div>
-        <Link to="/cadastros">
-          <button className='signin'>Sign In</button>
+        <Link to="/login">
+          <button className='signin-button'>Signin</button>
         </Link>
         <Link to="/contato">
-          <button className='signup'>Sign Up</button>
+          <button className='signup-button'>Sign Up</button>
         </Link>          
       </div>      
     </div>

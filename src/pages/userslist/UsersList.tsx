@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './UsersList.css';
 import axios from 'axios';
+import { Navbar } from '../../components/navbar/Navbar';
+import { useNavigate } from 'react-router-dom'; 
+import './UsersList.css';
 
 interface User {
   id: number;
@@ -10,6 +13,7 @@ interface User {
   telefone: string;
   profissao: string;
   especialidade: string;
+  registro: string;
 }
 
 interface UsersListProps {
@@ -20,6 +24,7 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate(); // Usar useNavigate para redirecionar
 
   // Função para carregar a lista de usuários
   const fetchUsers = useCallback(async () => {
@@ -35,11 +40,11 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
       setError('Erro ao carregar usuários.');
       setLoading(false);
     }
-  }, [onUsersListLoad]); // O hook `useCallback` garante que a função seja memorizada
+  }, [onUsersListLoad]);
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]); // Agora `fetchUsers` está incluída como dependência
+  }, [fetchUsers]);
 
   // Função para deletar um usuário
   const deleteUser = async (id: number) => {
@@ -53,21 +58,22 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
     }
   };
 
-  // Função para atualizar um usuário
+  // Função para redirecionar o usuário para a página de edição
   const updateUser = (id: number) => {
-    alert(`Redirecionando para atualizar o usuário com ID: ${id}`);
+    navigate(`/edituserpage/${id}`); // Redireciona para a página de edição passando o ID do usuário
   };
 
   return (
     <div className='userslist-container'>
-      <h1>Lista de Usuários</h1>
+      <Navbar />
+      <h1 className='userslist-h1'>Lista de Usuários</h1>
 
       {loading ? (
         <p>Carregando...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <table>
+        <table className='userslist-table'>
           <thead>
             <tr>
               <th>ID</th>
@@ -77,6 +83,7 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
               <th>Telefone</th>
               <th>Profissão</th>
               <th>Especialidade</th>
+              <th>Registro</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -90,9 +97,14 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
                 <td>{user.telefone}</td>
                 <td>{user.profissao}</td>
                 <td>{user.especialidade}</td>
+                <td>{user.registro}</td>
                 <td>
-                  <button onClick={() => updateUser(user.id)}>Update</button>
-                  <button onClick={() => deleteUser(user.id)}>Delete</button>
+                  <button className="userslist-button" onClick={() => updateUser(user.id)}>
+                    Update
+                  </button>
+                  <button className='userslist-button' onClick={() => deleteUser(user.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}

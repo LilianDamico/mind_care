@@ -1,172 +1,137 @@
-import React, { useState } from 'react';
-import { createUser } from '../../services/usersService'; 
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { createUser } from '../../services/usersService'; // Importe o serviço
 import './CadastroForm.css';
+import { Navbar } from '../navbar/Navbar';
 
-const CadastroForm = ({ onCadastroSuccess }: { onCadastroSuccess: () => void }) => {
-  // Definindo os estados para armazenar os valores do formulário
-  const [nome, setNome] = useState('');
-  const [cpf, setCpf] = useState('');
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [endereco, setEndereco] = useState('');
-  const [telefone, setTelefone] = useState('');
-  const [profissao, setProfissao] = useState('');
-  const [especialidade, setEspecialidade] = useState('');
-  const [registro, setRegistro] = useState('');
-  const [comentarios, setComentarios] = useState('');
-  const [error, setError] = useState('');
+// Definição da interface para os inputs do formulário
+interface UserFormInputs {
+  nome: string;
+  cpf: string;
+  email: string;
+  senha: string;
+  registro: string;
+  endereco: string;
+  telefone: string;
+  profissao: string;
+  especialidade: string;
+  comentarios?: string;
+}
 
-  // Função para enviar os dados do formulário
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+// Definição da interface para as props do CadastroForm, incluindo a função onCadastroSuccess
+interface CadastroFormProps {
+  onCadastroSuccess: () => void;
+}
 
-    // Validação simples para garantir que os campos obrigatórios estão preenchidos
-    if (!nome || !cpf || !email || !senha || !telefone || !profissao) {
-      setError('Todos os campos obrigatórios devem ser preenchidos');
-      return;
-    }
+// Esquema de validação usando Yup
+const userSchema = yup.object({
+  nome: yup.string().required('O nome é obrigatório.'),
+  cpf: yup
+    .string()
+    .length(11, 'O CPF deve conter exatamente 11 caracteres.')
+    .required('O CPF é obrigatório.'),
+  email: yup.string().email('E-mail inválido.').required('O e-mail é obrigatório.'),
+  senha: yup
+    .string()
+    .min(8, 'A senha deve ter no mínimo 8 caracteres.')
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/, 'A senha deve conter letras e números.')
+    .required('A senha é obrigatória.'),
+  registro: yup.string().required('O registro é obrigatório.'),
+  endereco: yup.string().required('O endereço é obrigatório.'),
+  telefone: yup
+    .string()
+    .length(11, 'O telefone deve conter exatamente 11 caracteres.')
+    .required('O telefone é obrigatório.'),
+  profissao: yup.string().required('A profissão é obrigatória.'),
+  especialidade: yup.string().required('A especialidade é obrigatória.'),
+  comentarios: yup.string().optional(),
+});
 
+const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserFormInputs>({
+    resolver: yupResolver(userSchema),
+  });
+
+  // Função chamada ao submeter o formulário
+  const onSubmit: SubmitHandler<UserFormInputs> = async (data) => {
     try {
-      // Criar o usuário chamando o serviço
-      const userData = {
-        nome,
-        cpf,
-        email,
-        senha,
-        endereco,
-        telefone,
-        profissao,
-        especialidade,
-        registro,
-        comentarios,
-      };
-
-      // Envia os dados para a API
-      const response = await createUser(userData);
-
-      if (response.error) {
-        setError(response.message); // Exibe a mensagem de erro
-      } else {
-        onCadastroSuccess(); // Chama o callback após o sucesso
-      }
-    } catch (err) {
-      console.error('Erro ao cadastrar usuário:', err);
-      setError('Ocorreu um erro ao criar o usuário. Tente novamente.');
+      const response = await createUser(data); // Usando o serviço usersService para criar o usuário
+      alert(response.message || 'Usuário cadastrado com sucesso!');
+      onCadastroSuccess(); // Chama a função onCadastroSuccess após o cadastro
+    } catch (error: any) {
+      console.error('Erro ao enviar formulário:', error.message);
+      alert(error.response?.data?.message || 'Erro ao cadastrar o usuário.');
     }
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Cadastro de Usuário</h2>
-        {error && <p className="error-message">{error}</p>}
-        {/* Campos do Formulário */}
-        <div className="form-group">
+    <div>
+      <Navbar />
+      <form onSubmit={handleSubmit(onSubmit)} className="cadastro-form">
+        <div>
           <label htmlFor="nome">Nome:</label>
-          <input
-            type="text"
-            id="nome"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
+          <input type="text" id="nome" {...register('nome')} />
+          {errors.nome && <span className="error">{errors.nome.message}</span>}
         </div>
 
-        <div className="form-group">
+        <div>
           <label htmlFor="cpf">CPF:</label>
-          <input
-            type="text"
-            id="cpf"
-            value={cpf}
-            onChange={(e) => setCpf(e.target.value)}
-            maxLength={11}
-            required
-          />
+          <input type="text" id="cpf" {...register('cpf')} />
+          {errors.cpf && <span className="error">{errors.cpf.message}</span>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        <div>
+          <label htmlFor="email">E-mail:</label>
+          <input type="email" id="email" {...register('email')} />
+          {errors.email && <span className="error">{errors.email.message}</span>}
         </div>
 
-        <div className="form-group">
+        <div>
           <label htmlFor="senha">Senha:</label>
-          <input
-          type="password"
-          id="senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          required
-          autoComplete="current-password" 
-          />
-        </div>
-        
-        <div className="form-group">
-          <label htmlFor="endereco">Endereço:</label>
-          <input
-            type="text"
-            id="endereco"
-            value={endereco}
-            onChange={(e) => setEndereco(e.target.value)}
-          />
+          <input type="password" id="senha" {...register('senha')} />
+          {errors.senha && <span className="error">{errors.senha.message}</span>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="telefone">Telefone:</label>
-          <input
-            type="text"
-            id="telefone"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-            maxLength={11}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="profissao">Profissão:</label>
-          <input
-            type="text"
-            id="profissao"
-            value={profissao}
-            onChange={(e) => setProfissao(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="especialidade">Especialidade:</label>
-          <input
-            type="text"
-            id="especialidade"
-            value={especialidade}
-            onChange={(e) => setEspecialidade(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
+        <div>
           <label htmlFor="registro">Registro:</label>
-          <input
-            type="text"
-            id="registro"
-            value={registro}
-            onChange={(e) => setRegistro(e.target.value)}
-          />
+          <input type="text" id="registro" {...register('registro')} />
+          {errors.registro && <span className="error">{errors.registro.message}</span>}
         </div>
 
-        <div className="form-group">
+        <div>
+          <label htmlFor="endereco">Endereço:</label>
+          <input type="text" id="endereco" {...register('endereco')} />
+          {errors.endereco && <span className="error">{errors.endereco.message}</span>}
+        </div>
+
+        <div>
+          <label htmlFor="telefone">Telefone:</label>
+          <input type="text" id="telefone" {...register('telefone')} />
+          {errors.telefone && <span className="error">{errors.telefone.message}</span>}
+        </div>
+
+        <div>
+          <label htmlFor="profissao">Profissão:</label>
+          <input type="text" id="profissao" {...register('profissao')} />
+          {errors.profissao && <span className="error">{errors.profissao.message}</span>}
+        </div>
+
+        <div>
+          <label htmlFor="especialidade">Especialidade:</label>
+          <input type="text" id="especialidade" {...register('especialidade')} />
+          {errors.especialidade && <span className="error">{errors.especialidade.message}</span>}
+        </div>
+
+        <div>
           <label htmlFor="comentarios">Comentários:</label>
-          <textarea
-            id="comentarios"
-            value={comentarios}
-            onChange={(e) => setComentarios(e.target.value)}
-          />
+          <textarea id="comentarios" {...register('comentarios')} />
+          {errors.comentarios && <span className="error">{errors.comentarios.message}</span>}
         </div>
 
         <button type="submit">Cadastrar</button>

@@ -20,7 +20,7 @@
   justify-content: space-between;
   align-items: center; /* Para centralizar verticalmente */
   margin: 50px;
-  width: 300px;
+  width: 500px;
   height: 50px;  
 }
 
@@ -57,9 +57,17 @@
   border: 1px solid #fff;
 }
 
+.inicial p{
+  display: flex;
+  width: 100px;
+  text-decoration: none;
+  margin: 10px;
+  color: #CA419C;
+  text-align: center;
+  cursor: pointer;
+}
 
-
-.artigo p {
+.artigo p{
   display: flex;
   text-decoration: none;
   margin: 10px;

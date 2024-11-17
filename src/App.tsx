@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CadastroForm from './components/cadastroform/CadastroForm';
 import Landingpage from './pages/landingpage/Landingpage';
 import UsersList from './pages/userslist/UsersList';
+import EditUserPage from './pages/edituserpage/EditUserPage';
 
 const App: React.FC = () => {
 
@@ -25,6 +26,10 @@ const App: React.FC = () => {
         <Route 
           path="/userslist" 
           element={<UsersList onUsersListLoad={handleUsersListLoad} />} 
+        />
+        <Route
+          path="/edituserpage/:id"
+          element={<EditUserPage />}  
         />
       </Routes>
     </Router>

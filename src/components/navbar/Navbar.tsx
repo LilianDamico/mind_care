@@ -10,10 +10,21 @@ export const Navbar: React.FC = () => {
         <img src={logo} alt='logo' />           
       </div>
       <div className='menu'>
-        <div className='artigo'><Link to="/"><p>Artigos</p></Link></div>
+        <div className='inicial'>
+          <Link to="/">
+          <p>Página Inicial</p>
+          </Link>
+        </div>
+        <div className='artigo'>
+          <Link to="/">
+            <p>Artigos</p>
+          </Link>
+        </div>
+
         <Link to="/login">
           <button className='signin-button'>Signin</button>
         </Link>
+
         <Link to="/contato">
           <button className='signup-button'>Sign Up</button>
         </Link>          

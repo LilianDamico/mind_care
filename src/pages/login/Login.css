@@ -1,0 +1,115 @@
+.login-container {
+  box-sizing: border-box;
+  margin: 0;
+}
+.login-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 65vh;
+    background-color: #fff;
+    margin: 10% 35%;
+    border: 2px solid #7852A5;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .login-form {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    width: 95%;
+    max-width: 400px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+  }
+  
+  .login-form h3 {
+    justify-content: center;
+    color: #7852A5;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .login-input {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .icon {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    padding: 5px;
+    color: #7852A5;
+  }
+    
+  input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  input:focus {
+    border-color: #7852A5;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.25);
+  }
+  
+  .error-input {
+    border-color: #dc3545;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  .login-button {
+    display:flex;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #7852A5;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .login-call {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: #7852A5;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .login-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

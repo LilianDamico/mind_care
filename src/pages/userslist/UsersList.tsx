@@ -60,8 +60,18 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
 
   // Função para redirecionar o usuário para a página de edição
   const updateUser = (id: number) => {
-    navigate(`/edituserpage/${id}`); // Redireciona para a página de edição passando o ID do usuário
+  
+    const token = localStorage.getItem('authToken'); // Verifica o token no localStorage
+  
+    if (token) {
+       
+       navigate('/login');
+    } else {
+      navigate(`/edituserpage/${id}`);
+       
+    }
   };
+ 
 
   return (
     <div className='userslist-container'>

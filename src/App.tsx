@@ -4,6 +4,7 @@ import CadastroForm from './components/cadastroform/CadastroForm';
 import Landingpage from './pages/landingpage/Landingpage';
 import UsersList from './pages/userslist/UsersList';
 import EditUserPage from './pages/edituserpage/EditUserPage';
+import Login from './pages/login/Login';
 
 const App: React.FC = () => {
 
@@ -31,6 +32,7 @@ const App: React.FC = () => {
           path="/edituserpage/:id"
           element={<EditUserPage />}  
         />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

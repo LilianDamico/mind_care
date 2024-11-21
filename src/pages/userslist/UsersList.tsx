@@ -2,8 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import './UsersList.css';
 import axios from 'axios';
 import { Navbar } from '../../components/navbar/Navbar';
-import { useNavigate } from 'react-router-dom'; 
-import './UsersList.css';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
   id: number;
@@ -16,74 +15,62 @@ interface User {
   registro: string;
 }
 
-interface UsersListProps {
-  onUsersListLoad?: () => void;
-}
-
-const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
+const UsersList: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate(); // Usar useNavigate para redirecionar
+  const navigate = useNavigate();
 
   // Função para carregar a lista de usuários
   const fetchUsers = useCallback(async () => {
     try {
-      const response = await axios.get('https://api-node-vjiq.onrender.com/users'); // Altere para sua URL de backend
+      const token = localStorage.getItem('authToken');
+      const response = await axios.get('https://api-node-vjiq.onrender.com/users', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUsers(response.data.users);
       setLoading(false);
-
-      if (onUsersListLoad) {
-        onUsersListLoad();
-      }
-    } catch (err) {
+    } catch (err: any) {
       setError('Erro ao carregar usuários.');
       setLoading(false);
     }
-  }, [onUsersListLoad]);
+  }, []);
 
   useEffect(() => {
     fetchUsers();
   }, [fetchUsers]);
 
+  // Função para redirecionar o usuário para a página de edição
+  const updateUser = (id: number) => {
+    navigate(`/edituserpage/${id}`);
+  };
+
   // Função para deletar um usuário
   const deleteUser = async (id: number) => {
     if (window.confirm('Tem certeza que deseja deletar este usuário?')) {
       try {
-        await axios.delete(`https://api-node-vjiq.onrender.com/users/${id}`); // Altere para sua URL de backend
-        setUsers(users.filter(user => user.id !== id));
+        const token = localStorage.getItem('authToken');
+        await axios.delete(`https://api-node-vjiq.onrender.com/users/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsers(users.filter((user) => user.id !== id));
       } catch (err) {
         setError('Erro ao deletar usuário.');
       }
     }
   };
 
-  // Função para redirecionar o usuário para a página de edição
-  const updateUser = (id: number) => {
-  
-    const token = localStorage.getItem('authToken'); // Verifica o token no localStorage
-  
-    if (token) {
-       
-       navigate('/login');
-    } else {
-      navigate(`/edituserpage/${id}`);
-       
-    }
-  };
- 
-
   return (
-    <div className='userslist-container'>
+    <div className="userslist-container">
       <Navbar />
-      <h1 className='userslist-h1'>Lista de Usuários</h1>
+      <h1 className="userslist-h1">Lista de Usuários</h1>
 
       {loading ? (
         <p>Carregando...</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <table className='userslist-table'>
+        <table className="userslist-table">
           <thead>
             <tr>
               <th>ID</th>
@@ -98,7 +85,7 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {users.map((user) => (
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.nome}</td>
@@ -109,10 +96,16 @@ const UsersList: React.FC<UsersListProps> = ({ onUsersListLoad }) => {
                 <td>{user.especialidade}</td>
                 <td>{user.registro}</td>
                 <td>
-                  <button className="userslist-button" onClick={() => updateUser(user.id)}>
+                  <button
+                    className="userslist-button"
+                    onClick={() => updateUser(user.id)}
+                  >
                     Update
                   </button>
-                  <button className='userslist-button' onClick={() => deleteUser(user.id)}>
+                  <button
+                    className="userslist-button"
+                    onClick={() => deleteUser(user.id)}
+                  >
                     Delete
                   </button>
                 </td>

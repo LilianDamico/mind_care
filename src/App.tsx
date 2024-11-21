@@ -5,15 +5,13 @@ import Landingpage from './pages/landingpage/Landingpage';
 import UsersList from './pages/userslist/UsersList';
 import EditUserPage from './pages/edituserpage/EditUserPage';
 import Login from './pages/login/Login';
+import ProtectedRoute from './components/protectedroute/ProtectedRoute';
+import Signup from './pages/signup/Signup';
 
 const App: React.FC = () => {
 
   const handleCadastroSuccess = () => {
     alert('Cadastro realizado com sucesso!');
-  };
-
-  const handleUsersListLoad = () => {
-    alert('Lista de usuários carregada com sucesso!');
   };
 
   return (
@@ -26,13 +24,15 @@ const App: React.FC = () => {
         />
         <Route 
           path="/userslist" 
-          element={<UsersList onUsersListLoad={handleUsersListLoad} />} 
+          element={<ProtectedRoute component={UsersList} />}
         />
         <Route
           path="/edituserpage/:id"
-          element={<EditUserPage />}  
+          element={<ProtectedRoute component={EditUserPage} />}
+            
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </Router>
   );

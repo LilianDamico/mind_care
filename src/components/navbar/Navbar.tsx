@@ -25,7 +25,7 @@ export const Navbar: React.FC = () => {
           <button className='signin-button'>Signin</button>
         </Link>
 
-        <Link to="/contato">
+        <Link to="/signup">
           <button className='signup-button'>Sign Up</button>
         </Link>          
       </div>      

@@ -7,6 +7,7 @@ import EditUserPage from './pages/edituserpage/EditUserPage';
 import Login from './pages/login/Login';
 import ProtectedRoute from './components/protectedroute/ProtectedRoute';
 import Signup from './pages/signup/Signup';
+import PasswordRecovery from './pages/password_recovery/PasswordRecovery';
 
 const App: React.FC = () => {
 
@@ -33,6 +34,7 @@ const App: React.FC = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/password-recovery" element={<PasswordRecovery />} />
       </Routes>
     </Router>
   );

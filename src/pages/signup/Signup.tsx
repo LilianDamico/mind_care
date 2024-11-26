@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Signup.css';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
@@ -11,8 +12,10 @@ const Signup: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  // Define a URL base dinamicamente usando as variáveis de ambiente
   const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8081';
+
+  // Hook do React Router para navegação
+  const navigate = useNavigate();
 
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,15 +28,9 @@ const Signup: React.FC = () => {
     }
 
     try {
-      // Envia os dados para o endpoint `/clientes`
-      const response = await axios.post(`${baseUrl}/clientes`, {
-        nome,
-        email,
-        senha,
-      });
-
+      const response = await axios.post(`${baseUrl}/clientes`, { nome, email, senha });
       if (response.data.error) {
-        setError(response.data.message); // Exibe mensagem de erro do backend
+        setError(response.data.message);
       } else {
         setSuccess('Cliente registrado com sucesso!');
         setNome('');
@@ -50,8 +47,8 @@ const Signup: React.FC = () => {
       <Navbar />
       <h2>Cadastre-se!</h2>
       <form className="signup-form" onSubmit={handleSignup}>
-        {error && <p className="error">{error}</p>} {/* Exibe erros */}
-        {success && <p className="success">{success}</p>} {/* Exibe sucesso */}
+        {error && <p className="error">{error}</p>}
+        {success && <p className="success">{success}</p>}
         
         <div className="input-group">
           <FaUser className="icon" />
@@ -90,6 +87,15 @@ const Signup: React.FC = () => {
           Registrar
         </button>
       </form>
+
+      <div className='recovery-box'>
+        <h6>Esqueceu a senha?</h6>
+        <button 
+          className="recovery-button" 
+          onClick={() => navigate('/password-recovery')}>
+          Clique aqui para recuperar sua senha
+        </button>
+      </div>      
     </div>
   );
 };

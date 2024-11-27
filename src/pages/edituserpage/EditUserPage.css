@@ -60,7 +60,7 @@ h2 {
 
 
 
-.update-button {
+.editupdate-button {
   display: flex;
   padding: 12px;
   background-color: #7852A5;
@@ -76,7 +76,7 @@ h2 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.cancel-button {
+.editcancel-button {
   display: flex;
   padding: 12px;
   background-color: blue;

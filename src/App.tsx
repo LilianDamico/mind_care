@@ -20,8 +20,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Landingpage />} />
         <Route
-          path="/cadastro"
-          element={<CadastroForm onCadastroSuccess={handleCadastroSuccess} />}
+        path="/cadastro"
+        element={<CadastroForm onCadastroSuccess={handleCadastroSuccess} />}
         />
         <Route 
           path="/userslist" 

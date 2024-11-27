@@ -50,7 +50,7 @@ const PasswordRecovery: React.FC = () => {
             disabled={loading}
           />
         </div>
-        <button type="submit" disabled={loading} className="submit-button">
+        <button type="submit" disabled={loading} className="recoverysubmit-button">
           {loading ? 'Enviando...' : 'Enviar'}
         </button>
       </form>

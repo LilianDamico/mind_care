@@ -132,10 +132,10 @@ const EditUserPage: React.FC = () => {
           <input type="text" value={formData.registro} readOnly />
         </div>
         <div className="form-buttons">
-          <button type="submit" className="update-button">
+          <button type="submit" className="editupdate-button">
             Salvar
           </button>
-          <button type="button" className="cancel-button" onClick={() => navigate('/userslist')}>
+          <button type="button" className="editcancel-button" onClick={() => navigate('/userslist')}>
             Cancelar
           </button>
         </div>

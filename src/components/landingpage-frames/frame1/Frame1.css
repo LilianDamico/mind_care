@@ -1,95 +1,109 @@
 .frame1-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(460px, 1fr)); 
-    gap: 30vh; 
-    width: 100%; 
-    height: 70vh; 
-    margin-left: 20px;
-    padding: 35px;
-    justify-content: left;
+    grid-template-columns: 1fr 1fr; /* Divide em duas colunas iguais */
+    gap: 20px;
+    align-items: center; /* Alinha verticalmente ao centro */
+    width: 100%;
+    height: 73.5vh; /* Ocupa toda a altura da tela */
+    padding: 50px;
+    box-sizing: border-box; /* Garante que padding seja incluído no tamanho total */
 }
 
 .text-container {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    justify-content: center;
+    max-width: 600px; /* Limita a largura */
+    padding: 0; /* Remove qualquer padding extra */
+    margin: 0; /* Remove qualquer margem extra */
 }
 
-.text-container h1, h2, h3 {
-    display: flex;
+
+.text-container h1 {
     color: #7852A5;
-    font-family: 'pangram', sans-serif;
-    padding: 10px;
-    margin-left: 10px;
+    font-size: 3rem; /* Ajuste de tamanho da fonte */
+    font-family: 'Pangram', sans-serif;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
+
+.text-container h2 {
+    display: flex;
+    width: 600px;
+    color: #7852A5;
+    font-size: 2rem; /* Tamanho da fonte */
+    font-family: 'Pangram', sans-serif;
+    font-weight: normal; /* Peso da fonte */
+    margin: 10px 0 20px 0; /* Margens superior, direita, inferior e esquerda */
+    padding: 0; /* Remove preenchimento */
+    text-align: left; /* Alinha o texto à esquerda */
+    box-sizing: border-box; /* Garante consistência no cálculo de tamanhos */
+}
+
 
 .text-container p {
-    display: flex;
-    justify-content: left;
-    font-family: 'pangram', sans-serif;
-    padding: 10px;
-    margin-left: 10px;
-    text-align: justify;
-    letter-spacing: 1px;
+    font-family: 'Pangram', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
 }
 
 .button-box {
     display: flex;
-    flex-direction: row;
-    width: 250px;
-    height: 80px;
-    margin: 60px;
-    justify-content: space-between; /* Alinha os botões lado a lado */
+    gap: 20px; /* Espaçamento entre os botões */
 }
 
 .inscrever {
-    display: flex;
     background-color: #7852A5;
-    align-items: center;
-    justify-content: center;
-    width: 90px;
-    height: 50px;
-    margin: 20px;
     color: white;
-    border: 1px solid #7852A5;
-    box-shadow: 6px 3px 3px grey;
+    font-family: 'Pangram', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    padding: 12px 24px;
     border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.inscrever:hover {
+    background-color: #663399; /* Escurece a cor ao passar o mouse */
+    box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.3);
 }
 
 .login {
-    display: flex;
-    width: 80px;
-    height: 50px;
-    align-items: center;
-    justify-content: center;
-    margin: 20px;
     background-color: white;
-    border: 1px solid #7852A5;
-    box-shadow: 6px 3px 3px grey;
-    border-radius: 5px;
     color: #7852A5;
-    font-weight: bold; 
-    transition: background-color 0.3s ease; 
+    font-family: 'Pangram', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid #7852A5;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .login:hover {
-    background-color: #7852A5; /* Muda a cor de fundo quando o mouse passa sobre o botão */
-    color: white; /* Muda a cor do texto para branco */
+    background-color: #7852A5;
+    color: white;
+    box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.3);
 }
 
 .image-box {
-    display: flex; 
-    width: 100%;
-    height: 500px; 
-    justify-content: center; 
-    align-items: center; 
-    overflow: hidden; 
-    margin: 50px;
-    margin-right: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px; /* Limita a largura máxima */
+    height: auto;
 }
 
 .image-box img {
-    max-width: 100%; 
-    max-height: 100%; 
+    width: 100%;
+    height: auto; /* Mantém a proporção da imagem */
     object-fit: cover;
+    border-radius: 10px; /* Bordas arredondadas */
 }

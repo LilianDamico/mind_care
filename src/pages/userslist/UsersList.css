@@ -104,3 +104,36 @@
     }
   }
   
+
+  .userslist-search {
+    display: flex;
+    width: 550px;
+    margin: 30px;
+    text-align: center;
+    border: 2px solid #7852A5;
+    border-radius: 5px;
+  }
+  
+  .userslist-search input {
+    display: flex;
+    margin: 3px;
+    width: 95%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .search-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #7852A5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .search-button:hover {
+    background-color: #0056b3;
+  }

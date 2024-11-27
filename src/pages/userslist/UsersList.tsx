@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import './UsersList.css';
 import axios from 'axios';
 import { Navbar } from '../../components/navbar/Navbar';
-import { useNavigate } from 'react-router-dom';
 
 interface User {
   id: number;
@@ -17,58 +16,67 @@ interface User {
 
 const UsersList: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(''); // Estado para o campo de pesquisa
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+
+  // Define a URL base com base no ambiente
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://api-node-vjiq.onrender.com'
+      : 'http://localhost:8081';
 
   // Função para carregar a lista de usuários
-  const fetchUsers = useCallback(async () => {
+  const fetchUsers = async (query?: string) => {
+    setLoading(true);
+    setError(null);
+
     try {
-      const token = localStorage.getItem('authToken');
-      const response = await axios.get('https://api-node-vjiq.onrender.com/users', {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get(`${baseUrl}/users`, {
+        params: query ? { query } : undefined, // Passa o termo de pesquisa se disponível
       });
-      setUsers(response.data.users);
-      setLoading(false);
+      setUsers(response.data.users || []);
     } catch (err: any) {
       setError('Erro ao carregar usuários.');
+    } finally {
       setLoading(false);
     }
-  }, []);
-
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
-
-  // Função para redirecionar o usuário para a página de edição
-  const updateUser = (id: number) => {
-    navigate(`/edituserpage/${id}`);
   };
 
-  // Função para deletar um usuário
-  const deleteUser = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja deletar este usuário?')) {
-      try {
-        const token = localStorage.getItem('authToken');
-        await axios.delete(`https://api-node-vjiq.onrender.com/users/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUsers(users.filter((user) => user.id !== id));
-      } catch (err) {
-        setError('Erro ao deletar usuário.');
-      }
+  useEffect(() => {
+    fetchUsers(); // Carrega todos os usuários inicialmente
+  }, []);
+
+  // Função para realizar a busca
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      fetchUsers(searchTerm);
+    } else {
+      fetchUsers(); // Carrega todos os usuários se o termo de busca estiver vazio
     }
   };
 
   return (
     <div className="userslist-container">
       <Navbar />
-      <h1 className="userslist-h1">Lista de Usuários</h1>
+      <h1 className="userslist-h1">Consulta de Profissionais</h1>
+
+      <div className="userslist-search">
+        <input
+          type="text"
+          placeholder="Pesquise por nome, profissão ou especialidade..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button onClick={handleSearch} className="search-button">
+          Buscar
+        </button>
+      </div>
 
       {loading ? (
         <p>Carregando...</p>
       ) : error ? (
-        <p>{error}</p>
+        <p className="error">{error}</p>
       ) : (
         <table className="userslist-table">
           <thead>
@@ -81,7 +89,6 @@ const UsersList: React.FC = () => {
               <th>Profissão</th>
               <th>Especialidade</th>
               <th>Registro</th>
-              <th>Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -95,20 +102,6 @@ const UsersList: React.FC = () => {
                 <td>{user.profissao}</td>
                 <td>{user.especialidade}</td>
                 <td>{user.registro}</td>
-                <td>
-                  <button
-                    className="userslist-button"
-                    onClick={() => updateUser(user.id)}
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="userslist-button"
-                    onClick={() => deleteUser(user.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>

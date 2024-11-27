@@ -1,42 +1,67 @@
-/* Estilos para o contêiner principal do Frame2 */
 .frame2-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Faz o contêiner ocupar toda a altura da tela */
-    background-color: #f0f4f8; /* Cor de fundo clara */
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  /* Estilo para o botão dentro do Frame2 */
-  .userslist {
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #4CAF50; /* Cor verde */
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra leve para o botão */
-  }
-  
-  /* Efeito ao passar o mouse sobre o botão */
-  .userslist:hover {
-    background-color: #45a049; /* Cor um pouco mais escura */
-    transform: translateY(-2px); /* Efeito de elevação do botão */
-  }
-  
-  /* Efeito ao pressionar o botão */
-  .userslist:active {
-    transform: translateY(1px); /* Dá a sensação de "pressionar" o botão */
-  }
-  
-  /* Estilos para o botão no foco */
-  .userslist:focus {
-    outline: none; /* Remove a borda padrão do foco */
-    box-shadow: 0 0 0 3px rgba(72, 145, 255, 0.5); /* Adiciona uma borda azul clara ao focar */
-  }
-  
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Duas colunas de igual tamanho */
+  align-items: center; /* Centraliza o conteúdo verticalmente */
+  gap: 20px; /* Espaçamento entre texto e imagem */
+  width: 100%;
+  height: 65vh; /* Altura da tela */
+  padding: 50px;
+  box-sizing: border-box; /* Inclui padding e borda no cálculo de tamanho */
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 600px; /* Define a largura máxima para o texto */
+  padding-right: 20px; /* Espaçamento adicional à direita */
+}
+
+.text-container p:first-of-type {
+  font-family: 'Pangram', sans-serif;
+  font-size: 1rem;
+  font-weight: normal;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.text-container h1 {
+  color: #7852A5;
+  font-size: 2.5rem;
+  font-family: 'Pangram', sans-serif;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+.text-container h2 {
+  color: #D15F95;
+  font-size: 2rem;
+  font-family: 'Pangram', sans-serif;
+  font-weight: normal;
+  margin: 10px 0 20px 0; /* Espaçamento vertical */
+  text-align: left; /* Alinha o texto à esquerda */
+}
+
+.text-container p {
+  font-family: 'Pangram', sans-serif;
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  text-align: justify; /* Justifica o texto para melhor legibilidade */
+}
+
+.image-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px; /* Limita a largura máxima da imagem */
+  height: auto;
+}
+
+.image-box img {
+  width: 100%;
+  height: auto; /* Mantém a proporção da imagem */
+  object-fit: cover;
+}

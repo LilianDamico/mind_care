@@ -1,0 +1,61 @@
+.frame4-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas: imagem e texto */
+    gap: 20px;
+    align-items: center; /* Alinha o conteúdo verticalmente */
+    width: 100%;
+    height: 65vh; /* Ocupa a altura total da tela */
+    padding: 50px;
+    box-sizing: border-box;
+}
+
+.image-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-box img {
+    width: 100%;
+    max-width: 500px; /* Limita a largura da imagem */
+    height: auto; /* Mantém a proporção da imagem */
+    object-fit: cover; /* Ajusta para ocupar bem o espaço */
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 600px; /* Define um limite para a largura do texto */
+    text-align: left;
+}
+
+.text-container .highlight {
+    font-family: 'Pangram', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.text-container h1 {
+    font-family: 'Pangram', sans-serif;
+    font-size: 2.5rem; /* Tamanho do título */
+    font-weight: bold;
+    color: #7852A5; /* Roxo */
+    line-height: 1.4;
+    margin: 0 0 20px 0;
+}
+
+.text-container h1 .highlight-pink {
+    color: #D15F95; /* Rosa para destacar */
+}
+
+.text-container .description {
+    font-family: 'Pangram', sans-serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    text-align: justify;
+}

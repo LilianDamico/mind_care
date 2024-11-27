@@ -113,3 +113,11 @@
     cursor: not-allowed;
   }
   
+
+  .success {
+    color: #28a745;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  

@@ -17,14 +17,16 @@ const Frame1: React.FC = () => {
   return (
     <div className="frame1-container">
       <div className="text-container">
-        <h1>Bem-vindo ao MindCare</h1>
-        <h2>Cuidando da sua saúde mental</h2>
+        <h1>MindCare</h1>
+        <h2>Onde médicos, pacientes e familiares se encontram!</h2>
         <p>
-          No MindCare, oferecemos suporte emocional e psicológico para quem precisa. 
-          Cadastre-se para ter acesso a uma rede de profissionais de saúde que podem te ajudar a manter o equilíbrio mental e emocional.
+          Cuidar da sua saúde mental nunca foi tão acessível e seguro. Na MindCare,
+          médicos especialistas e pacientes se encontram em um ambiente online
+          dedicado ao bem-estar emocional e psicológico. Inscreva-se e faça parte
+          dessa jornada de cuidado e acolhimento. Venha para a MindCare!
         </p>
         <div className="button-box">
-          <button className="inscrever" onClick={handleCadastroClick}>Inscrever-se</button>
+          <button className="inscrever" onClick={handleCadastroClick}>Inscreva-se</button>
           <button className="login" onClick={handleLoginClick}>Login</button>
         </div>
       </div>
@@ -32,6 +34,8 @@ const Frame1: React.FC = () => {
         <img src={headImage} alt="Imagem MindCare" />
       </div>
     </div>
+
+   
   );
 };
 

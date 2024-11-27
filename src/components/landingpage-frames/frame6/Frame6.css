@@ -1,0 +1,31 @@
+.frame6-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas */
+    gap: 40px; /* Espaçamento entre os itens */
+    padding: 50px;
+    justify-items: center; /* Centraliza os itens horizontalmente */
+    align-items: center; /* Centraliza os itens verticalmente */
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .feature-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .feature-box i {
+    font-size: 3rem; /* Tamanho dos ícones */
+    color: #9900f5; /* Cor dos ícones */
+    margin-bottom: 10px; /* Espaço entre o ícone e o texto */
+  }
+  
+  .feature-box p {
+    font-family: 'Pangram', sans-serif;
+    font-size: 1rem;
+    color: #9900f5; /* Cor do texto */
+    margin: 0;
+  }
+  

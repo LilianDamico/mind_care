@@ -11,7 +11,7 @@ const Frame1: React.FC = () => {
   };
 
   const handleLoginClick = () => {
-    navigate('/login'); 
+    navigate('/loginusers'); 
   };
 
   return (
@@ -25,7 +25,7 @@ const Frame1: React.FC = () => {
           dedicado ao bem-estar emocional e psicológico. Inscreva-se e faça parte
           dessa jornada de cuidado e acolhimento. Venha para a MindCare!
         </p>
-        <div className="button-box">
+        <div className="button-boxx">
           <button className="inscrever" onClick={handleCadastroClick}>Inscreva-se</button>
           <button className="login" onClick={handleLoginClick}>Login</button>
         </div>

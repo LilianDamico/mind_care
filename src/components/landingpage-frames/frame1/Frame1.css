@@ -6,25 +6,26 @@
     width: 100%;
     height: 73.5vh; /* Ocupa toda a altura da tela */
     padding: 50px;
-    box-sizing: border-box; /* Garante que padding seja incluído no tamanho total */
+    box-sizing: border-box; 
 }
 
 .text-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    max-width: 600px; /* Limita a largura */
-    padding: 0; /* Remove qualquer padding extra */
-    margin: 0; /* Remove qualquer margem extra */
+    max-width: 600px; 
+    padding: 0;
+    margin: 0; 
 }
 
 
 .text-container h1 {
     color: #7852A5;
-    font-size: 3rem; /* Ajuste de tamanho da fonte */
+    font-size: 3rem; 
     font-family: 'Pangram', sans-serif;
     font-weight: bold;
     margin-bottom: 10px;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
 }
 
 .text-container h2 {
@@ -37,7 +38,8 @@
     margin: 10px 0 20px 0; /* Margens superior, direita, inferior e esquerda */
     padding: 0; /* Remove preenchimento */
     text-align: left; /* Alinha o texto à esquerda */
-    box-sizing: border-box; /* Garante consistência no cálculo de tamanhos */
+    box-sizing: border-box; 
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -49,9 +51,11 @@
     margin-bottom: 30px;
 }
 
-.button-box {
+.button-boxx {
     display: flex;
-    gap: 20px; /* Espaçamento entre os botões */
+    flex-direction: row;
+    gap: 20px; 
+    margin: 40px;
 }
 
 .inscrever {
@@ -105,5 +109,5 @@
     width: 100%;
     height: auto; /* Mantém a proporção da imagem */
     object-fit: cover;
-    border-radius: 10px; /* Bordas arredondadas */
+    border-radius: 10px; 
 }

@@ -4,9 +4,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { createUser, updateUser, deleteUser } from '../../services/usersService';
 import './CadastroForm.css';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../navbar/Navbar';
 
-// Interface para os inputs do formulário
 interface UserFormInputs {
   nome: string;
   cpf: string;
@@ -20,23 +20,14 @@ interface UserFormInputs {
   comentarios?: string;
 }
 
-// Interface para as props do componente CadastroForm
-interface CadastroFormProps {
-  onCadastroSuccess: () => void; // Função chamada após o cadastro ser bem-sucedido
-}
-
-// Esquema de validação com Yup
-const userSchema = yup.object({
+const userSchema = yup.object().shape({
   nome: yup.string().required('O nome é obrigatório.'),
   cpf: yup
     .string()
     .matches(/^\d{11}$/, 'O CPF deve conter exatamente 11 dígitos.')
     .required('O CPF é obrigatório.'),
   email: yup.string().email('Formato de e-mail inválido.').required('O e-mail é obrigatório.'),
-  senha: yup
-    .string()
-    .min(8, 'A senha deve ter no mínimo 8 caracteres.')
-    .optional(),
+  senha: yup.string().min(8, 'A senha deve ter no mínimo 8 caracteres.').optional(),
   registro: yup.string().required('O registro é obrigatório.'),
   endereco: yup.string().required('O endereço é obrigatório.'),
   telefone: yup
@@ -48,7 +39,7 @@ const userSchema = yup.object({
   comentarios: yup.string().optional(),
 });
 
-const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
+const CadastroForm: React.FC = () => {
   const {
     register,
     handleSubmit,
@@ -57,28 +48,38 @@ const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
     resolver: yupResolver(userSchema),
   });
 
+  const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<UserFormInputs> = async (data) => {
     try {
-      const response = await createUser(data);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
+  
+      const response = await createUser(formData);
       alert(response.message || 'Usuário cadastrado com sucesso!');
-      onCadastroSuccess();
+      navigate('/userslist');
     } catch (error: any) {
-      if (error.response?.data?.details) {
-        alert(`Erro: ${error.response.data.details.join(', ')}`);
-      } else {
-        alert('Erro inesperado ao cadastrar o usuário.');
-      }
+      alert(error.response?.data?.details || 'Erro inesperado ao cadastrar o usuário.');
     }
   };
-
-  const handleUpdate = async (data: UserFormInputs) => {
+  
+  const handleUpdate: SubmitHandler<UserFormInputs> = async (data) => {
     try {
-      const response = await updateUser(data.cpf, data);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value as string);
+      });
+  
+      const response = await updateUser(data.cpf, formData);
       alert(response.message || 'Usuário atualizado com sucesso!');
+      navigate('/userslist');
     } catch (error: any) {
       alert('Erro ao atualizar o usuário.');
     }
   };
+  
 
   const handleDelete = async () => {
     const cpf = window.prompt('Digite o CPF do usuário a ser excluído:');
@@ -86,6 +87,7 @@ const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
       try {
         const response = await deleteUser(cpf);
         alert(response.message || 'Usuário excluído com sucesso!');
+        navigate('/userslist');
       } catch (error: any) {
         alert('Erro ao excluir o usuário.');
       }
@@ -98,59 +100,25 @@ const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
       <div className="grid-container">
         <form onSubmit={handleSubmit(onSubmit)} className="cadastro-form">
           <h2>Cadastro de Usuários</h2>
-          <div className="form-group">
-            <label htmlFor="nome">Nome</label>
-            <input type="text" id="nome" {...register('nome')} />
-            {errors.nome && <span className="error">{errors.nome.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="cpf">CPF</label>
-            <input type="text" id="cpf" {...register('cpf')} />
-            {errors.cpf && <span className="error">{errors.cpf.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="email">E-mail</label>
-            <input type="email" id="email" {...register('email')} />
-            {errors.email && <span className="error">{errors.email.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="senha">Senha</label>
-            <input type="password" id="senha" {...register('senha')} />
-            {errors.senha && <span className="error">{errors.senha.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="registro">Registro</label>
-            <input type="text" id="registro" {...register('registro')} />
-            {errors.registro && <span className="error">{errors.registro.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="endereco">Endereço</label>
-            <input type="text" id="endereco" {...register('endereco')} />
-            {errors.endereco && <span className="error">{errors.endereco.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="telefone">Telefone</label>
-            <input type="text" id="telefone" {...register('telefone')} />
-            {errors.telefone && <span className="error">{errors.telefone.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="profissao">Profissão</label>
-            <input type="text" id="profissao" {...register('profissao')} />
-            {errors.profissao && <span className="error">{errors.profissao.message}</span>}
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="especialidade">Especialidade</label>
-            <input type="text" id="especialidade" {...register('especialidade')} />
-            {errors.especialidade && <span className="error">{errors.especialidade.message}</span>}
-          </div>
+          {[
+            { id: 'nome', label: 'Nome', type: 'text' },
+            { id: 'cpf', label: 'CPF', type: 'text' },
+            { id: 'email', label: 'E-mail', type: 'email' },
+            { id: 'senha', label: 'Senha', type: 'password' },
+            { id: 'registro', label: 'Registro', type: 'text' },
+            { id: 'endereco', label: 'Endereço', type: 'text' },
+            { id: 'telefone', label: 'Telefone', type: 'tel' },
+            { id: 'profissao', label: 'Profissão', type: 'text' },
+            { id: 'especialidade', label: 'Especialidade', type: 'text' },
+          ].map(({ id, label, type }) => (
+            <div key={id} className="form-group">
+              <label htmlFor={id}>{label}</label>
+              <input type={type} id={id} {...register(id as keyof UserFormInputs)} />
+              {errors[id as keyof UserFormInputs] && (
+                <span className="error">{errors[id as keyof UserFormInputs]?.message}</span>
+              )}
+            </div>
+          ))}
 
           <div className="form-group">
             <label htmlFor="comentarios">Comentários</label>
@@ -158,7 +126,7 @@ const CadastroForm: React.FC<CadastroFormProps> = ({ onCadastroSuccess }) => {
           </div>
         </form>
 
-        <div className="button-group">
+        <div className="button-box">
           <button type="submit" className="submit-button" onClick={handleSubmit(onSubmit)}>
             Cadastrar
           </button>

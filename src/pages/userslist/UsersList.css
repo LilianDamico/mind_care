@@ -137,3 +137,16 @@
   .search-button:hover {
     background-color: #0056b3;
   }
+
+  .userslist-foto img {
+    display: block;
+    margin: 0 auto;
+    border: 2px solid #ccc;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .userslist-foto img:hover {
+    transform: scale(1.1);
+    border-color: #7852A5;
+  }
+  

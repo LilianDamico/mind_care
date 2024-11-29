@@ -9,16 +9,16 @@ const Frame4: React.FC = () => {
         <img src={pic8} alt="Agendamento online" />
       </div>
       <div className="text-container">
-        <p className="highlight">Destaque sua clínica!</p>
+        <h4 className="highlight">Destaque sua clínica!</h4>
         <h1>
           Aumente a visibilidade <br />
           <span className="highlight-pink">da sua clínica</span> com nosso <br />
           agendamento online
         </h1>
-        <p className="description">
+        <h5 className="description">
           Permita que seus pacientes agendem consultas a qualquer momento, todos
           os dias da semana!
-        </p>
+        </h5>
       </div>
     </div>
   );

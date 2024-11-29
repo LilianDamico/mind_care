@@ -12,6 +12,7 @@ interface User {
   profissao: string;
   especialidade: string;
   registro: string;
+  foto: string;
 }
 
 const UsersList: React.FC = () => {
@@ -89,6 +90,7 @@ const UsersList: React.FC = () => {
               <th>Profissão</th>
               <th>Especialidade</th>
               <th>Registro</th>
+              <th>Foto</th>
             </tr>
           </thead>
           <tbody>
@@ -102,6 +104,22 @@ const UsersList: React.FC = () => {
                 <td>{user.profissao}</td>
                 <td>{user.especialidade}</td>
                 <td>{user.registro}</td>
+                <td className='userslist-foto'>
+                  {user.foto ? (
+                    <img
+                      src={user.foto}
+                      alt={`Foto de ${user.nome}`}
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '50%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  ) : (
+                    'Sem foto'
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

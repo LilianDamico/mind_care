@@ -6,13 +6,13 @@ const Frame2: React.FC = () => {
   return (
     <div className="frame2-container">
       <div className="text-container">
-        <p>Otimize sua prática com nosso site</p>
+        <h4>Otimize sua prática com nosso site!</h4>
         <h1>Gestão clínica</h1>
         <h2>Simplificada e eficiente</h2>
-        <p>
+        <h4>
           Saiba mais sobre uma solução que promove uma maior conexão dos
           pacientes com os serviços de saúde.
-        </p>
+        </h4>
       </div>
       <div className="image-box">
         <img src={frametwo} alt="Imagem ilustrativa de gestão clínica" />

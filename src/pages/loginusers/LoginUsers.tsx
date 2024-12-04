@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { apiUrl } from '../../services/api';
+import axios from 'axios';
 import './LoginUsers.css';
 import { Navbar } from '../../components/navbar/Navbar';
 
@@ -8,12 +8,18 @@ const LoginUsers: React.FC = () => {
   const [senha, setSenha] = useState('');
   const [message, setMessage] = useState<string | null>(null);
 
+  // Defina a URL diretamente aqui
+  const apiUrl = process.env.NODE_ENV === 'production'
+    ? 'https://api-node-lr3u.onrender.com' // URL da API em produção
+    : 'http://localhost:8081'; // URL da API local para desenvolvimento
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
 
     try {
-      const response = await apiUrl.post('/loginusers', { cpf, senha });
+      // Requisição para o login
+      const response = await axios.post(`${apiUrl}/loginusers`, { cpf, senha });
       setMessage(response.data.message);
       // Limpa os campos após sucesso
       setCpf('');

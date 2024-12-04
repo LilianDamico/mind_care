@@ -5,7 +5,6 @@ import Landingpage from './pages/landingpage/Landingpage';
 import UsersList from './pages/userslist/UsersList';
 import EditUserPage from './pages/edituserpage/EditUserPage';
 import Signin from './pages/signin/Signin';
-import ProtectedRoute from './components/protectedroute/ProtectedRoute';
 import Signup from './pages/signup/Signup';
 import PasswordRecovery from './pages/password_recovery/PasswordRecovery';
 import AgendaInteligente from './pages/agendainteligente/AgendaInteligente';
@@ -18,8 +17,8 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Landingpage />} />
         <Route path="/cadastro" element={<CadastroForm />} />
-        <Route path="/userslist" element={<ProtectedRoute component={UsersList} />} />
-        <Route path="/edituserpage/:id" element={<ProtectedRoute component={EditUserPage} />} />
+        <Route path="/userslist" element={<UsersList />} />
+        <Route path="/edituserpage/:id" element={<EditUserPage />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/password-recovery" element={<PasswordRecovery />} />

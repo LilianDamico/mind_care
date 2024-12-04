@@ -4,12 +4,25 @@ import { apiUrl, apiUrlLocal } from './api';
 const isLocal = window.location.hostname === 'localhost';
 const api = isLocal ? apiUrlLocal : apiUrl;
 
+export interface UserFormInputs {
+  nome: string;
+  cpf: string;
+  email: string;
+  senha?: string;
+  registro: string;
+  endereco: string;
+  telefone: string;
+  profissao: string;
+  especialidade: string;
+  comentarios?: string;
+}
+
 // Função para criar usuário
-export const createUser = async (userData: FormData): Promise<any> => {
+export const createUser = async (userData: UserFormInputs): Promise<any> => {
   try {
     const response = await api.post('/users', userData, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Tipo correto para envio de arquivos
+        'Content-Type': 'application/json', // Tipo correto para JSON
       },
     });
     return response.data;
@@ -31,11 +44,11 @@ export const getUserByCpf = async (cpf: string): Promise<any> => {
 };
 
 // Função para atualizar usuário
-export const updateUser = async (cpf: string, userData: FormData): Promise<any> => {
+export const updateUser = async (cpf: string, userData: UserFormInputs): Promise<any> => {
   try {
     const response = await api.put(`/users/${cpf}`, userData, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Tipo correto para envio de arquivos
+        'Content-Type': 'application/json', // Tipo correto para JSON
       },
     });
     return response.data;

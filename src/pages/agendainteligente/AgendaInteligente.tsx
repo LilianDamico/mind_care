@@ -13,9 +13,9 @@ interface AgendaItem {
   hora: string;
   status: string;
   user: {
-    id: number;
     nome: string;
     email: string;
+    cpf: string;
   };
 }
 
@@ -34,8 +34,14 @@ const AgendaInteligente: React.FC = () => {
           throw new Error('Erro ao carregar agendamentos');
         }
         const data = await response.json();
-        setAgenda(data.agenda);
-        setError(null);
+
+        if (data.success && data.compromissos) {
+          setAgenda(data.compromissos); // Ajustado para 'compromissos' da resposta do backend
+          setError(null);
+        } else {
+          setAgenda([]);
+          setError('Nenhum agendamento encontrado.');
+        }
       } catch (err) {
         console.error('Erro ao carregar a agenda:', err);
         setError('Não foi possível carregar os agendamentos.');
@@ -87,7 +93,7 @@ const AgendaInteligente: React.FC = () => {
             {agenda.map((item) => (
               <div key={item.id} className="agenda-item">
                 <h3>{item.titulo}</h3>
-                <p>{item.descricao}</p>
+                <p>{item.descricao || 'Sem descrição'}</p>
                 <p>
                   <strong>Data:</strong>{' '}
                   {new Date(item.data).toLocaleDateString('pt-BR')}
@@ -124,3 +130,4 @@ const AgendaInteligente: React.FC = () => {
 };
 
 export default AgendaInteligente;
+

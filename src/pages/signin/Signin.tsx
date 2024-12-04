@@ -1,54 +1,37 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from 'react-icons/fa';
+import './Signin.css'; // Certifique-se de ter o arquivo CSS
 import axios from 'axios';
-import './Signin.css';
 import { Navbar } from '../../components/navbar/Navbar';
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null); // Estado para mensagem de sucesso
-  const [loading, setLoading] = useState(false); // Estado para indicar carregamento
-  const navigate = useNavigate();
+const LoginPage: React.FC = () => {
+  const [email, setEmail] = useState<string>('');
+  const [senha, setSenha] = useState<string>('');
+  const [message, setMessage] = useState<string | null>(null); // Mensagem de erro ou sucesso
+  const [loading, setLoading] = useState<boolean>(false); // Estado de carregamento
 
-  const baseUrl = process.env.REACT_APP_API_URL || 'http://localhost:8081';
+  // URL base configurada
+  const baseUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://api-node-vjiq.onrender.com'
+      : 'http://localhost:8081';
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null); // Reseta a mensagem de sucesso
+    setMessage(null);
     setLoading(true);
 
-    if (!email || !password) {
-      setError('Preencha todos os campos.');
-      setLoading(false);
-      return;
-    }
-
     try {
-      const response = await axios.post(`${baseUrl}/login`, {
-        email,
-        senha: password, // Backend espera o campo `senha`
-      });
+      const response = await axios.post(`${baseUrl}/login`, { email, senha });
 
-      const { token, cliente } = response.data;
-      if (token) {
-        localStorage.setItem('authToken', token); // Armazena o token no localStorage
-        localStorage.setItem('cliente', JSON.stringify(cliente)); // Armazena informações do cliente no localStorage
-        setSuccess('Login realizado com sucesso! Redirecionando...'); // Define a mensagem de sucesso
-        setLoading(false);
-
-        // Aguarda 5 segundos para exibir a mensagem antes de redirecionar
-        setTimeout(() => {
-          navigate('/'); // Redireciona para a LandingPage
-        }, 5000);
+      if (response.data.success) {
+        setMessage(`Bem-vindo(a), ${response.data.user.nome}!`);
       } else {
-        throw new Error('Token não recebido. Verifique o backend.');
+        setMessage('Erro ao realizar login. Verifique suas credenciais.');
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Erro ao realizar login.');
+    } catch (error: any) {
+      console.error('Erro no login:', error);
+      setMessage('Erro ao realizar login. Tente novamente mais tarde.');
+    } finally {
       setLoading(false);
     }
   };
@@ -57,39 +40,40 @@ const Login: React.FC = () => {
     <div className="login-container">
       <Navbar />
       <div className="login-box">
-        <form className="login-form" onSubmit={handleLogin}>
-          <h3>Login do Cliente</h3>
-          {error && <p className="error">{error}</p>} {/* Exibe mensagem de erro */}
-          {success && <p className="success">{success}</p>} {/* Exibe mensagem de sucesso */}
-          <div className="input-group">
-            <FaUser className="icon" />
+        <form className="login-form" onSubmit={handleSubmit}>
+          <h3>Login</h3>
+          <div className="login-input">
+            <span className="icon">📧</span>
             <input
               type="email"
-              placeholder="E-mail"
+              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="Digite seu email"
               required
             />
           </div>
-          <div className="input-group">
-            <FaLock className="icon" />
+          <div className="login-input">
+            <span className="icon">🔒</span>
             <input
               type="password"
-              placeholder="Senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              id="senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              placeholder="Digite sua senha"
               required
             />
           </div>
-          <div>
-            <button className="login-button" type="submit" disabled={loading}>
-              {loading ? 'Entrando...' : 'Entrar'} {/* Indica carregamento */}
-            </button>
-          </div>
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Carregando...' : 'Entrar'}
+          </button>
         </form>
+        {message && (
+          <p className={message.includes('Bem-vindo') ? 'success' : 'error-message'}>{message}</p>
+        )}
       </div>
     </div>
   );
 };
 
-export default Login;
+export default LoginPage;

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './UsersList.css';
 import axios from 'axios';
 import { Navbar } from '../../components/navbar/Navbar';
 
 interface User {
-  id: number;
   nome: string;
   cpf: string;
   email: string;
@@ -12,48 +11,55 @@ interface User {
   profissao: string;
   especialidade: string;
   registro: string;
-  foto: string;
+  endereco: string;
+  comentarios: string;
+  foto?: string | null;
 }
 
 const UsersList: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>(''); // Estado para o campo de pesquisa
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [users, setUsers] = useState<User[]>([]); // Estado para armazenar os usuários
+  const [searchTerm, setSearchTerm] = useState<string>(''); // Campo de busca
+  const [loading, setLoading] = useState<boolean>(false); // Indicador de carregamento
+  const [error, setError] = useState<string | null>(null); // Mensagem de erro
 
-  // Define a URL base com base no ambiente
+  // URL base configurada
   const baseUrl =
     process.env.NODE_ENV === 'production'
       ? 'https://api-node-vjiq.onrender.com'
       : 'http://localhost:8081';
 
-  // Função para carregar a lista de usuários
-  const fetchUsers = async (query?: string) => {
+  // Função para buscar usuários
+  const fetchUsers = useCallback(async (query?: string) => {
     setLoading(true);
     setError(null);
 
     try {
       const response = await axios.get(`${baseUrl}/users`, {
-        params: query ? { query } : undefined, // Passa o termo de pesquisa se disponível
+        params: query ? { query } : undefined,
       });
-      setUsers(response.data.users || []);
-    } catch (err: any) {
-      setError('Erro ao carregar usuários.');
+
+      // Ajuste para o formato correto do retorno da API
+      const data = response.data?.users?.rows || [];
+      setUsers(data);
+    } catch (err) {
+      console.error('Erro ao buscar usuários:', err);
+      setError('Erro ao carregar usuários. Verifique sua conexão ou tente novamente.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [baseUrl]);
 
+  // Efeito para carregar os usuários na montagem do componente
   useEffect(() => {
-    fetchUsers(); // Carrega todos os usuários inicialmente
-  }, []);
+    fetchUsers();
+  }, [fetchUsers]);
 
-  // Função para realizar a busca
+  // Função para lidar com a busca
   const handleSearch = () => {
     if (searchTerm.trim()) {
       fetchUsers(searchTerm);
     } else {
-      fetchUsers(); // Carrega todos os usuários se o termo de busca estiver vazio
+      fetchUsers(); // Recarrega todos os usuários se o termo de busca estiver vazio
     }
   };
 
@@ -62,6 +68,7 @@ const UsersList: React.FC = () => {
       <Navbar />
       <h1 className="userslist-h1">Consulta de Profissionais</h1>
 
+      {/* Campo de busca */}
       <div className="userslist-search">
         <input
           type="text"
@@ -74,15 +81,15 @@ const UsersList: React.FC = () => {
         </button>
       </div>
 
-      {loading ? (
-        <p>Carregando...</p>
-      ) : error ? (
-        <p className="error">{error}</p>
-      ) : (
+      {/* Mensagem de status */}
+      {loading && <p>Carregando...</p>}
+      {error && <p className="error">{error}</p>}
+
+      {/* Tabela de usuários */}
+      {!loading && !error && users.length > 0 && (
         <table className="userslist-table">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Nome</th>
               <th>CPF</th>
               <th>Email</th>
@@ -90,21 +97,22 @@ const UsersList: React.FC = () => {
               <th>Profissão</th>
               <th>Especialidade</th>
               <th>Registro</th>
+              <th>Endereço</th>
               <th>Foto</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.nome}</td>
+            {users.map((user, index) => (
+              <tr key={index}>
+                <td>{user.nome || 'Não informado'}</td>
                 <td>{user.cpf}</td>
-                <td>{user.email}</td>
-                <td>{user.telefone}</td>
-                <td>{user.profissao}</td>
-                <td>{user.especialidade}</td>
-                <td>{user.registro}</td>
-                <td className='userslist-foto'>
+                <td>{user.email || 'Não informado'}</td>
+                <td>{user.telefone || 'Não informado'}</td>
+                <td>{user.profissao || 'Não informado'}</td>
+                <td>{user.especialidade || 'Não informado'}</td>
+                <td>{user.registro || 'Não informado'}</td>
+                <td>{user.endereco || 'Não informado'}</td>
+                <td className="userslist-foto">
                   {user.foto ? (
                     <img
                       src={user.foto}
@@ -124,6 +132,11 @@ const UsersList: React.FC = () => {
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* Mensagem caso não encontre usuários */}
+      {!loading && !error && users.length === 0 && (
+        <p className="no-results">Nenhum usuário encontrado.</p>
       )}
     </div>
   );

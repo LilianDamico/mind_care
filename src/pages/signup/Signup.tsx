@@ -89,7 +89,7 @@ const Signup: React.FC = () => {
       </form>
 
       <div className='recovery-box'>
-        <h6>Esqueceu a senha?</h6>
+        <h3>Esqueceu a senha?</h3>
         <button 
           className="recovery-button" 
           onClick={() => navigate('/password-recovery')}>

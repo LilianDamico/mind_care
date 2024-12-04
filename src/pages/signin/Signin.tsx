@@ -3,17 +3,14 @@ import './Signin.css'; // Certifique-se de ter o arquivo CSS
 import axios from 'axios';
 import { Navbar } from '../../components/navbar/Navbar';
 
+// URL base configurada para a API
+const baseUrl = process.env.REACT_APP_API_URL || 'https://api-node-lr3u.onrender.com';
+
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [senha, setSenha] = useState<string>('');
   const [message, setMessage] = useState<string | null>(null); // Mensagem de erro ou sucesso
   const [loading, setLoading] = useState<boolean>(false); // Estado de carregamento
-
-  // URL base configurada
-  const baseUrl =
-    process.env.NODE_ENV === 'production'
-      ? 'https://api-node-lr3u.onrender.com'
-      : 'http://localhost:8081';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +18,7 @@ const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
+      // Fazendo o POST com as credenciais
       const response = await axios.post(`${baseUrl}/login`, { email, senha });
 
       if (response.data.success) {
@@ -77,3 +75,4 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+

@@ -22,28 +22,31 @@ const UsersList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false); // Indicador de carregamento
   const [error, setError] = useState<string | null>(null); // Mensagem de erro
 
-  // URL base configurada
-  const baseUrl =
-    process.env.NODE_ENV === 'production'
-      ? 'https://api-node-vjiq.onrender.com'
-      : 'http://localhost:8081';
+  // URL base configurada para a API
+  const baseUrl = process.env.REACT_APP_API_URL || 'https://api-node-vjiq.onrender.com'; // URL para produção ou local
 
   // Função para buscar usuários
   const fetchUsers = useCallback(async (query?: string) => {
     setLoading(true);
-    setError(null);
+    setError(null); // Reseta a mensagem de erro
 
     try {
       const response = await axios.get(`${baseUrl}/users`, {
-        params: query ? { query } : undefined,
+        params: query ? { query } : undefined, // Passa o termo de busca, se houver
       });
 
       // Ajuste para o formato correto do retorno da API
       const data = response.data?.users?.rows || [];
       setUsers(data);
-    } catch (err) {
+    } catch (err: unknown) {  // Definindo explicitamente o tipo do erro
       console.error('Erro ao buscar usuários:', err);
-      setError('Erro ao carregar usuários. Verifique sua conexão ou tente novamente.');
+
+      // Verifica se o erro é uma instância de Error e trata a mensagem
+      if (err instanceof Error) {
+        setError(`Erro: ${err.message}`);
+      } else {
+        setError('Erro desconhecido ao carregar usuários.');
+      }
     } finally {
       setLoading(false);
     }

@@ -37,7 +37,7 @@ const CreateAgenda: React.FC = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8081/agenda/user/${userCPF}`, // Ajustar a URL de produção aqui
+          `https://api-node-lr3u.onrender.com/agenda/user/${userCPF}`, 
           {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
@@ -67,7 +67,7 @@ const CreateAgenda: React.FC = () => {
   // Função para criar agendamento
   const handleCreate = async () => {
     try {
-      const response = await fetch('http://localhost:8081/agenda', {
+      const response = await fetch('https://api-node-lr3u.onrender.com/agenda', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
@@ -93,7 +93,7 @@ const CreateAgenda: React.FC = () => {
   // Função para atualizar agendamento
   const handleUpdate = async () => {
     try {
-      const response = await fetch(`http://localhost:8081/agenda/${formValues.id}`, {
+      const response = await fetch(`https://api-node-lr3u.onrender.com/agenda/${formValues.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('userToken')}`,
@@ -121,7 +121,7 @@ const CreateAgenda: React.FC = () => {
   // Função para deletar agendamento
   const handleDelete = async (id: number) => {
     try {
-      const response = await fetch(`http://localhost:8081/agenda/${id}`, {
+      const response = await fetch(`https://api-node-lr3u.onrender.com/agenda/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('userToken')}`,

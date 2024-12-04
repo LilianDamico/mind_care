@@ -12,7 +12,7 @@ const LoginPage: React.FC = () => {
   // URL base configurada
   const baseUrl =
     process.env.NODE_ENV === 'production'
-      ? 'https://api-node-vjiq.onrender.com'
+      ? 'https://api-node-lr3u.onrender.com'
       : 'http://localhost:8081';
 
   const handleSubmit = async (e: React.FormEvent) => {

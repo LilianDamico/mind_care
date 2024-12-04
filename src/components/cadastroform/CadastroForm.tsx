@@ -34,7 +34,7 @@ const CadastroForm: React.FC = () => {
     setMessage(null);
 
     try {
-      const response = await fetch('http://localhost:8081/users', {
+      const response = await fetch('https://api-node-lr3u.onrender.com/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -73,7 +73,7 @@ const CadastroForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/users/${formData.cpf}`, {
+      const response = await fetch(`https://api-node-lr3u.onrender.com/users/${formData.cpf}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -100,7 +100,7 @@ const CadastroForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8081/users/${formData.cpf}`, {
+      const response = await fetch(`https://api-node-lr3u.onrender.com/users/${formData.cpf}`, {
         method: 'DELETE',
       });
 

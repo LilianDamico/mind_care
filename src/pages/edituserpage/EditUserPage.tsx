@@ -26,7 +26,7 @@ const EditUserPage: React.FC = () => {
       try {
         setLoading(true);
         const token = localStorage.getItem('authToken');
-        const response = await axios.get(`https://api-node-vjiq.onrender.com/users/${id}`, {
+        const response = await axios.get(`https://api-node-lr3u.onrender.com/users/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setFormData(response.data.user);
@@ -51,7 +51,7 @@ const EditUserPage: React.FC = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('authToken');
-      await axios.put(`https://api-node-vjiq.onrender.com/users/${id}`, formData, {
+      await axios.put(`https://api-node-lr3u.onrender.com/users/${id}`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       alert('Usuário atualizado com sucesso!');

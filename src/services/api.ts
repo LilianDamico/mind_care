@@ -1,7 +1,7 @@
 // api.ts
 import axios from 'axios';
 
-const baseURL = process.env.REACT_APP_API_URL || 'https://api-node-vjiq.onrender.com'; 
+const baseURL = process.env.REACT_APP_API_URL || 'https://api-node-lr3u.onrender.com'; 
 
 export const apiUrl = axios.create({
   baseURL,

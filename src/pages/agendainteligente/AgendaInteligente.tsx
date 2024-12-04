@@ -29,7 +29,7 @@ const AgendaInteligente: React.FC = () => {
   useEffect(() => {
     const fetchAgenda = async () => {
       try {
-        const response = await fetch('http://localhost:8081/agenda');
+        const response = await fetch('https://api-node-lr3u.onrender.com/agenda');
         if (!response.ok) {
           throw new Error('Erro ao carregar agendamentos');
         }
@@ -57,7 +57,7 @@ const AgendaInteligente: React.FC = () => {
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja deletar este agendamento?')) {
       try {
-        const response = await fetch(`http://localhost:8081/agenda/${id}`, {
+        const response = await fetch(`https://api-node-lr3u.onrender.com/agenda/${id}`, {
           method: 'DELETE',
         });
 

@@ -7,11 +7,11 @@ const Frame1: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCadastroClick = () => {
-    navigate('/cadastro'); 
+    navigate('/signuppage'); 
   };
 
   const handleLoginClick = () => {
-    navigate('/loginusers'); 
+    navigate('/loginpage'); 
   };
 
   return (

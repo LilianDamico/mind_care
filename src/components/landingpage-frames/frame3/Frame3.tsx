@@ -15,7 +15,7 @@ const Frame3: React.FC = () => {
 
   // Adiciona a rota associada a cada recurso
   const features = [
-    { icon: faLightbulb, text: 'Agenda inteligente', route: '/agendainteligente' },
+    { icon: faLightbulb, text: 'Agenda inteligente', route: '/consultas/nova' },
     { icon: faCircleCheck, text: 'Confirmação de agendamento', route: '/confirmacao-agendamento' },
     { icon: faCommentDots, text: 'Chat interno', route: '/chat-interno' },
     { icon: faList, text: 'Gestão de tarefas', route: '/gestao-tarefas' },

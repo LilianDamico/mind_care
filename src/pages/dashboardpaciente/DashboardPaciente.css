@@ -1,0 +1,64 @@
+.paciente-dashboard {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.card {
+  background: #fff;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(90, 0, 130, 0.1);
+}
+
+.card h2 {
+  color: #5e239d;
+  margin-bottom: 1rem;
+}
+
+.card p {
+  margin: 0.4rem 0;
+}
+
+.consulta-item,
+.historico {
+  margin-bottom: 1.2rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+button, .relatorio-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button {
+  background-color: #5e239d;
+  color: white;
+}
+
+.cancelar-btn {
+  background-color: #c0392b;
+}
+
+.save-btn {
+  background-color: #27ae60;
+}
+
+.relatorio-btn {
+  background-color: #5e239d;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.mensagem {
+  color: green;
+  font-weight: bold;
+}

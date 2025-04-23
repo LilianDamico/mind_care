@@ -1,0 +1,40 @@
+.nova-consulta {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .nova-consulta form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nova-consulta label {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  .nova-consulta input,
+  .nova-consulta textarea,
+  .nova-consulta select {
+    padding: 8px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .nova-consulta button {
+    background-color: #7852A5;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .nova-consulta .mensagem {
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  

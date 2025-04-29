@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { apiUrl } from '../../services/api';
 import './NovaConsulta.css';
 
 interface Patient {
@@ -16,7 +16,7 @@ const NovaConsulta: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:8080/pacientes', {
+    apiUrl.get('/pacientes', {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setPacientes(res.data))
@@ -28,7 +28,7 @@ const NovaConsulta: React.FC = () => {
     const token = localStorage.getItem('token');
 
     try {
-      await axios.post('http://localhost:8080/consultas', {
+      await apiUrl.post('/consultas', {
         dataHora,
         observacoes,
         pacienteId

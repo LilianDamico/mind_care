@@ -1,123 +1,101 @@
 .navbar-container {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 120px;
   justify-content: space-between;
+  align-items: center;
+  height: 120px;
+  width: 100%;
   border-bottom: 1px solid black;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  padding: 0 40px;
 }
 
-.logo {
-  display: flex;
-  width: 5vh;
-  height: 5vh;
-  margin: 3vh;
+.logo img {
+  height: 60px;
+  width: auto;
+  max-width: 160px; /* limite para o logo não ocupar demais */
+  cursor: pointer;
+  object-fit: contain; /* garante que o conteúdo se ajuste */
 }
+
 
 .menu {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center; /* Para centralizar verticalmente */
-  margin: 50px;
-  width: 500px;
-  height: 50px;  
+  align-items: center;
+  gap: 20px;
 }
 
+.menu-item {
+  cursor: pointer;
+  color: #CA419C;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.signin-button,
+.signup-button,
+.message-button,
+.dashboard-button,
+.logout-button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.3s ease;
+}
 
 .signin-button {
-  display: flex;
-  width: 80px;
-  height: 35px;
-  margin: 15px;
-  padding: 5px;
-  align-items: center;
-  justify-content: center;
-  background-color: #fff;
-  color:#7852A5;
-  cursor: pointer;
-  text-decoration-line: none;
-  border-radius: 5px;
+  background-color: white;
+  color: #7852A5;
   border: 1px solid #7852A5;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .signup-button {
+  background-color: #7852A5;
+  color: white;
+}
+
+.message-button {
+  background-color: #E75480;
+  color: white;
+}
+
+.dashboard-button {
+  background-color: #7852A5;
+  color: white;
+}
+
+.logout-button {
+  background-color: tomato;
+  color: white;
+}
+
+.user-section {
   display: flex;
-  width: 80px;
+  align-items: center;
+  gap: 10px;
+}
+
+.welcome-text {
+  font-weight: bold;
+  color: #7852A5;
+}
+
+
+.mensagens-button {
+  display: flex;
+  width: 120px;
   height: 35px;
   margin: 15px;
   padding: 5px;
   align-items: center;
   justify-content: center;
   background-color: #7852A5;
-  color: #fff;
+  color: white;
   cursor: pointer;
   text-decoration: none;
   border-radius: 5px;
   border: 1px solid #fff;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-}
-
-.inicial p{
-  display: flex;
-  width: 100px;
-  text-decoration: none;
-  margin: 10px;
-  color: #CA419C;
-  text-align: center;
-  cursor: pointer;
-  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-}
-
-.artigo p{
-  display: flex;
-  text-decoration: none;
-  margin: 10px;
-  color: #CA419C;
-  text-align: center;
-  cursor: pointer;
-  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-}
-
-
-.logout-button {
-  display: flex;
-  width: 80px;
-  height: 35px;
-  margin: 15px;
-  padding: 5px;
-  align-items: center;
-  justify-content: center;
-  background-color: #d9534f;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 5px;
-  border: 1px solid #fff;
-  font-weight: bold;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
-  transition: background-color 0.3s ease;
-}
-
-.logout-button:hover {
-  background-color: #c9302c;
-}
-
-.bemvindo {
-  color: #5e239d;
-  font-weight: bold;
-  margin-right: 1rem;
-}
-
-
-.chat-button {
-  background-color: #CA419C;
-  color: white;
-  margin-left: 10px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../services/api';
 import './SignupPage.css';
 
 const SignupPage: React.FC = () => {
@@ -9,15 +9,15 @@ const SignupPage: React.FC = () => {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [tipo, setTipo] = useState('PACIENTE');
+  const [tipo, setTipo] = useState<'PACIENTE' | 'PROFISSIONAL'>('PACIENTE');
   const [clinicaId, setClinicaId] = useState<number | null>(null);
   const [clinicas, setClinicas] = useState([]);
 
   useEffect(() => {
     if (tipo === 'PROFISSIONAL') {
-      axios.get('http://localhost:8080/clinicas')
+      apiUrl.get('/clinicas')
         .then(res => setClinicas(res.data))
-        .catch(err => console.error("Erro ao carregar clínicas", err));
+        .catch(err => console.error('Erro ao carregar clínicas:', err));
     }
   }, [tipo]);
 
@@ -25,7 +25,7 @@ const SignupPage: React.FC = () => {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:8080/usuarios', {
+      await apiUrl.post('/usuarios', {
         nome,
         email,
         senha,
@@ -55,7 +55,7 @@ const SignupPage: React.FC = () => {
         <input type="password" value={senha} onChange={e => setSenha(e.target.value)} required />
 
         <label>Tipo de Usuário</label>
-        <select value={tipo} onChange={e => setTipo(e.target.value)}>
+        <select value={tipo} onChange={e => setTipo(e.target.value as 'PACIENTE' | 'PROFISSIONAL')}>
           <option value="PACIENTE">Paciente</option>
           <option value="PROFISSIONAL">Profissional</option>
         </select>

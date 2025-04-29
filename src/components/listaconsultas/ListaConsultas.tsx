@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { apiUrl } from '../../services/api'; // ajuste o caminho se necessário
 import './ListaConsultas.css';
 
 interface Consulta {
@@ -17,7 +17,8 @@ const ListaConsultas: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:8080/consultas/profissional', {
+
+    apiUrl.get('/consultas/profissional', {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setConsultas(res.data))

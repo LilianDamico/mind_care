@@ -1,15 +1,11 @@
-import axios from 'axios';
-
-const API = axios.create({
-  baseURL: 'http://localhost:8080',
-});
+import { apiUrl } from './api';
 
 export const consultarInteracoes = async (medicamento: string) => {
   const token = localStorage.getItem('token');
-  const response = await API.get(`/anvisa/interacoes/${medicamento}`, {
+  const response = await apiUrl.get(`/anvisa/interacoes/${medicamento}`, {
     headers: {
-      Authorization: `Bearer ${token}`
-    }
+      Authorization: `Bearer ${token}`,
+    },
   });
   return response.data;
 };

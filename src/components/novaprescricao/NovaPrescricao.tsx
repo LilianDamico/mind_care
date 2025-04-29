@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { apiUrl } from '../../services/api';
 import { consultarInteracoes } from '../../services/anvisaService';
 import './NovaPrescricao.css';
 
@@ -28,7 +28,7 @@ const NovaPrescricao: React.FC = () => {
     const token = localStorage.getItem('token');
 
     try {
-      await axios.post('http://localhost:8080/prescricoes', {
+      await apiUrl.post('/prescricoes', {
         descricao,
         data,
         indicacoes,
@@ -45,7 +45,7 @@ const NovaPrescricao: React.FC = () => {
       setContraIndicacoes('');
       setEfeitosColaterais('');
       setInteracoes('');
-    } catch (error) {
+    } catch {
       setMensagem('Erro ao cadastrar prescrição.');
     }
   };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { apiUrl } from '../../services/api';
 import './MedicalRecordsList.css';
 
 interface Patient {
@@ -20,7 +20,7 @@ const MedicalRecordsList: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:8080/medicalrecords/professional', {
+    apiUrl.get('/medicalrecords/professional', {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setRegistros(res.data))
@@ -44,7 +44,7 @@ const MedicalRecordsList: React.FC = () => {
             <p><strong>Observações:</strong> {r.observacoes}</p>
             <a
               className="relatorio-btn"
-              href={`http://localhost:8080/relatorio/registro/${r.id}/pdf`}
+              href={`https://api-60lk.onrender.com/relatorio/registro/${r.id}/pdf`}
               target="_blank"
               rel="noopener noreferrer"
             >

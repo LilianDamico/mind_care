@@ -1,0 +1,31 @@
+/* src/pages/consultafuturapaciente/ConsultaFuturaPaciente.css */
+
+.consultas-futuras {
+    margin: 30px;
+  }
+  
+  .consultas-futuras ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .consultas-futuras li {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .consultas-futuras button {
+    margin-left: 20px;
+    background-color: #CA419C;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .consultas-futuras button:hover {
+    background-color: #a93380;
+  }
+  

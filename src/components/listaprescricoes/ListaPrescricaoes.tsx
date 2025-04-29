@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { apiUrl } from '../../services/api';
 import './ListaPrescricoes.css';
 
 interface Patient {
@@ -22,7 +22,7 @@ const ListaPrescricoes: React.FC = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:8080/prescricoes/profissional', {
+    apiUrl.get('/prescricoes/profissional', {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setPrescricoes(res.data))

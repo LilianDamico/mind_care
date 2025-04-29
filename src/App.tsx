@@ -14,6 +14,7 @@ import ConsultaInteracoes from './components/consultainteracoes/ConsultaInteraco
 import NovaPrescricao from './components/novaprescricao/NovaPrescricao';
 import NovaConsulta from './components/novaconsulta/NovaConsulta';
 import ListaConsultas from './components/listaconsultas/ListaConsultas';
+import MensagensPage from './pages/mensagenspage/MensagensPage';
 
 const App: React.FC = () => {
   return (
@@ -33,6 +34,7 @@ const App: React.FC = () => {
         <Route path="/prescricoes/nova" element={<PrivateRoute><NovaPrescricao /></PrivateRoute>} />
         <Route path="/consultas/nova" element={<PrivateRoute><NovaConsulta /></PrivateRoute>} />
         <Route path="/consultas" element={<PrivateRoute><ListaConsultas /></PrivateRoute>} />
+        <Route path="/mensagens" element={<MensagensPage />} />
       </Routes>
     </>
   );

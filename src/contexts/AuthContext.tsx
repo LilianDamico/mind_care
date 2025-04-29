@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { apiUrl } from '../services/api'; // use a instância centralizada do axios
 
 interface Usuario {
+  id: number;
   nome: string;
   email: string;
+  token: string;
   tipo: string;
 }
 
@@ -26,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const fetchUsuario = async () => {
       if (token) {
         try {
-          const response = await axios.get('http://localhost:8080/usuarios/me', {
+          const response = await apiUrl.get('/usuarios/me', {
             headers: { Authorization: `Bearer ${token}` },
           });
           setUsuario(response.data);

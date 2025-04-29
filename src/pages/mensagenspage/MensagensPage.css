@@ -1,0 +1,78 @@
+.mensagens-container {
+    display: flex;
+    height: calc(100vh - 120px); /* altura total menos a Navbar */
+    padding: 20px;
+  }
+  
+  .contatos {
+    width: 250px;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .contato {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background: #f8f8f8;
+    border-radius: 8px;
+  }
+  
+  .contato.ativo {
+    background: #7852a5;
+    color: white;
+  }
+  
+  .chat {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mensagens {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+  }
+  
+  .mensagem {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+    max-width: 60%;
+  }
+  
+  .enviada {
+    background-color: #7852a5;
+    color: white;
+    align-self: flex-end;
+  }
+  
+  .recebida {
+    background-color: #e6e6e6;
+    align-self: flex-start;
+  }
+  
+  .enviar-mensagem {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .enviar-mensagem input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .enviar-mensagem button {
+    background: #ca419c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  

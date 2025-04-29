@@ -12,14 +12,6 @@ export const Navbar: React.FC = () => {
     navigate(path);
   };
 
-  const irParaDashboard = () => {
-    if (usuario?.tipo === 'PROFISSIONAL') {
-      navigate('/dashboard-profissional');
-    } else if (usuario?.tipo === 'PACIENTE') {
-      navigate('/dashboard-paciente');
-    }
-  };
-
   return (
     <div className="navbar-container">
       <div className="logo" onClick={() => handleNavigation('/')}>
@@ -30,18 +22,6 @@ export const Navbar: React.FC = () => {
         <div className="inicial" onClick={() => handleNavigation('/')}>
           <p>Página Inicial</p>
         </div>
-        <button className="dashboard-button" onClick={() => handleNavigation('/prontuarios')}>
-          Prontuários
-        </button>
-        
-        {usuario && (
-              <>
-                <span className="bemvindo">Olá, {usuario.nome.split(' ')[0]}</span>
-                <button className="logout-button" onClick={logout}>Sair</button>
-                <button className="chat-button" onClick={() => handleNavigation('/chat')}>Mensagens</button>
-              </>
-            )}
-
 
         {!usuario ? (
           <>
@@ -60,9 +40,13 @@ export const Navbar: React.FC = () => {
           </>
         ) : (
           <>
-            <button className="dashboard-button" onClick={irParaDashboard}>
-              Dashboard
+            <button
+              className="mensagens-button"
+              onClick={() => handleNavigation('/mensagens')}
+            >
+              Mensagens
             </button>
+
             <span className="bemvindo">Olá, {usuario.nome.split(' ')[0]}</span>
             <button className="logout-button" onClick={logout}>Sair</button>
           </>

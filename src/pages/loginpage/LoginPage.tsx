@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useAuth } from '../../contexts/AuthContext';
+import { apiUrl } from '../../services/api';
 import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
@@ -17,16 +17,12 @@ const LoginPage: React.FC = () => {
     setErro('');
 
     try {
-      const response = await axios.post('http://localhost:8080/login', {
-        email,
-        senha,
-      });
+      const response = await apiUrl.post('/login', { email, senha });
 
       const token = response.data.token;
-      login(token); // chama o método do AuthContext
+      login(token); // Armazena o token no contexto
 
-      // Redirecionar será feito automaticamente pelo AuthContext ao carregar o usuário
-      const userInfo = await axios.get('http://localhost:8080/usuarios/me', {
+      const userInfo = await apiUrl.get('/usuarios/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
 

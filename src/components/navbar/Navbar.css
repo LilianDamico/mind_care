@@ -2,100 +2,75 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 120px;
-  width: 100%;
-  border-bottom: 1px solid black;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
-  padding: 0 40px;
+  background-color: #fff; /* fundo branco */
+  padding: 0.8rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  z-index: 1000;
+  position: sticky;
+  top: 0;
 }
 
-.logo img {
-  height: 60px;
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  height: 40px;
   width: auto;
-  max-width: 160px; /* limite para o logo não ocupar demais */
-  cursor: pointer;
-  object-fit: contain; /* garante que o conteúdo se ajuste */
 }
 
-
-.menu {
+.navbar-right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 1rem;
 }
 
-.menu-item {
-  cursor: pointer;
-  color: #CA419C;
+.navbar-right span {
+  margin-right: 1rem;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  color: #333;
 }
 
-.signin-button,
-.signup-button,
-.message-button,
-.dashboard-button,
-.logout-button {
-  padding: 8px 16px;
-  border-radius: 5px;
+.navbar-btn {
+  background-color: #5e239d;
+  color: white;
   border: none;
-  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.4);
+  font-weight: bold;
   transition: background-color 0.3s ease;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
 }
 
-.signin-button {
-  background-color: white;
-  color: #7852A5;
-  border: 1px solid #7852A5;
+.navbar-btn:hover {
+  background-color: #4b1a7a;
 }
 
-.signup-button {
-  background-color: #7852A5;
-  color: white;
+.logout-btn {
+  background-color: #c0392b;
 }
 
-.message-button {
-  background-color: #E75480;
-  color: white;
+.logout-btn:hover {
+  background-color: #a93226;
 }
 
-.dashboard-button {
-  background-color: #7852A5;
-  color: white;
-}
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-.logout-button {
-  background-color: tomato;
-  color: white;
-}
+  .navbar-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
 
-.user-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.welcome-text {
-  font-weight: bold;
-  color: #7852A5;
-}
-
-
-.mensagens-button {
-  display: flex;
-  width: 120px;
-  height: 35px;
-  margin: 15px;
-  padding: 5px;
-  align-items: center;
-  justify-content: center;
-  background-color: #7852A5;
-  color: white;
-  cursor: pointer;
-  text-decoration: none;
-  border-radius: 5px;
-  border: 1px solid #fff;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  .navbar-right span {
+    margin-right: 0;
+  }
 }

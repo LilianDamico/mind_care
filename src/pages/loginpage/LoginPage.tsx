@@ -18,50 +18,52 @@ const LoginPage: React.FC = () => {
 
     try {
       const response = await apiUrl.post('/login', { email, senha });
-
       const token = response.data.token;
-      login(token); // Armazena o token no contexto
+      localStorage.setItem('token', token);
 
       const userInfo = await apiUrl.get('/usuarios/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const tipo = userInfo.data.tipo;
+      const user = {
+        id: userInfo.data.id,
+        nome: userInfo.data.nome,
+        email: userInfo.data.email,
+        tipo: userInfo.data.tipo,
+      };
 
-      if (tipo === 'PROFISSIONAL') {
+      login(user);
+
+      if (user.tipo === 'PROFISSIONAL') {
         navigate('/dashboard-profissional');
       } else {
         navigate('/dashboard-paciente');
       }
-
     } catch (err) {
+      console.error(err); // Ajuda a identificar o erro no console
       setErro('Usuário ou senha inválidos.');
     }
   };
 
   return (
     <div className="login-container">
-      <form className="login-form" onSubmit={handleLogin}>
-        <h2>Entrar no MindCare</h2>
-
-        <label>Email</label>
+      <form onSubmit={handleLogin}>
+        <h2>Login</h2>
+        {erro && <p className="erro">{erro}</p>}
         <input
           type="email"
+          placeholder="E-mail"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
           required
         />
-
-        <label>Senha</label>
         <input
           type="password"
+          placeholder="Senha"
           value={senha}
-          onChange={(e) => setSenha(e.target.value)}
+          onChange={e => setSenha(e.target.value)}
           required
         />
-
-        {erro && <div className="erro">{erro}</div>}
-
         <button type="submit">Entrar</button>
       </form>
     </div>

@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { apiUrl } from '../../services/api';
 import './SignupPage.css';
 
+interface Clinica {
+  id: number;
+  nome: string;
+}
+
+
 const SignupPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -11,7 +17,7 @@ const SignupPage: React.FC = () => {
   const [senha, setSenha] = useState('');
   const [tipo, setTipo] = useState<'PACIENTE' | 'PROFISSIONAL'>('PACIENTE');
   const [clinicaId, setClinicaId] = useState<number | null>(null);
-  const [clinicas, setClinicas] = useState([]);
+  const [clinicas, setClinicas] = useState<Clinica[]>([]);
 
   useEffect(() => {
     if (tipo === 'PROFISSIONAL') {
@@ -30,7 +36,7 @@ const SignupPage: React.FC = () => {
         email,
         senha,
         tipo,
-        clinicId: tipo === 'PROFISSIONAL' ? clinicaId : null
+        clinicaId: tipo === 'PROFISSIONAL' ? clinicaId : null
       });
 
       alert('Cadastro realizado com sucesso!');
@@ -61,16 +67,23 @@ const SignupPage: React.FC = () => {
         </select>
 
         {tipo === 'PROFISSIONAL' && (
-          <>
-            <label>Clínica</label>
-            <select onChange={e => setClinicaId(Number(e.target.value))} required>
-              <option value="">Selecione</option>
-              {clinicas.map((c: any) => (
-                <option key={c.id} value={c.id}>{c.nome}</option>
-              ))}
-            </select>
-          </>
-        )}
+          <div>
+            <label htmlFor="clinica">Clínica (opcional)</label>
+            <select
+            id="clinica"
+            value={clinicaId || ''}
+            onChange={(e) => setClinicaId(e.target.value ? parseInt(e.target.value) : null)}
+        >
+          <option value="">Nenhuma</option>
+          {clinicas.map((clinica) => (
+            <option key={clinica.id} value={clinica.id}>
+              {clinica.nome}
+          </option>
+          ))}
+        </select>
+      </div>
+    )}
+
 
         <button type="submit">Cadastrar</button>
       </form>

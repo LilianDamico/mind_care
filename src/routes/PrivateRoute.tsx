@@ -1,3 +1,4 @@
+// src/routes/PrivateRoute.tsx
 import React, { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,14 +8,14 @@ interface PrivateRouteProps {
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const { token, carregando } = useAuth();
+  const { user, carregando } = useAuth();
 
   if (carregando) {
-    return <p>Carregando autenticação...</p>;
+    return <p>Carregando...</p>; // Ou um spinner, se preferir
   }
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  if (!user) {
+    return <Navigate to="/loginpage" replace />;
   }
 
   return <>{children}</>;

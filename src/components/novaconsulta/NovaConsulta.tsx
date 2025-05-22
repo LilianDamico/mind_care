@@ -1,46 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { apiUrl } from '../../services/api';
-import './NovaConsulta.css';
-
-interface Patient {
-  id: number;
-  nome: string;
-}
+// src/components/novaconsulta/NovaConsulta.tsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { agendarConsulta } from '../../services/appointmentService';
+import { useAuth } from '../../contexts/AuthContext';
+import './NovaConsulta.css'; // se houver estilo
 
 const NovaConsulta: React.FC = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const [dataHora, setDataHora] = useState('');
   const [observacoes, setObservacoes] = useState('');
-  const [pacienteId, setPacienteId] = useState<number | null>(null);
-  const [pacientes, setPacientes] = useState<Patient[]>([]);
   const [mensagem, setMensagem] = useState('');
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    apiUrl.get('/pacientes', {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(res => setPacientes(res.data))
-    .catch(() => setMensagem('Erro ao carregar pacientes.'));
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const token = localStorage.getItem('token');
+  const handleAgendar = async () => {
+    if (!dataHora || !user?.id) {
+      setMensagem('Preencha todos os campos obrigatórios.');
+      return;
+    }
 
     try {
-      await apiUrl.post('/consultas', {
+      await agendarConsulta({
+        pacienteId: user.id,
         dataHora,
         observacoes,
-        pacienteId
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
       });
-
       setMensagem('Consulta agendada com sucesso!');
-      setDataHora('');
-      setObservacoes('');
-      setPacienteId(null);
-    } catch {
+      setTimeout(() => navigate('/dashboard-paciente'), 1500);
+    } catch (error) {
+      console.error('Erro ao agendar consulta:', error);
       setMensagem('Erro ao agendar consulta.');
     }
   };
@@ -48,37 +36,30 @@ const NovaConsulta: React.FC = () => {
   return (
     <div className="nova-consulta">
       <h2>Agendar Nova Consulta</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Paciente:</label>
-        <select
-          value={pacienteId || ''}
-          onChange={(e) => setPacienteId(Number(e.target.value))}
-          required
-        >
-          <option value="" disabled>Selecione um paciente</option>
-          {pacientes.map(p => (
-            <option key={p.id} value={p.id}>{p.nome}</option>
-          ))}
-        </select>
+      {mensagem && <p className="mensagem-feedback">{mensagem}</p>}
 
-        <label>Data e Hora:</label>
-        <input
-          type="datetime-local"
-          value={dataHora}
-          onChange={(e) => setDataHora(e.target.value)}
-          required
-        />
+      <form onSubmit={(e) => { e.preventDefault(); handleAgendar(); }}>
+        <div>
+          <label>Data e Hora:</label>
+          <input
+            type="datetime-local"
+            value={dataHora}
+            onChange={(e) => setDataHora(e.target.value)}
+            required
+          />
+        </div>
 
-        <label>Observações:</label>
-        <textarea
-          value={observacoes}
-          onChange={(e) => setObservacoes(e.target.value)}
-        />
+        <div>
+          <label>Observações:</label>
+          <textarea
+            value={observacoes}
+            onChange={(e) => setObservacoes(e.target.value)}
+            placeholder="Descreva detalhes importantes..."
+          />
+        </div>
 
-        <button type="submit">Agendar</button>
+        <button type="submit" className="botao-agendar">Agendar</button>
       </form>
-
-      {mensagem && <p className="mensagem">{mensagem}</p>}
     </div>
   );
 };

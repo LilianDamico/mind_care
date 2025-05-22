@@ -4,7 +4,7 @@ import axios from 'axios';
 const baseURL = process.env.REACT_APP_API_URL || 'https://api-60lk.onrender.com';
 
 // URL local opcional (caso queira testar o backend local)
-const baseURLLocal = process.env.REACT_APP_API_URL_LOCAL || 'http://localhost:8080';
+const baseURLLocal = process.env.REACT_APP_API_URL_LOCAL || 'http://localhost:8081';
 
 // Instância para produção
 export const apiUrl = axios.create({

@@ -1,16 +1,64 @@
-.paciente-dashboard {
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
+/* Layout geral */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fcf9ff;
 }
 
+/* Sidebar lateral */
+aside {
+  width: 250px;
+  background-color: #f7f0fb;
+  padding: 2rem 1rem;
+  border-right: 1px solid #e0d6f2;
+}
+
+aside h2 {
+  color: #5e239d;
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+aside nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+aside nav ul li {
+  margin-bottom: 1rem;
+}
+
+aside nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+aside nav ul li a:hover {
+  color: #5e239d;
+}
+
+/* Conteúdo principal */
+main {
+  flex: 1;
+  padding: 2rem;
+}
+
+main h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #222;
+}
+
+/* Cartões */
 .card {
   background: #fff;
   padding: 1.5rem;
   margin-bottom: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(90, 0, 130, 0.1);
+  box-shadow: 0 4px 12px rgba(94, 35, 157, 0.05);
 }
 
 .card h2 {
@@ -18,47 +66,51 @@
   margin-bottom: 1rem;
 }
 
-.card p {
-  margin: 0.4rem 0;
+.card ul {
+  list-style-type: none;
+  padding-left: 0;
 }
 
-.consulta-item,
-.historico {
-  margin-bottom: 1.2rem;
+.card li {
+  padding: 1rem;
   border-top: 1px solid #eee;
-  padding-top: 1rem;
 }
 
-button, .relatorio-btn {
-  margin-top: 0.5rem;
-  padding: 0.5rem 0.8rem;
+.card li:first-child {
+  border-top: none;
+}
+
+.erro {
+  background-color: #f8d7da;
+  color: #842029;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+/* Botões */
+button {
+  margin-top: 0.75rem;
+  padding: 0.6rem 1.2rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
+  font-size: 0.9rem;
 }
 
-button {
-  background-color: #5e239d;
-  color: white;
+button:hover {
+  opacity: 0.9;
 }
 
 .cancelar-btn {
-  background-color: #c0392b;
+  background-color: #e74c3c;
+  color: white;
+  margin-left: 0.5rem;
 }
 
-.save-btn {
-  background-color: #27ae60;
-}
-
-.relatorio-btn {
+button:not(.cancelar-btn) {
   background-color: #5e239d;
-  color: #fff;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.mensagem {
-  color: green;
-  font-weight: bold;
+  color: white;
 }

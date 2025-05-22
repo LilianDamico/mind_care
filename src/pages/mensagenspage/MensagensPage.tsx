@@ -17,7 +17,7 @@ interface Mensagem {
 }
 
 const MensagensPage: React.FC = () => {
-  const { usuario } = useAuth();
+  const { user } = useAuth();
   const [contatos, setContatos] = useState<Contato[]>([]);
   const [mensagens, setMensagens] = useState<Mensagem[]>([]);
   const [mensagem, setMensagem] = useState('');
@@ -82,7 +82,7 @@ const MensagensPage: React.FC = () => {
                 <div
                   key={msg.id}
                   className={`mensagem ${
-                    msg.remetente.id === usuario?.id ? 'enviada' : 'recebida'
+                    msg.remetente.id === user?.id ? 'enviada' : 'recebida'
                   }`}
                 >
                   {msg.content}

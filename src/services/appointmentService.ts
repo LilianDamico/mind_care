@@ -10,6 +10,19 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export interface Appointment {
+  id: number;
+  dataHora: string;
+  status: 'AGENDADA' | 'REALIZADA' | 'CANCELADA';
+  observacoes?: string;
+  pacienteId: number;
+  profissionalId: number;
+  profissional: {
+    id: number;
+    nome: string;
+  } | null;
+}
+
 export interface ConsultaDTO {
   pacienteId: number;
   profissionalId: number;
@@ -19,4 +32,8 @@ export interface ConsultaDTO {
 
 export const agendarConsulta = async (consulta: ConsultaDTO) => {
   return await api.post('/consultas', consulta);
+};
+
+export const listarConsultasPaciente = async (pacienteId: number): Promise<Appointment[]> => {
+  return await api.get(`/consultas/paciente/${pacienteId}`).then(res => res.data);
 };

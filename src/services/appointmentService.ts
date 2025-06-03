@@ -1,41 +1,22 @@
-import { apiUrlLocal } from './api';
+import axios from 'axios';
 
-export interface Profissional {
-  id: number;
-  nome: string;
-  email?: string;
-  telefone?: string;
-  // Adicione outros campos conforme o backend retornar
-}
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
-export interface Appointment {
-  id: number;
-  dataHora: string;
-  status: string;
-  observacoes?: string;
-  profissional?: Profissional; // <- incluído para uso no dashboard do paciente
-}
+const api = axios.create({
+  baseURL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
 
-export const listarConsultasPaciente = async (): Promise<Appointment[]> => {
-  const response = await apiUrlLocal.get('/consultas/paciente');
-  return response.data;
-};
-
-export const listarConsultasProfissional = async (): Promise<Appointment[]> => {
-  const response = await apiUrlLocal.get('/consultas/profissional');
-  return response.data;
-};
-
-export const agendarConsulta = async (novaConsulta: {
+export interface ConsultaDTO {
   pacienteId: number;
+  profissionalId: number;
   dataHora: string;
   observacoes?: string;
-  profissionalId: number; // <--- Adicionado aqui
-}): Promise<Appointment> => {
-  const response = await apiUrlLocal.post('/consultas', novaConsulta);
-  return response.data;
-};
+}
 
-export const cancelarConsulta = async (consultaId: number): Promise<void> => {
-  await apiUrlLocal.put(`/consultas/${consultaId}/cancelar`);
+export const agendarConsulta = async (consulta: ConsultaDTO) => {
+  return await api.post('/consultas', consulta);
 };

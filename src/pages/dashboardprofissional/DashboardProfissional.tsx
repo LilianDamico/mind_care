@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import { useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiUrl } from '../../services/api'; // ✅ Aqui usamos a instância centralizada
 import './DashboardProfissional.css';
 
 interface Profissional {
@@ -53,13 +52,13 @@ const DashboardProfissional: React.FC = () => {
 
   const carregarDados = useCallback(async () => {
     try {
-      const resProf = await axios.get('http://localhost:8080/usuarios/me', config);
+      const resProf = await apiUrl.get('/usuarios/me', config);
       setProfissional(resProf.data);
 
-      const resCons = await axios.get('http://localhost:8080/agendamentos/profissional', config);
+      const resCons = await apiUrl.get('/agendamentos/profissional', config);
       setConsultas(resCons.data);
 
-      const resHist = await axios.get('http://localhost:8080/historico/profissional', config);
+      const resHist = await apiUrl.get('/historico/profissional', config);
       setHistoricos(resHist.data);
     } catch (err) {
       console.error('Erro ao carregar dados do profissional:', err);
@@ -78,7 +77,7 @@ const DashboardProfissional: React.FC = () => {
     }
 
     try {
-      await axios.post('http://localhost:8080/historico', {
+      await apiUrl.post('/historico', {
         pacienteId,
         diagnostico,
         observacoes,
@@ -118,16 +117,12 @@ const DashboardProfissional: React.FC = () => {
             <div key={c.id} className="consulta-item">
               <p><strong>Data:</strong> {new Date(c.dataHora).toLocaleString('pt-BR')}</p>
               <p><strong>Paciente:</strong> {c.paciente.nome}</p>
-              <button
-                className="btn"
-                onClick={() => setPacienteId(c.paciente.id)}
-              >
+              <button className="btn" onClick={() => setPacienteId(c.paciente.id)}>
                 Registrar Atendimento
               </button>
               <button className="dashboard-button" onClick={() => handleNavigation('/consultas')}>
                 Consultas
               </button>
-
             </div>
           ))
         )}
@@ -169,7 +164,7 @@ const DashboardProfissional: React.FC = () => {
               <p><strong>Observações:</strong> {h.observacoes}</p>
               <a
                 className="relatorio-btn"
-                href={`http://localhost:8080/relatorio/registro/${h.id}/pdf`}
+                href={`${apiUrl.defaults.baseURL}/relatorio/registro/${h.id}/pdf`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

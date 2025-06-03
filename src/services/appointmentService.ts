@@ -30,6 +30,7 @@ export const agendarConsulta = async (novaConsulta: {
   pacienteId: number;
   dataHora: string;
   observacoes?: string;
+  profissionalId: number; // <--- Adicionado aqui
 }): Promise<Appointment> => {
   const response = await apiUrlLocal.post('/consultas', novaConsulta);
   return response.data;

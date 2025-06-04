@@ -31,9 +31,19 @@ export interface ConsultaDTO {
 }
 
 export const agendarConsulta = async (consulta: ConsultaDTO) => {
-  return await api.post('/consultas', consulta);
+  const token = localStorage.getItem('token');
+  return await api.post('/consultas', consulta, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export const listarConsultasPaciente = async (pacienteId: number): Promise<Appointment[]> => {
-  return await api.get(`/consultas/paciente/${pacienteId}`).then(res => res.data);
+  const token = localStorage.getItem('token');
+  return await api.get(`/consultas/paciente/${pacienteId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(res => res.data);
 };

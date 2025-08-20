@@ -17,55 +17,84 @@ const DashboardPaciente: React.FC = () => {
         const resultado = await listarConsultasPaciente(user.id);
         setConsultas(resultado);
       } catch (error) {
-        console.error('Erro ao carregar consultas:', error);
         setMensagem('Erro ao carregar consultas.');
       }
     };
-
     carregarConsultas();
   }, [user]);
 
-  const marcarConsulta = () => {
-    navigate('/consultas/nova');
+  const marcarConsulta = () => navigate('/consultas/nova');
+  const desmarcarConsulta = (id: number) => {
+    // lógica para desmarcar consulta
   };
 
-  const desmarcarConsulta = (id: number) => {
-    console.log(`Desmarcar consulta ID: ${id}`);
-    // Aqui você pode implementar a chamada à API para deletar a consulta
-  };
+  const futuras = consultas.filter(c => c.status !== 'REALIZADA');
+  const historico = consultas.filter(c => c.status === 'REALIZADA');
 
   return (
-    <div className="dashboard-paciente">
-      <h2>Minhas Consultas Futuras</h2>
-      {mensagem && <p className="mensagem-erro">{mensagem}</p>}
-      <ul>
-        {consultas
-          .filter((c) => c.status !== 'REALIZADA')
-          .map((consulta) => (
-            <li key={consulta.id}>
-              <p><strong>Data:</strong> {new Date(consulta.dataHora).toLocaleString()}</p>
-              <p><strong>Status:</strong> {consulta.status}</p>
-              <p><strong>Profissional:</strong> {consulta.profissional?.nome || 'Atribuição pendente'}</p>
-              <button className="cancelar-btn" onClick={() => desmarcarConsulta(consulta.id)}>Desmarcar</button>
+    <div className="dashboard-paciente-wrapper">
+      <aside className="dashboard-paciente-sidebar">
+        
+        <nav>
+          <ul>
+            <li>
+              <button className="dashboard-paciente-agendar-btn" onClick={marcarConsulta}>
+                + Marcar Consulta
+              </button>
             </li>
-          ))}
-      </ul>
+          </ul>
+        </nav>
+      </aside>
+      <main className="dashboard-paciente-main">
+        <header className="dashboard-paciente-header">
+          <h1>Olá, {user?.nome || 'Paciente'}!</h1>
+        </header>
 
-      <button onClick={marcarConsulta}>Marcar Consulta</button>
+        {mensagem && <div className="dashboard-paciente-erro">{mensagem}</div>}
 
-      <section className="card">
-        <h2>Histórico de Consultas</h2>
-        <ul>
-          {consultas
-            .filter((c) => c.status === 'REALIZADA')
-            .map((c) => (
-              <li key={c.id}>
-                <p><strong>Data:</strong> {new Date(c.dataHora).toLocaleString()}</p>
-                <p><strong>Profissional:</strong> {c.profissional?.nome || '---'}</p>
-              </li>
-            ))}
-        </ul>
-      </section>
+        <section className="dashboard-paciente-card-proximas">
+          <h2>Próximas Consultas</h2>
+          {futuras.length === 0 ? (
+            <p className="dashboard-paciente-vazio">Nenhuma consulta agendada.</p>
+          ) : (
+            <ul>
+              {futuras.map(consulta => (
+                <li key={consulta.id} className="dashboard-paciente-consulta-item">
+                  <div>
+                    <span className="dashboard-paciente-data">{new Date(consulta.dataHora).toLocaleString()}</span>
+                    <span className="dashboard-paciente-profissional">
+                      {consulta.profissional?.nome || 'Atribuição pendente'}
+                    </span>
+                  </div>
+                  <span className="dashboard-paciente-status">{consulta.status}</span>
+                  <button
+                    className="dashboard-paciente-cancelar-btn"
+                    onClick={() => desmarcarConsulta(consulta.id)}
+                  >
+                    Desmarcar
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="dashboard-paciente-card-historico">
+          <h2>Histórico de Consultas</h2>
+          {historico.length === 0 ? (
+            <p className="dashboard-paciente-vazio">Ainda não há consultas realizadas.</p>
+          ) : (
+            <ul>
+              {historico.map(c => (
+                <li key={c.id}>
+                  <span className="dashboard-paciente-data">{new Date(c.dataHora).toLocaleString()}</span>
+                  <span className="dashboard-paciente-profissional">{c.profissional?.nome || '---'}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </main>
     </div>
   );
 };

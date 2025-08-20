@@ -1,29 +1,54 @@
-.nova-consulta {
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-  }
+.nova-consulta-container {
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  width: 800px;
+  height: 450px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 2px solid #7852A5;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+}
+
+.nova-consulta-container h2 {
+  text-align: center;
+  color: #7852A5;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
   
-  .nova-consulta form {
-    display: flex;
-    flex-direction: column;
-  }
+.nova-consulta-form {
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+}
   
-  .nova-consulta label {
+  .nova-consulta-form label {
     margin-top: 10px;
     font-weight: bold;
+    color:#7852A5;
   }
   
-  .nova-consulta input,
-  .nova-consulta textarea,
-  .nova-consulta select {
+  .nova-consulta-form input,
+  .nova-consulta-form textarea,
+  .nova-consulta-form select {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     padding: 8px;
-    margin-bottom: 12px;
+    margin: 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
   }
   
-  .nova-consulta button {
+  .nova-consulta-form button {
+    display: flex;
+    width: 160px;
+    align-self: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: bold;
     background-color: #7852A5;
     color: white;
     border: none;

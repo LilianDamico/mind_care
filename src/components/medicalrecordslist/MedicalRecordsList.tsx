@@ -2,57 +2,54 @@ import React, { useEffect, useState } from 'react';
 import { apiUrl } from '../../services/api';
 import './MedicalRecordsList.css';
 
-interface Patient {
-  nome: string;
-}
-
 interface MedicalRecord {
   id: number;
   data: string;
   diagnostico: string;
   observacoes: string;
-  patient: Patient;
+  // outros campos
 }
 
-const MedicalRecordsList: React.FC = () => {
+interface MedicalRecordsListProps {
+  patientId: number;
+}
+
+const MedicalRecordsList: React.FC<MedicalRecordsListProps> = ({ patientId }) => {
   const [registros, setRegistros] = useState<MedicalRecord[]>([]);
   const [mensagem, setMensagem] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!patientId) return;
+    setLoading(true);
+    setMensagem('');
     const token = localStorage.getItem('token');
-    apiUrl.get('/medicalrecords/professional', {
+    apiUrl.get(`/medicalrecords/patient/${patientId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then(res => setRegistros(res.data))
-    .catch(() => setMensagem('Erro ao carregar registros médicos.'));
-  }, []);
+    .then(res => {
+      setRegistros(res.data);
+      setLoading(false);
+    })
+    .catch(() => {
+      setMensagem('Erro ao carregar registros médicos.');
+      setLoading(false);
+    });
+  }, [patientId]);
+
+  if (loading) return <p>Carregando registros...</p>;
+  if (mensagem) return <p>{mensagem}</p>;
+  if (registros.length === 0) return <p>Nenhum prontuário encontrado.</p>;
 
   return (
     <div className="medical-records-list">
-      <h1>Prontuários Médicos</h1>
-
-      {mensagem && <p className="mensagem">{mensagem}</p>}
-
-      {registros.length === 0 ? (
-        <p>Nenhum prontuário encontrado.</p>
-      ) : (
-        registros.map((r) => (
-          <div key={r.id} className="registro">
-            <p><strong>Paciente:</strong> {r.patient.nome}</p>
-            <p><strong>Data:</strong> {new Date(r.data).toLocaleDateString()}</p>
-            <p><strong>Diagnóstico:</strong> {r.diagnostico}</p>
-            <p><strong>Observações:</strong> {r.observacoes}</p>
-            <a
-              className="relatorio-btn"
-              href={`https://api-60lk.onrender.com/relatorio/registro/${r.id}/pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              📄 Ver PDF
-            </a>
-          </div>
-        ))
-      )}
+      {registros.map((r) => (
+        <div key={r.id} className="registro">
+          <p><strong>Data:</strong> {new Date(r.data).toLocaleDateString()}</p>
+          <p><strong>Diagnóstico:</strong> {r.diagnostico}</p>
+          <p><strong>Observações:</strong> {r.observacoes}</p>
+        </div>
+      ))}
     </div>
   );
 };

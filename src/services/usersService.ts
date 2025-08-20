@@ -1,8 +1,13 @@
-import { apiUrl, apiUrlLocal } from './api';
+// src/services/usersService.ts
+import { apiUrl } from './api';
 
-// Determina se a aplicação está rodando localmente
-const isLocal = window.location.hostname === 'localhost';
-const api = isLocal ? apiUrlLocal : apiUrl;
+// Removido isLocal, pois apiUrl já gerencia o ambiente dinamicamente
+// const isLocal = window.location.hostname === 'localhost'; // Não necessário
+
+export const buscarUsuarioLogado = async () => {
+  const response = await apiUrl.get('/usuarios/me');
+  return response.data;
+};
 
 export interface UserFormInputs {
   nome: string;
@@ -20,7 +25,7 @@ export interface UserFormInputs {
 // Função para criar usuário
 export const createUser = async (userData: UserFormInputs): Promise<any> => {
   try {
-    const response = await api.post('/users', userData, {
+    const response = await apiUrl.post('/users', userData, {
       headers: {
         'Content-Type': 'application/json', // Tipo correto para JSON
       },
@@ -35,7 +40,7 @@ export const createUser = async (userData: UserFormInputs): Promise<any> => {
 // Função para buscar usuário por CPF
 export const getUserByCpf = async (cpf: string): Promise<any> => {
   try {
-    const response = await api.get(`/users/${cpf}`);
+    const response = await apiUrl.get(`/users/${cpf}`);
     return response.data;
   } catch (error: any) {
     console.error('Erro ao buscar dados do usuário:', error.response || error.message);
@@ -46,7 +51,7 @@ export const getUserByCpf = async (cpf: string): Promise<any> => {
 // Função para atualizar usuário
 export const updateUser = async (cpf: string, userData: UserFormInputs): Promise<any> => {
   try {
-    const response = await api.put(`/users/${cpf}`, userData, {
+    const response = await apiUrl.put(`/users/${cpf}`, userData, {
       headers: {
         'Content-Type': 'application/json', // Tipo correto para JSON
       },
@@ -61,7 +66,7 @@ export const updateUser = async (cpf: string, userData: UserFormInputs): Promise
 // Função para deletar usuário
 export const deleteUser = async (cpf: string): Promise<any> => {
   try {
-    const response = await api.delete(`/users/${cpf}`);
+    const response = await apiUrl.delete(`/users/${cpf}`);
     return response.data;
   } catch (error: any) {
     console.error('Erro ao deletar usuário:', error.response || error.message);

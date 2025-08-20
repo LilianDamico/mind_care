@@ -1,10 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
+// src/services/api.ts
+import axios, { AxiosInstance, AxiosError } from 'axios';
 
-// Base URLs
-const baseURL = process.env.REACT_APP_API_URL || 'https://api-60lk.onrender.com';
-const baseURLLocal = process.env.REACT_APP_API_URL_LOCAL || 'http://localhost:8081';
+const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
 
-// Instâncias separadas
 export const apiUrl: AxiosInstance = axios.create({
   baseURL,
   headers: {
@@ -13,28 +11,36 @@ export const apiUrl: AxiosInstance = axios.create({
   withCredentials: true,
 });
 
-export const apiUrlLocal: AxiosInstance = axios.create({
-  baseURL: baseURLLocal,
-  headers: {
-    'Content-Type': 'application/json',
+// Interceptor: Adiciona token apenas se NÃO for para /login
+apiUrl.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+
+    // Evita envio de token se a URL for exatamente /login
+    const isLoginRoute =
+      config.url?.includes('/login') || config.url?.endsWith('/login');
+
+    if (token && config.headers && !isLoginRoute) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return config;
   },
-  withCredentials: true,
-});
+  (error: AxiosError) => Promise.reject(error)
+);
 
-// Interceptor para adicionar token
-const attachToken = (instance: AxiosInstance): void => {
-  instance.interceptors.request.use(
-    (config) => {
-      const token = localStorage.getItem('token');
-      if (token && config.headers) {
-        config.headers['Authorization'] = `Bearer ${token}`;
-      }
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-};
+// Interceptor de resposta
+apiUrl.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    if (error.response?.status === 403) {
+      console.error(
+        'Erro 403: Acesso negado - Verifique o token ou permissões',
+        error.response.data
+      );
+    }
+    return Promise.reject(error);
+  }
+);
 
-// Aplica o interceptor às instâncias
-attachToken(apiUrl);
-attachToken(apiUrlLocal);
+export default apiUrl;

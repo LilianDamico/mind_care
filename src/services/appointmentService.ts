@@ -17,10 +17,8 @@ export interface Appointment {
   observacoes?: string;
   pacienteId: number;
   profissionalId: number;
-  profissional: {
-    id: number;
-    nome: string;
-  } | null;
+  paciente?: { id: number; nome: string } | null;  // <-- novo
+  profissional: { id: number; nome: string } | null;
 }
 
 export interface ConsultaDTO {
@@ -32,6 +30,7 @@ export interface ConsultaDTO {
 
 export const agendarConsulta = async (consulta: ConsultaDTO) => {
   const token = localStorage.getItem('token');
+  console.log("Token usado no agendamento:", token);
   return await api.post('/consultas', consulta, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -42,6 +41,15 @@ export const agendarConsulta = async (consulta: ConsultaDTO) => {
 export const listarConsultasPaciente = async (pacienteId: number): Promise<Appointment[]> => {
   const token = localStorage.getItem('token');
   return await api.get(`/consultas/paciente/${pacienteId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(res => res.data);
+};
+
+export const listarConsultasProfissional = async (profissionalId: number): Promise<Appointment[]> => {
+  const token = localStorage.getItem('token');
+  return await api.get(`/consultas/profissional/${profissionalId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

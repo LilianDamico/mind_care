@@ -1,6 +1,6 @@
-import { apiUrlLocal } from './api';
+import { apiUrl } from './api';
 
 export const buscarPrescricoesPaciente = async () => {
-  const response = await apiUrlLocal.get('/prescricoes/paciente');
+  const response = await apiUrl.get('/prescricoes/paciente');
   return response.data;
 };

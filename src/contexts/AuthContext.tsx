@@ -1,5 +1,11 @@
 // src/contexts/AuthContext.tsx
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from 'react';
 
 interface User {
   id: number;
@@ -17,14 +23,24 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser: User = JSON.parse(storedUser);
+        setUser(parsedUser);
+      } catch (e) {
+        console.warn('Erro ao analisar user do localStorage:', e);
+        localStorage.removeItem('user');
+      }
     }
     setCarregando(false);
   }, []);

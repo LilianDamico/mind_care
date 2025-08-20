@@ -22,7 +22,7 @@ const ListaConsultas: React.FC = () => {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setConsultas(res.data))
-    .catch(() => setErro('Erro ao carregar as consultas.'));
+    .catch(() => setErro('Não há nenhuma consulta agendada.'));
   }, []);
 
   return (

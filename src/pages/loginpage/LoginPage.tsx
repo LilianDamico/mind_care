@@ -17,41 +17,46 @@ const LoginPage: React.FC = () => {
     setErro('');
 
     try {
+      // Requisição de login
       const response = await apiUrl.post('/login', { email, senha });
-      const token = response.data.token;
+      const { token, user } = response.data;
+
+      console.log('TOKEN:', token);
+      console.log('USER:', user)
+
+
+      // Armazenar token
       localStorage.setItem('token', token);
 
-      const userInfo = await apiUrl.get('/usuarios/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const user = {
-        id: userInfo.data.id,
-        nome: userInfo.data.nome,
-        email: userInfo.data.email,
-        tipo: userInfo.data.tipo,
-      };
-
+      // Atualizar contexto global de autenticação
       login(user);
 
+      // Redirecionamento baseado no tipo de usuário
       if (user.tipo === 'PROFISSIONAL') {
         navigate('/dashboard-profissional');
-      } else {
+      } else if (user.tipo === 'PACIENTE') {
         navigate('/dashboard-paciente');
+      } else {
+        navigate('/dashboard');
       }
-    } catch (err) {
-      console.error(err); // Ajuda a identificar o erro no console
-      setErro('Usuário ou senha inválidos.');
+
+    } catch (err: any) {
+      console.error('Erro de login:', err.response?.status, err.response?.data || err.message);
+      setErro(
+        'Usuário ou senha inválidos. ' +
+        (err.response?.data?.message ? `(${err.response.data.message})` : '')
+      );
     }
   };
 
   return (
     <div className="login-container">
-      <form onSubmit={handleLogin}>
+      <form className='login-form' onSubmit={handleLogin}>
         <h2>Login</h2>
         {erro && <p className="erro">{erro}</p>}
         <input
           type="email"
+          name="email"
           placeholder="E-mail"
           value={email}
           onChange={e => setEmail(e.target.value)}
@@ -59,6 +64,7 @@ const LoginPage: React.FC = () => {
         />
         <input
           type="password"
+          name="senha"
           placeholder="Senha"
           value={senha}
           onChange={e => setSenha(e.target.value)}

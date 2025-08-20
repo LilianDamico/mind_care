@@ -1,6 +1,13 @@
-import { apiUrlLocal } from './api';
+import { apiUrl } from './api';
 
-export const buscarHistoricoMedico = async () => {
-  const response = await apiUrlLocal.get('/prontuarios/me');
+// Buscar histórico médico de um paciente específico (pelo ID)
+export const buscarHistoricoMedicoPorPacienteId = async (pacienteId: number) => {
+  const response = await apiUrl.get(`/prontuarios/paciente/${pacienteId}`);
+  return response.data;
+};
+
+
+export const buscarProntuarioPorPaciente = async (pacienteId: number) => {
+  const response = await apiUrl.get(`/prontuarios/paciente/${pacienteId}`);
   return response.data;
 };

@@ -1,76 +1,117 @@
+/* ------------------------------
+   NAVBAR — layout geral
+--------------------------------*/
 .navbar-container {
+  width: 100%;
+  height: 70px;
+  background: #fbf9fc;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #fff; /* fundo branco */
-  padding: 0.8rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-  z-index: 1000;
-  position: sticky;
+  justify-content: space-between;
+  padding: 0 25px;
+  position: fixed;
   top: 0;
+  left: 0;
+  z-index: 200;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
+/* LOGO + TÍTULO */
 .navbar-left {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
 .navbar-logo {
   height: 40px;
-  width: auto;
 }
 
+.navbar-title {
+  color: #fff;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* BOTÕES DESKTOP */
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 1rem;
-}
-
-.navbar-right span {
-  margin-right: 1rem;
-  font-weight: bold;
-  color: #333;
+  gap: 15px;
 }
 
 .navbar-btn {
-  background-color: #5e239d;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
+  background-color: #6a0dad;
+  padding: 8px 14px;
   border-radius: 6px;
+  color: #fff;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
+  transition: 0.2s;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.8);
 }
 
 .navbar-btn:hover {
-  background-color: #4b1a7a;
+  background: rgba(255,255,255,0.2);
 }
 
 .logout-btn {
-  background-color: #c0392b;
+  border-color: #ffb3b3;
+  color: #ffdede;
 }
 
 .logout-btn:hover {
-  background-color: #a93226;
+  background: rgba(255, 119, 119, 0.3);
 }
 
-@media (max-width: 768px) {
-  .navbar-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+/* ------------------------------
+   HAMBURGUER — somente no mobile
+--------------------------------*/
+.navbar-hamburger {
+  display: none;
+  background: #6a0dad;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 22px;
+  cursor: pointer;
+  margin-right: 10px;
+}
 
+/* ------------------------------
+   RESPONSIVIDADE
+   Mobile e tablet
+--------------------------------*/
+@media (max-width: 900px) {
   .navbar-right {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    display: none; /* esconder menu desktop */
   }
 
-  .navbar-right span {
-    margin-right: 0;
+  .navbar-hamburger {
+    display: block;
+  }
+
+  .navbar-title {
+    font-size: 19px;
+  }
+
+  .navbar-logo {
+    height: 35px;
+  }
+}
+
+/* Ultra mobile */
+@media (max-width: 500px) {
+  .navbar-container {
+    padding: 0 15px;
+  }
+
+  .navbar-title {
+    font-size: 16px;
+  }
+
+  .navbar-logo {
+    height: 30px;
   }
 }

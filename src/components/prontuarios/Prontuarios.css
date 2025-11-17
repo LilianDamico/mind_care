@@ -1,0 +1,73 @@
+.pr-wrapper {
+  margin-left: 260px;  /* espaço da sidebar */
+  margin-top: 80px;    /* espaço da navbar */
+  padding: 25px;
+  min-height: 100vh;
+  background: #f5f5fb;
+}
+
+.pr-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #5b1ac4;
+  margin-bottom: 25px;
+}
+
+.pr-msg {
+  font-size: 16px;
+  background: #fff3cd;
+  padding: 12px 16px;
+  border-left: 4px solid #ffca2c;
+  border-radius: 6px;
+  width: fit-content;
+  margin-bottom: 20px;
+}
+
+.pr-table-wrapper {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+}
+
+.pr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.pr-table thead {
+  background: #eee4ff;
+}
+
+.pr-table thead th {
+  text-align: left;
+  padding: 12px;
+  color: #55249c;
+  font-weight: 600;
+}
+
+.pr-table tbody tr {
+  border-bottom: 1px solid #eaeaea;
+}
+
+.pr-table tbody tr:hover {
+  background: #faf6ff;
+}
+
+.pr-table td {
+  padding: 12px;
+  color: #333;
+  vertical-align: top;
+}
+
+@media (max-width: 900px) {
+  .pr-wrapper {
+    margin-left: 0;
+    margin-top: 120px;
+  }
+
+  .pr-table-wrapper {
+    overflow-x: auto;
+  }
+}

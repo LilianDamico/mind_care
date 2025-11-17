@@ -1,18 +1,9 @@
-import { apiUrl } from './api';
+// src/services/professionalService.ts
+import api from "./api";
 
-export interface Profissional {
-  id: number;
-  nome: string;
-  especialidade: string;
-  // Adicione outros campos se necessário
+export async function buscarProfissionaisPorNome(nome: string) {
+  const response = await api.get(`/api/profissionais/buscar`, {
+    params: { nome },
+  });
+  return response.data;
 }
-
-export const listarProfissionais = async (): Promise<Profissional[]> => {
-  try {
-    const response = await apiUrl.get<Profissional[]>('/profissionais');
-    return response.data;
-  } catch (error) {
-    console.error('Erro ao buscar profissionais:', error);
-    throw error;
-  }
-};

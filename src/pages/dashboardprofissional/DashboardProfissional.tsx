@@ -1,142 +1,167 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { listarConsultasProfissional, Appointment } from '../../services/appointmentService';
-import { useAuth } from '../../contexts/AuthContext';
-import MedicalRecordsList from '../../components/medicalrecordslist/MedicalRecordsList';
-import './DashboardProfissional.css';
-import checar from '../../assets/images/checar.png';
+import React, { useEffect, useState, useCallback } from "react";
+import { Navbar } from "../../components/navbar/Navbar";
+import SidebarProfissional from "../../components/sidebarprofissional/SidebarProfissional";
+
+import {
+  listarConsultasPorCliente,
+  listarPrescricoesPorUserNome,
+  listarProntuariosPorUsuario,
+} from "../../services/appointmentService";
+
+import "./DashboardProfissional.css";
 
 const DashboardProfissional: React.FC = () => {
-  const [consultas, setConsultas] = useState<Appointment[]>([]);
-  const [mensagem, setMensagem] = useState('');
-  const [showProntuario, setShowProntuario] = useState(false);
-  const [prontuarioNome, setProntuarioNome] = useState<string>('');
-  const [pacienteSelecionadoId, setPacienteSelecionadoId] = useState<number | null>(null);
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  const nomeUsuario = localStorage.getItem("userNome") || "Profissional";
+
+  const [consultasHoje, setConsultasHoje] = useState<any[]>([]);
+  const [proximasConsultas, setProximasConsultas] = useState<any[]>([]);
+  const [prescricoesRecentes, setPrescricoesRecentes] = useState<any[]>([]);
+  const [prontuariosRecentes, setProntuariosRecentes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // =====================================================
+  // 🚀 CARREGAR DADOS DO DASHBOARD
+  // =====================================================
+  const carregarDashboard = useCallback(async () => {
+    setLoading(true);
+
+    try {
+      // consultas
+      const consultas = await listarConsultasPorCliente(nomeUsuario);
+
+      const hoje = new Date().toISOString().split("T")[0];
+      const hojeLista = consultas.filter((c: any) => c.data === hoje);
+      const futuras = consultas.filter((c: any) => c.data > hoje);
+
+      setConsultasHoje(hojeLista);
+      setProximasConsultas(futuras.slice(0, 5));
+
+      // prescrições
+      const prescricoes = await listarPrescricoesPorUserNome(nomeUsuario);
+      setPrescricoesRecentes(prescricoes.slice(0, 5));
+
+      // prontuários
+      const prontuarios = await listarProntuariosPorUsuario(nomeUsuario);
+      setProntuariosRecentes(prontuarios.slice(0, 5));
+    } catch (e) {
+      console.error("Erro ao carregar dashboard", e);
+    } finally {
+      setLoading(false);
+    }
+  }, [nomeUsuario]);
 
   useEffect(() => {
-    const carregarConsultas = async () => {
-      try {
-        if (!user?.id) return;
-        const resultado = await listarConsultasProfissional(user.id);
-        setConsultas(resultado);
-      } catch (error) {
-        setMensagem('Erro ao carregar agenda.');
-      }
-    };
-    carregarConsultas();
-  }, [user]);
+    carregarDashboard();
+  }, [carregarDashboard]);
 
-  const abrirProntuario = (pacienteId: number, nomePaciente: string) => {
-    setPacienteSelecionadoId(pacienteId);
-    setProntuarioNome(nomePaciente);
-    setShowProntuario(true);
-  };
-
-  const fecharProntuario = () => {
-    setShowProntuario(false);
-    setPacienteSelecionadoId(null);
-    setProntuarioNome('');
-  };
-
-  const agenda = consultas.filter(c => c.status !== 'REALIZADA');
-  const historico = consultas.filter(c => c.status === 'REALIZADA');
-
+  // =====================================================
+  // RENDER
+  // =====================================================
   return (
-    <div className="dashboard-profissional-wrapper">
-      <aside className="dashboard-profissional-sidebar">
-        <div className="dashboard-profissional-logo">
-          <img src={checar} alt="MindCare" />
-        </div>
-        <nav>
-          <ul>
-            <li>
-              <button className="dashboard-profissional-agenda-btn" onClick={() => navigate('/agenda/novo')}>
-                + Novo Horário
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <main className="dashboard-profissional-main">
-        <header className="dashboard-profissional-header">
-          <h1>Bem-vindo(a), {user?.nome || 'Profissional'}!</h1>
-        </header>
+    <div className="layout-dashboard">
+      <Navbar />
+      <SidebarProfissional />
 
-        {mensagem && <div className="dashboard-profissional-erro">{mensagem}</div>}
+      <main className="conteudo-dashboard">
+        <h1>Visão Geral</h1>
+        <p className="subtitulo">Bem-vindo(a), {nomeUsuario}. Aqui está sua visão geral.</p>
 
-        <section className="dashboard-profissional-card-agenda">
-          <h2>Agenda</h2>
-          {agenda.length === 0 ? (
-            <p className="dashboard-profissional-vazio">Nenhum atendimento agendado.</p>
-          ) : (
-            <ul>
-              {agenda.map(consulta => (
-                <li key={consulta.id} className="dashboard-profissional-consulta-item">
-                  <div>
-                    <span className="dashboard-profissional-data">
-                      {new Date(consulta.dataHora).toLocaleString()}
-                    </span>
-                    <span className="dashboard-profissional-paciente">
-                      {consulta.paciente?.nome || 'Paciente'}
-                    </span>
-                    {/* Botão para ver prontuário */}
-                    {consulta.pacienteId && (
-                      <button
-                        className="dashboard-profissional-prontuario-btn"
-                        onClick={() =>
-                          abrirProntuario(
-                            consulta.pacienteId,
-                            consulta.paciente?.nome || 'Paciente'
-                          )
-                        }
-                      >
-                        Ver Prontuário
-                      </button>
-                    )}
-                  </div>
-                  <span className="dashboard-profissional-status">{consulta.status}</span>
-                  <button
-                    className="dashboard-profissional-atender-btn"
-                    onClick={() => { /* lógica para marcar como realizada */ }}
-                  >
-                    Marcar como Realizada
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+        {loading ? (
+          <p className="loading">Carregando dados...</p>
+        ) : (
+          <>
+            {/* CARDS SUPERIORES */}
+            <section className="cards-topo">
+              <div className="card-resumo">
+                <h3>Consultas Hoje</h3>
+                <p className="numero">{consultasHoje.length}</p>
+              </div>
 
-        {/* Modal de Prontuário */}
-        {showProntuario && pacienteSelecionadoId && (
-          <div className="prontuario-modal">
-            <div className="prontuario-modal-content">
-              <h2>Prontuário de {prontuarioNome}</h2>
-              <button className="prontuario-modal-fechar" onClick={fecharProntuario}>
-                Fechar
-              </button>
-              <MedicalRecordsList patientId={pacienteSelecionadoId} />
-            </div>
-          </div>
+              <div className="card-resumo">
+                <h3>Próximas Consultas</h3>
+                <p className="numero">{proximasConsultas.length}</p>
+              </div>
+
+              <div className="card-resumo">
+                <h3>Prescrições Recentes</h3>
+                <p className="numero">{prescricoesRecentes.length}</p>
+              </div>
+
+              <div className="card-resumo">
+                <h3>Prontuários Recentes</h3>
+                <p className="numero">{prontuariosRecentes.length}</p>
+              </div>
+            </section>
+
+            {/* CONSULTAS DE HOJE */}
+            <section className="card bloco">
+              <h2>Consultas de Hoje</h2>
+
+              {consultasHoje.length === 0 ? (
+                <p>Nenhuma consulta para hoje.</p>
+              ) : (
+                <ul>
+                  {consultasHoje.map((c: any) => (
+                    <li key={c.id}>
+                      <strong>{c.paciente?.nome}</strong> — {c.horario}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* PRÓXIMAS CONSULTAS */}
+            <section className="card bloco">
+              <h2>Próximas Consultas</h2>
+
+              {proximasConsultas.length === 0 ? (
+                <p>Nenhuma consulta futura agendada.</p>
+              ) : (
+                <ul>
+                  {proximasConsultas.map((c: any) => (
+                    <li key={c.id}>
+                      <strong>{c.paciente?.nome}</strong> — {c.data} às {c.horario}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* PRESCRIÇÕES RECENTES */}
+            <section className="card bloco">
+              <h2>Prescrições Recentes</h2>
+
+              {prescricoesRecentes.length === 0 ? (
+                <p>Nenhuma prescrição criada recentemente.</p>
+              ) : (
+                <ul>
+                  {prescricoesRecentes.map((p: any) => (
+                    <li key={p.id}>
+                      <strong>{p.tipo}</strong> — {p.paciente?.nome}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+
+            {/* PRONTUÁRIOS RECENTES */}
+            <section className="card bloco">
+              <h2>Prontuários Recentes</h2>
+
+              {prontuariosRecentes.length === 0 ? (
+                <p>Nenhum prontuário adicionado recentemente.</p>
+              ) : (
+                <ul>
+                  {prontuariosRecentes.map((pr: any) => (
+                    <li key={pr.id}>
+                      <strong>{pr.paciente?.nome}</strong> — {pr.data}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </>
         )}
-
-        <section className="dashboard-profissional-card-historico">
-          <h2>Histórico de Atendimentos</h2>
-          {historico.length === 0 ? (
-            <p className="dashboard-profissional-vazio">Ainda não há atendimentos realizados.</p>
-          ) : (
-            <ul>
-              {historico.map(c => (
-                <li key={c.id}>
-                  <span className="dashboard-profissional-data">{new Date(c.dataHora).toLocaleString()}</span>
-                  <span className="dashboard-profissional-paciente">{c.paciente?.nome || '---'}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
       </main>
     </div>
   );

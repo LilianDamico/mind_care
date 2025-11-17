@@ -6,7 +6,7 @@ const Frame7: React.FC = () => {
   const navigate = useNavigate(); // Inicializa o hook para navegação
 
   const handleNavigate = () => {
-    navigate('/userslist'); // Redireciona para a página UsersList
+    navigate('/profissionaispage'); // Redireciona para a página UsersList
   };
 
   return (

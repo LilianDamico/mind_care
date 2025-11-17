@@ -1,0 +1,43 @@
+.horarios-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.horarios-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.horario-item {
+  background: #f9f7ff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.horario-item:hover {
+  background: #f0e5ff;
+}
+
+.horario-item.reservado {
+  background: #ffe6e6;
+  color: #666;
+  cursor: not-allowed;
+  position: relative;
+}
+
+.horario-item.reservado .tarja {
+  color: #fff;
+  background: #c20000;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 5px;
+  margin-left: 10px;
+  font-size: 0.9rem;
+}

@@ -1,75 +1,94 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { apiUrl } from '../../services/api';
-import './LoginPage.css';
+// src/pages/loginpage/LoginPage.tsx
+
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../services/api";
+import "./LoginPage.css";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
 
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [erro, setErro] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErro('');
+    setErro("");
 
     try {
-      // Requisição de login
-      const response = await apiUrl.post('/login', { email, senha });
+      const response = await api.post("/api/auth/login", {
+        login: email,
+        senha,
+      });
+
+      // 🔥 Backend retorna: { token, user: { id, nome, email, tipo } }
       const { token, user } = response.data;
 
-      console.log('TOKEN:', token);
-      console.log('USER:', user)
+      if (!token || !user) {
+        setErro("Erro inesperado: usuário ou token não enviados pelo servidor.");
+        return;
+      }
 
+      // ============================
+      // 🔥 Padronização de armazenamento
+      // ============================
+      localStorage.clear(); // limpa qualquer lixo anterior
 
-      // Armazenar token
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", user.id);
+      localStorage.setItem("userNome", user.nome);
+      localStorage.setItem("userTipo", user.tipo);
 
-      // Atualizar contexto global de autenticação
-      login(user);
+      console.log("LOGIN OK → Gravado no localStorage:", {
+        token,
+        id: user.id,
+        nome: user.nome,
+        tipo: user.tipo,
+      });
 
-      // Redirecionamento baseado no tipo de usuário
-      if (user.tipo === 'PROFISSIONAL') {
-        navigate('/dashboard-profissional');
-      } else if (user.tipo === 'PACIENTE') {
-        navigate('/dashboard-paciente');
+      // ============================
+      // 🔁 Redirecionamento por tipo
+      // ============================
+      if (user.tipo === "PROFISSIONAL") {
+        navigate("/dashboard-profissional");
+      } else if (user.tipo === "CLIENTE") {
+        navigate("/dashboard-cliente");
       } else {
-        navigate('/dashboard');
+        navigate("/");
       }
 
     } catch (err: any) {
-      console.error('Erro de login:', err.response?.status, err.response?.data || err.message);
+      console.error("Erro no login:", err);
       setErro(
-        'Usuário ou senha inválidos. ' +
-        (err.response?.data?.message ? `(${err.response.data.message})` : '')
+        err.response?.data?.error || "Login ou senha inválidos. Tente novamente."
       );
     }
   };
 
   return (
     <div className="login-container">
-      <form className='login-form' onSubmit={handleLogin}>
+      <form className="login-form" onSubmit={handleLogin}>
         <h2>Login</h2>
+
         {erro && <p className="erro">{erro}</p>}
+
         <input
           type="email"
-          name="email"
-          placeholder="E-mail"
+          placeholder="E-mail ou CPF"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
-          name="senha"
           placeholder="Senha"
           value={senha}
-          onChange={e => setSenha(e.target.value)}
+          onChange={(e) => setSenha(e.target.value)}
           required
         />
+
         <button type="submit">Entrar</button>
       </form>
     </div>

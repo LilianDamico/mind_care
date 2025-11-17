@@ -19,7 +19,7 @@ const ConsultaFuturaPaciente: React.FC = () => {
     async function carregarConsultas() {
       try {
         const token = localStorage.getItem('token');
-        const resposta = await apiUrl.get('/agendamentos/minhas', {
+        const resposta = await apiUrl.get('/listaConsultas', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setConsultas(resposta.data);

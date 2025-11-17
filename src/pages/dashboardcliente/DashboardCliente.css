@@ -1,0 +1,90 @@
+.layout-dashboard {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #f8f9fa;
+  margin-top: 100px;
+}
+
+/* ========================
+   NAVBAR + SIDEBAR
+======================== */
+.conteudo {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  margin-left: 220px;
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.bloco {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.mensagem-erro {
+  color: #d9534f;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.mensagem-vazia {
+  color: #777;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+/* ========================
+   RESPONSIVIDADE
+======================== */
+@media (max-width: 1024px) {
+  .layout-dashboard {
+    flex-direction: column;
+  }
+
+  .conteudo {
+    padding: 15px;
+  }
+
+  .bloco {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .conteudo {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .bloco {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .bloco h2 {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+
+  .mensagem-vazia {
+    text-align: center;
+  }
+}

@@ -9,8 +9,7 @@ const SignupPage: React.FC = () => {
     <div className="signup-choice-container">
       <h2>Cadastre-se</h2>
       <div className="signup-buttons">
-        <button onClick={() => navigate('/signuppacientepage')}>Cadastrar Paciente</button>
-        <button onClick={() => navigate('/signupprofissionalpage')}>Cadastrar Profissional</button>
+        <button onClick={() => navigate('/signupuserpage')}>Cadastre-se aqui!</button>
       </div>
     </div>
   );

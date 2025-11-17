@@ -1,0 +1,83 @@
+.sidebar-profissional {
+  width: 240px;
+  background-color: #4a148c; /* tom roxo mais escuro */
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
+}
+
+
+.bemvindo {
+  margin-top: 25px;
+  font-size: 0.9rem;
+  color: #ce93d8;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 5rem;
+}
+
+.menu a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 10px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.menu a:hover {
+  background-color: #6a1b9a;
+  transform: translateX(4px);
+}
+
+.footer-sidebar {
+  text-align: center;
+  margin-top: auto;
+}
+
+.sair {
+  color: #ffb3b3;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.sair:hover {
+  color: #ff6b6b;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 768px) {
+  .sidebar-profissional {
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative;
+  }
+
+  .menu {
+    flex-direction: row;
+    gap: 0.6rem;
+    margin-top: 0;
+  }
+
+  .footer-sidebar {
+    display: none;
+  }
+}

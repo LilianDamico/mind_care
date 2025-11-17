@@ -1,46 +1,39 @@
 // src/services/api.ts
-import axios, { AxiosInstance, AxiosError } from 'axios';
+import axios, { AxiosError } from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL || 'http://localhost:8081';
+const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
-export const apiUrl: AxiosInstance = axios.create({
+const api = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 
-// Interceptor: Adiciona token apenas se NÃO for para /login
-apiUrl.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-
-    // Evita envio de token se a URL for exatamente /login
-    const isLoginRoute =
-      config.url?.includes('/login') || config.url?.endsWith('/login');
-
-    if (token && config.headers && !isLoginRoute) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const token = localStorage.getItem("token");
+    if (token && config.headers && !config.url?.includes("/login")) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
   (error: AxiosError) => Promise.reject(error)
 );
 
-// Interceptor de resposta
-apiUrl.interceptors.response.use(
+api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     if (error.response?.status === 403) {
-      console.error(
-        'Erro 403: Acesso negado - Verifique o token ou permissões',
-        error.response.data
-      );
+      console.warn("🔒 Acesso negado (403):", error.response.data);
+    }
+    if (error.response?.status === 404) {
+      console.warn("🚫 Endpoint não encontrado:", error.config?.url);
     }
     return Promise.reject(error);
   }
 );
 
-export default apiUrl;
+// 👇 ESSA LINHA É O OURO:
+export const apiUrl = api;
+export default api;

@@ -1,65 +1,45 @@
-.nova-consulta-container {
-  display: flex;
-  flex-direction: column;
-  background-color: whitesmoke;
-  width: 800px;
-  height: 450px;
-  margin: 100px auto;
-  padding: 20px;
-  border: 2px solid #7852A5;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+.nova-consulta {
+  margin-top: 20px;
 }
 
-.nova-consulta-container h2 {
-  text-align: center;
-  color: #7852A5;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-  
-.nova-consulta-form {
+.busca-prof {
   display: flex;
-  flex-direction: column;
-  margin: 12px;
+  gap: 10px;
 }
-  
-  .nova-consulta-form label {
-    margin-top: 10px;
-    font-weight: bold;
-    color:#7852A5;
-  }
-  
-  .nova-consulta-form input,
-  .nova-consulta-form textarea,
-  .nova-consulta-form select {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 8px;
-    margin: 12px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-  }
-  
-  .nova-consulta-form button {
-    display: flex;
-    width: 160px;
-    align-self: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #7852A5;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .nova-consulta .mensagem {
-    margin-top: 15px;
-    font-weight: bold;
-  }
-  
+
+.busca-prof input {
+  flex: 1;
+  padding: 8px;
+}
+
+.lista-prof li,
+.lista-horarios li {
+  background: #fff;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  border-left: 4px solid #7a1cac;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background: #7a1cac;
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #5d138f;
+}
+
+.mensagem {
+  padding: 10px;
+  background: #ffe2e2;
+  border-left: 4px solid #d9534f;
+  margin-bottom: 12px;
+}

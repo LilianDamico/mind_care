@@ -1,140 +1,159 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { agendarConsulta } from '../../services/appointmentService';
-import { listarProfissionais, Profissional } from '../../services/professionalService';
-import { useAuth } from '../../contexts/AuthContext';
-import './NovaConsulta.css';
+import React, { useState } from "react";
+import {
+  buscarProfissionaisPorNome,
+  listarHorariosPorNome,
+  agendarConsulta,
+} from "../../services/appointmentService";
+import "./NovaConsulta.css";
 
-const NovaConsulta: React.FC = () => {
-  const [dataHora, setDataHora] = useState('');
-  const [observacoes, setObservacoes] = useState('');
-  const [profissionalId, setProfissionalId] = useState<number | ''>('');
+interface Props {
+  /** Nome do cliente logado (por nome mesmo, não id) */
+  nomeCliente: string;
+  /** Callback opcional pra recarregar a lista no dashboard */
+  onConsultaAgendada?: () => void;
+}
+
+interface Profissional {
+  id: string;
+  nome: string;
+  especialidade?: string;
+  cidade?: string;
+}
+
+interface Horario {
+  id: string;
+  dataHora: string;
+  disponivel?: boolean;
+}
+
+const NovaConsulta: React.FC<Props> = ({ nomeCliente, onConsultaAgendada }) => {
+  const [busca, setBusca] = useState("");
   const [profissionais, setProfissionais] = useState<Profissional[]>([]);
-  const [mensagem, setMensagem] = useState('');
-  const [loadingProfissionais, setLoadingProfissionais] = useState(true);
+  const [profSelecionado, setProfSelecionado] = useState<Profissional | null>(null);
+  const [horarios, setHorarios] = useState<Horario[]>([]);
+  const [mensagem, setMensagem] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
-  const { user, carregando } = useAuth();
-
-  useEffect(() => {
-    const fetchProfissionais = async () => {
-      try {
-        setLoadingProfissionais(true);
-        const data = await listarProfissionais();
-        setProfissionais(data);
-      } catch (error) {
-        setMensagem('Erro ao carregar profissionais.');
-        setProfissionais([]);
-      } finally {
-        setLoadingProfissionais(false);
-      }
-    };
-    fetchProfissionais();
-  }, []);
-
-  // Função que garante o formato YYYY-MM-DDTHH:mm:ss para o backend do Spring Boot
-  function normalizaDataHora(valor: string) {
-    // Se já vem no formato com segundos, só retorna.
-    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(valor)) return valor;
-    // Se vier só com minutos, adiciona ":00"
-    if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(valor)) return valor + ':00';
-    // Qualquer outro formato, retorna vazio para forçar erro de validação
-    return '';
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (carregando) return;
-
-    if (!user || !user.id) {
-      setMensagem('Você precisa estar logado para agendar uma consulta.');
+  const handleBuscar = async () => {
+    setMensagem("");
+    setProfSelecionado(null);
+    setHorarios([]);
+    if (!busca || busca.trim().length < 2) {
+      setMensagem("Digite pelo menos 2 letras para buscar.");
       return;
     }
-
-    if (!dataHora || !profissionalId) {
-      setMensagem('Por favor, preencha a data/hora e selecione um profissional.');
-      return;
-    }
-
-    const dataHoraFormatada = normalizaDataHora(dataHora);
-    if (!dataHoraFormatada) {
-      setMensagem('Formato de data/hora inválido.');
-      return;
-    }
-
     try {
-      await agendarConsulta({
-        pacienteId: user.id,
-        dataHora: dataHoraFormatada,
-        observacoes,
-        profissionalId: Number(profissionalId),
-      });
-      setMensagem('Consulta agendada com sucesso!');
-      setTimeout(() => navigate('/dashboard-paciente'), 1200);
-    } catch (error: any) {
-      setMensagem('Erro ao agendar consulta. Verifique os dados.');
+      setLoading(true);
+      const data = await buscarProfissionaisPorNome(busca.trim());
+      setProfissionais(data || []);
+      if (!data || data.length === 0) setMensagem("Nenhum profissional encontrado.");
+    } catch (e) {
+      setMensagem("Erro ao buscar profissionais.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (carregando) {
-    return (
-      <div className="nova-consulta-container">
-        <div className="loader">Carregando usuário...</div>
-      </div>
-    );
-  }
+  const handleVerHorarios = async (p: Profissional) => {
+    setMensagem("");
+    setProfSelecionado(p);
+    setHorarios([]);
+    try {
+      setLoading(true);
+      const res = await listarHorariosPorNome(p.nome);
+      setHorarios(res?.horarios || []);
+      if (!res?.horarios || res.horarios.length === 0) {
+        setMensagem("Profissional sem horários disponíveis no momento.");
+      }
+    } catch (e) {
+      setMensagem("Erro ao carregar horários.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAgendar = async (horarioId: string) => {
+    if (!profSelecionado) {
+      setMensagem("Selecione um profissional antes de agendar.");
+      return;
+    }
+    try {
+      setLoading(true);
+      await agendarConsulta({
+        clienteNome: nomeCliente,
+        profissionalNome: profSelecionado.nome,
+        horarioId, // ✅ backend espera horarioId (não dataHora)
+      });
+      setMensagem("✅ Consulta marcada com sucesso!");
+      // limpa UI
+      setProfSelecionado(null);
+      setHorarios([]);
+      setProfissionais([]);
+      setBusca("");
+      // notifica pai
+      onConsultaAgendada?.();
+    } catch (e) {
+      setMensagem("Erro ao marcar consulta.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="nova-consulta-container">
-      <h2>Agendar Nova Consulta</h2>
-      <form onSubmit={handleSubmit} className="nova-consulta-form">
-        <div className="form-group">
-          <label htmlFor="dataHora">Data e Hora:</label>
-          <input
-            type="datetime-local"
-            id="dataHora"
-            value={dataHora}
-            onChange={(e) => setDataHora(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="profissional">Profissional:</label>
-          {loadingProfissionais ? (
-            <select id="profissional" disabled>
-              <option>Carregando profissionais...</option>
-            </select>
-          ) : (
-            <select
-              id="profissional"
-              value={profissionalId}
-              onChange={(e) => setProfissionalId(Number(e.target.value))}
-              required
-            >
-              <option value="">Selecione um profissional</option>
-              {profissionais.map((prof) => (
-                <option key={prof.id} value={prof.id}>
-                  {prof.nome}
-                  {prof.especialidade ? ` - ${prof.especialidade}` : ''}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="observacoes">Observações (opcional):</label>
-          <textarea
-            id="observacoes"
-            value={observacoes}
-            onChange={(e) => setObservacoes(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="submit-button">
-          Agendar Consulta
+    <div className="nova-consulta">
+      {mensagem && <p className="mensagem">{mensagem}</p>}
+
+      <div className="busca-prof">
+        <input
+          type="text"
+          placeholder="Busque pelo nome do profissional…"
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleBuscar()}
+        />
+        <button onClick={handleBuscar} disabled={loading}>
+          {loading ? "Buscando..." : "Buscar"}
         </button>
-        {mensagem && <p className="message">{mensagem}</p>}
-      </form>
+      </div>
+
+      {profissionais.length > 0 && (
+        <ul className="lista-prof">
+          {profissionais.map((p) => (
+            <li key={p.id}>
+              <div className="prof-info">
+                <strong>{p.nome}</strong>
+                <span>
+                  {p.especialidade ? ` — ${p.especialidade}` : ""}{" "}
+                  {p.cidade ? ` (${p.cidade})` : ""}
+                </span>
+              </div>
+              <button onClick={() => handleVerHorarios(p)} disabled={loading}>
+                Ver horários
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {profSelecionado && (
+        <div className="selecionado-head">
+          <span>Profissional selecionado:</span>{" "}
+          <strong>{profSelecionado.nome}</strong>
+        </div>
+      )}
+
+      {horarios.length > 0 && (
+        <ul className="lista-horarios">
+          {horarios.map((h) => (
+            <li key={h.id}>
+              <span>{new Date(h.dataHora).toLocaleString("pt-BR")}</span>
+              <button onClick={() => handleAgendar(h.id)} disabled={loading}>
+                {loading ? "Agendando..." : "Agendar"}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

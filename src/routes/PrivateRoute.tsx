@@ -1,21 +1,21 @@
-// src/routes/PrivateRoute.tsx
-import React, { ReactNode } from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import React from "react";
+import { Navigate } from "react-router-dom";
 
-interface PrivateRouteProps {
-  children: ReactNode;
+interface Props {
+  children: React.ReactNode;
+  role?: "CLIENTE" | "PROFISSIONAL";
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const { user, carregando } = useAuth();
+const PrivateRoute: React.FC<Props> = ({ children, role }) => {
+  const token = localStorage.getItem("token");
+  const userTipo = localStorage.getItem("userTipo");
 
-  if (carregando) {
-    return <p>Carregando...</p>; // Ou um spinner, se preferir
+  if (!token) {
+    return <Navigate to="/loginpage" replace />;
   }
 
-  if (!user) {
-    return <Navigate to="/loginpage" replace />;
+  if (role && role !== userTipo) {
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;

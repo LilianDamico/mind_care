@@ -1,0 +1,70 @@
+.lgpd-status-box {
+  width: 100%;
+  max-width: 450px;
+  background: #fff;
+  padding: 22px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.12);
+  margin: 30px auto;
+  text-align: center;
+  animation: fadeIn .4s ease;
+}
+
+/* Título */
+.lgpd-status-box h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #5e17eb;
+  font-weight: 800;
+}
+
+/* Badge de status */
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-top: 5px;
+  animation: fadeIn .5s ease;
+}
+
+/*** Cores por status ***/
+.status-ativo   { background:#32d957; color:#fff; }
+.status-ausente { background:#b9b9b9; color:#fff; }
+.status-revogado{ background:#ff5252; color:#fff; }
+.status-expirado{ background:#e6a100; color:#fff; }
+
+/* Botões */
+.lgpd-actions {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lgpd-actions button {
+  padding: 10px;
+  background: #5e17eb;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.lgpd-actions button:hover {
+  transform: scale(1.03);
+}
+
+/* Botão crítico */
+.lgpd-actions .danger {
+  background:#c9142a;
+}
+
+/* Transições */
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(10px)}
+  to   { opacity:1; transform:translateY(0)}
+}

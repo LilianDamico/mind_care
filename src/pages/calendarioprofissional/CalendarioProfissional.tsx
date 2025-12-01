@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../../components/navbar/Navbar";
 import SidebarProfissional from "../../components/sidebarprofissional/SidebarProfissional";
-
 import {
   calendarioMe,
   calendarioGerarDia,
   calendarioAtualizar,
   calendarioExcluir,
-} from "../../services/appointmentService";
-
+} from "../../services/calendarioService";
 import "./CalendarioProfissional.css";
 
 const CalendarioProfissional: React.FC = () => {
@@ -17,12 +15,10 @@ const CalendarioProfissional: React.FC = () => {
   const [slots, setSlots] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Geração de horários
   const [data, setData] = useState("");
   const [inicio, setInicio] = useState("");
   const [fim, setFim] = useState("");
 
-  // Modal de edição
   const [modalAberto, setModalAberto] = useState(false);
   const [slotEditando, setSlotEditando] = useState<any>(null);
   const [editObs, setEditObs] = useState("");
@@ -43,12 +39,17 @@ const CalendarioProfissional: React.FC = () => {
   }, []);
 
   const gerarHorarios = async () => {
+    if (!data || !inicio || !fim) {
+      alert("Preencha todos os campos!");
+      return;
+    }
+
     try {
       await calendarioGerarDia({
         data,
         inicio,
         fim,
-        intervaloMinutos: 30,
+        intervalo: 30,
       });
 
       carregarAgenda();
@@ -66,11 +67,7 @@ const CalendarioProfissional: React.FC = () => {
 
   const salvarEdicao = async () => {
     try {
-      await calendarioAtualizar(slotEditando.id, {
-        observacao: editObs,
-        disponivel: editDisponivel,
-      });
-
+      await calendarioAtualizar(slotEditando.id, editDisponivel);
       setModalAberto(false);
       carregarAgenda();
     } catch (err) {
@@ -94,37 +91,23 @@ const CalendarioProfissional: React.FC = () => {
 
       <main className="conteudo">
 
-        <h1>Minha Agenda</h1>
-        <p>
+        <h1 className="titulo">Minha Agenda</h1>
+        <p className="subtitulo">
           Profissional: <strong>{userNome}</strong>
         </p>
 
-        {/* Geração de horários */}
         <section className="bloco-calendario">
           <h2>Gerar Horários (30 min)</h2>
 
           <div className="linha-form">
-            <input
-              type="date"
-              value={data}
-              onChange={(e) => setData(e.target.value)}
-            />
-            <input
-              type="time"
-              value={inicio}
-              onChange={(e) => setInicio(e.target.value)}
-            />
-            <input
-              type="time"
-              value={fim}
-              onChange={(e) => setFim(e.target.value)}
-            />
+            <input type="date" value={data} onChange={(e) => setData(e.target.value)} />
+            <input type="time" value={inicio} onChange={(e) => setInicio(e.target.value)} />
+            <input type="time" value={fim} onChange={(e) => setFim(e.target.value)} />
 
-            <button onClick={gerarHorarios}>Gerar horários</button>
+            <button onClick={gerarHorarios} className="btn-gerar">Gerar horários</button>
           </div>
         </section>
 
-        {/* Lista de horários */}
         <section className="bloco-calendario">
           <h2>Horários Criados</h2>
 
@@ -137,9 +120,7 @@ const CalendarioProfissional: React.FC = () => {
               {slots.map((slot) => (
                 <li key={slot.id} className="item-horario">
                   <div className="slot-info">
-                    <strong>
-                      {new Date(slot.dataHora).toLocaleString("pt-BR")}
-                    </strong>
+                    <strong>{new Date(slot.dataHora).toLocaleString("pt-BR")}</strong>
 
                     {slot.observacao && (
                       <span className="obs">({slot.observacao})</span>
@@ -151,17 +132,11 @@ const CalendarioProfissional: React.FC = () => {
                   </div>
 
                   <div className="botoes-acoes">
-                    <button
-                      className="btn-editar"
-                      onClick={() => abrirEditar(slot)}
-                    >
+                    <button className="btn-editar" onClick={() => abrirEditar(slot)}>
                       Editar
                     </button>
 
-                    <button
-                      className="btn-excluir"
-                      onClick={() => excluirHorario(slot.id)}
-                    >
+                    <button className="btn-excluir" onClick={() => excluirHorario(slot.id)}>
                       Excluir
                     </button>
                   </div>
@@ -171,7 +146,6 @@ const CalendarioProfissional: React.FC = () => {
           )}
         </section>
 
-        {/* Modal */}
         {modalAberto && (
           <div className="modal">
             <div className="modal-inner">
@@ -199,10 +173,7 @@ const CalendarioProfissional: React.FC = () => {
                   Salvar
                 </button>
 
-                <button
-                  className="btn-fechar"
-                  onClick={() => setModalAberto(false)}
-                >
+                <button className="btn-fechar" onClick={() => setModalAberto(false)}>
                   Fechar
                 </button>
               </div>

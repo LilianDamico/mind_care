@@ -1,45 +1,26 @@
-// ============================================================
-//  SERVICE: calendarioService.ts
-//  Funções de integração com o backend de calendário profissional
-//  Todas as operações buscam o profissional pelo NOME
-// ============================================================
-
 import api from "./api";
 
-// ------------------------------------------------------------
-//  GET /api/calendario-profissional/:nome
-// ------------------------------------------------------------
-export async function listarCalendarioPorNome(nome: string) {
-  const resp = await api.get(
-    `/api/calendario-profissional/${encodeURIComponent(nome)}`
-  );
-  return resp.data;
+export async function calendarioMe() {
+  const res = await api.get("/api/calendario/me");
+  return res.data;
 }
 
-// ------------------------------------------------------------
-//  POST /api/calendario-profissional/:nome
-// ------------------------------------------------------------
-export async function criarHorarioCalendario(
-  nome: string,
-  payload: { dataHora: string; observacao?: string }
-) {
-  const resp = await api.post(
-    `/api/calendario-profissional/${encodeURIComponent(nome)}`,
-    payload
-  );
-  return resp.data;
+export async function calendarioGerarDia(payload: {
+  data: string;
+  inicio: string;
+  fim: string;
+  intervalo: number;
+}) {
+  const res = await api.post("/api/calendario/gerar-dia", payload);
+  return res.data;
 }
 
-// ------------------------------------------------------------
-//  DELETE /api/calendario-profissional/:nome
-// ------------------------------------------------------------
-export async function deletarHorarioCalendario(
-  nome: string,
-  payload: { dataHora: string }
-) {
-  const resp = await api.delete(
-    `/api/calendario-profissional/${encodeURIComponent(nome)}`,
-    { data: payload }
-  );
-  return resp.data;
+export async function calendarioAtualizar(id: string, disponivel: boolean) {
+  const res = await api.put(`/api/calendario/${id}`, { disponivel });
+  return res.data;
+}
+
+export async function calendarioExcluir(id: string) {
+  const res = await api.delete(`/api/calendario/${id}`);
+  return res.data;
 }

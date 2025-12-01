@@ -7,7 +7,7 @@ const Frame1: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCadastroClick = () => {
-    navigate('/signuppage'); 
+    navigate('/signupuserpage'); 
   };
 
   const handleLoginClick = () => {

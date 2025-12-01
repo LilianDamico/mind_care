@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
 
       localStorage.setItem("token", token);
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("userNome", user.nome);
+      localStorage.setItem("userNome", response.data.user.nome);
       localStorage.setItem("userTipo", user.tipo);
 
       console.log("LOGIN OK → Gravado no localStorage:", {

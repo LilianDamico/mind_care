@@ -1,3 +1,4 @@
+// src/components/prescricoes/Prescricoes.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import { Navbar } from "../../components/navbar/Navbar";
 import SidebarProfissional from "../../components/sidebarprofissional/SidebarProfissional";
@@ -7,37 +8,36 @@ import {
   criarPrescricao,
   atualizarPrescricao,
   excluirPrescricao,
-} from "../../services/appointmentService";
+  TipoPrescricao,
+  Prescricao,
+} from "../../services/prescricaoService";
 
 import "./Prescricoes.css";
 
-const tiposPrescricao = ["RECEITA", "EXAME", "ATESTADO", "OUTRO"];
+const TIPOS: TipoPrescricao[] = ["RECEITA", "LAUDO", "RELATORIO"];
 
 const Prescricoes: React.FC = () => {
   const nomeUsuario = localStorage.getItem("nome") || "Usuário";
 
-  const [lista, setLista] = useState<any[]>([]);
+  const [lista, setLista] = useState<Prescricao[]>([]);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
-  // estados da criação
+  // criação
   const [pacienteNome, setPacienteNome] = useState("");
-  const [tipo, setTipo] = useState("RECEITA");
+  const [tipo, setTipo] = useState<TipoPrescricao>("RECEITA");
   const [conteudo, setConteudo] = useState("");
 
   // edição
-  const [editando, setEditando] = useState<any | null>(null);
+  const [editando, setEditando] = useState<Prescricao | null>(null);
 
-  // ===================================================
-  // 🚀 CARREGAR PRESCRIÇÕES
-  // ===================================================
+  /** ================= CARREGAR ================= */
   const carregar = useCallback(async () => {
     setErro(null);
     setLoading(true);
-
     try {
-      const resp = await listarPrescricoesPorUserNome(nomeUsuario);
-      setLista(resp || []);
+      const dados = await listarPrescricoesPorUserNome(nomeUsuario);
+      setLista(dados);
     } catch (e) {
       console.error(e);
       setErro("Erro ao carregar prescrições.");
@@ -50,18 +50,19 @@ const Prescricoes: React.FC = () => {
     carregar();
   }, [carregar]);
 
-  // ===================================================
-  // ➕ CRIAR
-  // ===================================================
-  const handleCriar = async () => {
+  /** ================= CRIAR ================= */
+  async function handleCriar() {
+    setErro(null);
+
     if (!pacienteNome.trim() || !conteudo.trim()) {
-      setErro("Preencha o nome do paciente e o conteúdo da prescrição.");
+      setErro("Informe o paciente e o conteúdo da prescrição.");
       return;
     }
 
     try {
       const nova = await criarPrescricao({
         pacienteNome,
+        profissionalNome: nomeUsuario,
         tipo,
         conteudo,
       });
@@ -69,17 +70,15 @@ const Prescricoes: React.FC = () => {
       setLista((prev) => [nova, ...prev]);
       setPacienteNome("");
       setConteudo("");
-      setErro(null);
+      setTipo("RECEITA");
     } catch (e) {
       console.error(e);
       setErro("Erro ao criar prescrição.");
     }
-  };
+  }
 
-  // ===================================================
-  // ✏️ EDITAR
-  // ===================================================
-  const handleSalvarEdicao = async () => {
+  /** ================= SALVAR EDIÇÃO ================= */
+  async function handleSalvarEdicao() {
     if (!editando) return;
 
     try {
@@ -91,21 +90,18 @@ const Prescricoes: React.FC = () => {
       setLista((prev) =>
         prev.map((p) => (p.id === atualizada.id ? atualizada : p))
       );
-
       setEditando(null);
       setErro(null);
     } catch (e) {
       console.error(e);
       setErro("Erro ao atualizar prescrição.");
     }
-  };
+  }
 
-  // ===================================================
-  // 🗑️ EXCLUIR
-  // ===================================================
-  const handleExcluir = async (id: string) => {
-    if (!window.confirm("Tem certeza que deseja excluir esta prescrição?"))
-      return;
+  /** ================= EXCLUIR ================= */
+  async function handleExcluir(id: string) {
+    const ok = window.confirm("Tem certeza que deseja excluir esta prescrição?");
+    if (!ok) return;
 
     try {
       await excluirPrescricao(id);
@@ -114,61 +110,28 @@ const Prescricoes: React.FC = () => {
       console.error(e);
       setErro("Erro ao excluir prescrição.");
     }
-  };
+  }
 
-  // ===================================================
-  // 🖨️ IMPRIMIR
-  // ===================================================
-  const handleImprimir = (prescricao: any) => {
-    const pacientePrint = prescricao.paciente?.nome ?? "Paciente";
+  /** ================= IMPRIMIR ================= */
+  function handleImprimir(p: Prescricao) {
+    const paciente = p.paciente?.nome ?? "Paciente";
     const data = new Date().toLocaleDateString("pt-BR");
 
     const html = `
       <!DOCTYPE html>
       <html>
       <head>
-        <meta charset="UTF-8"/>
-        <title>Prescrição - ${pacientePrint}</title>
+        <meta charset="UTF-8" />
+        <title>Prescrição - ${paciente}</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap">
         <style>
-          body {
-            font-family: "Inter", sans-serif;
-            margin: 30px;
-            color: #222;
-          }
-          .topo {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 2px solid #7d2ae8;
-            padding-bottom: 10px;
-            margin-bottom: 25px;
-          }
-          .titulo {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 600;
-            margin: 25px 0;
-          }
-          .label {
-            font-weight: 600;
-          }
-          .box {
-            border: 1px solid #ccc;
-            padding: 14px;
-            border-radius: 8px;
-            background: #fafafa;
-            margin-top: 6px;
-            white-space: pre-wrap;
-          }
-          .assinatura {
-            margin-top: 70px;
-            text-align: center;
-          }
-          .assinatura hr {
-            width: 60%;
-            border: none;
-            border-top: 1px solid #444;
-          }
+          body { font-family:"Inter",sans-serif;margin:32px;color:#222;}
+          .topo{display:flex;justify-content:space-between;border-bottom:2px solid #7d2ae8;padding-bottom:10px;margin-bottom:24px;}
+          .titulo{text-align:center;font-size:22px;font-weight:600;margin:24px 0;}
+          .label{font-weight:600;}
+          .box{border:1px solid #ccc;padding:14px;border-radius:8px;background:#fafafa;margin-top:6px;white-space:pre-wrap;}
+          .assinatura{margin-top:70px;text-align:center;}
+          .assinatura hr{width:60%;border:none;border-top:1px solid #444;}
         </style>
       </head>
       <body>
@@ -176,32 +139,20 @@ const Prescricoes: React.FC = () => {
           <div>
             <strong style="color:#7d2ae8;font-size:20px;">MindCare</strong>
             <div style="font-size:13px;margin-top:4px;">
-              Profissional: ${nomeUsuario}<br/>
-              Tipo: ${prescricao.tipo}
+              Profissional: ${nomeUsuario}<br/>Tipo: ${p.tipo}
             </div>
           </div>
           <div style="font-size:13px;">Data: ${data}</div>
         </div>
 
         <div class="titulo">Prescrição</div>
-
-        <div style="margin-bottom:16px;">
-          <span class="label">Paciente:</span> ${pacientePrint}
-        </div>
-
+        <div style="margin-bottom:16px;"><span class="label">Paciente:</span> ${paciente}</div>
         <div style="margin-bottom:30px;">
           <span class="label">Conteúdo:</span>
-          <div class="box">${prescricao.conteudo.replace(
-            /(?:\r\n|\r|\n)/g,
-            "<br/>"
-          )}</div>
+          <div class="box">${p.conteudo.replace(/(?:\r\n|\r|\n)/g,"<br/>")}</div>
         </div>
 
-        <div class="assinatura">
-          <hr/>
-          <span>Assinatura e carimbo do profissional</span>
-        </div>
-
+        <div class="assinatura"><hr/><span>Assinatura e carimbo do profissional</span></div>
         <script>window.print();</script>
       </body>
       </html>
@@ -211,104 +162,112 @@ const Prescricoes: React.FC = () => {
     if (!win) return;
     win.document.write(html);
     win.document.close();
-  };
+  }
 
-  // ===================================================
-  // RENDER
-  // ===================================================
+  /** ================= RENDER ================= */
   return (
     <div className="layout-dashboard">
       <Navbar />
       <SidebarProfissional />
 
-      <main className="conteudo-prescricao">
-        <h1>Prescrições</h1>
+      <main className="presc-wrapper">
+        <h1 className="presc-title">Prescrições</h1>
+        {erro && <div className="presc-erro">{erro}</div>}
 
-        {erro && <div className="erro-box">{erro}</div>}
+        {/* NOVA PRESCRIÇÃO */}
+        <section className="presc-card">
+          <h2 className="presc-subtitle">Nova Prescrição</h2>
 
-        {/* ================= NOVA ================= */}
-        <section className="card">
-          <h2>Nova prescrição</h2>
-
-          <div className="form-linha">
+          <div className="presc-form-row">
             <input
-              placeholder="Nome do paciente"
+              className="presc-input"
+              placeholder="Paciente"
               value={pacienteNome}
               onChange={(e) => setPacienteNome(e.target.value)}
             />
-            <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-              {tiposPrescricao.map((t) => (
-                <option key={t}>{t}</option>
+
+            <select
+              className="presc-select"
+              value={tipo}
+              onChange={(e) => setTipo(e.target.value as TipoPrescricao)}
+            >
+              {TIPOS.map((t) => (
+                <option key={t} value={t}>{t}</option>
               ))}
             </select>
           </div>
 
           <textarea
-            placeholder="Conteúdo da prescrição"
+            className="presc-textarea"
+            placeholder="Conteúdo"
             value={conteudo}
             onChange={(e) => setConteudo(e.target.value)}
           />
-
-          <button className="btn-principal" onClick={handleCriar}>
+          
+          <button className="presc-btn-primary" onClick={handleCriar}>
             Salvar
+          </button>
+
+          {/* 🚀 BOTÃO NOVO — Consulta Interações IA + ANVISA */}
+          <button
+            className="presc-btn-secondary"
+            onClick={() => window.location.href = "/consultainteracoes"}
+          >
+            🔍 Pesquisar Interações Medicamentosas
           </button>
         </section>
 
-        {/* ================= LISTAGEM ================= */}
-        <section className="card">
-          <h2>Minhas prescrições</h2>
+        {/* LISTA DE PRESCRIÇÕES */}
+        <section className="presc-card">
+          <h2 className="presc-subtitle">Minhas Prescrições</h2>
 
           {loading && <p>Carregando...</p>}
-          {!loading && lista.length === 0 && <p>Nenhuma prescrição encontrada.</p>}
+          {!loading && lista.length === 0 && <p>Nada encontrado.</p>}
 
-          <ul className="lista-prescricoes">
+          <ul className="presc-list">
             {lista.map((p) => (
-              <li key={p.id} className="item-prescricao">
-                <div>
-                  <strong>{p.tipo}</strong>
-                  <p>Paciente: {p.paciente?.nome}</p>
-                  <p className="conteudo">{p.conteudo}</p>
+              <li key={p.id} className="presc-item">
+                <div className="presc-item-info">
+                  <span className="presc-tipo">{p.tipo}</span>
+                  <span className="presc-paciente">Paciente: {p.paciente?.nome ?? "-"}</span>
+                  <p className="presc-conteudo">{p.conteudo}</p>
                 </div>
 
-                <div className="acoes">
-                  <button onClick={() => setEditando(p)}>Editar</button>
-                  <button className="btn-print" onClick={() => handleImprimir(p)}>
-                    Imprimir
-                  </button>
-                  <button className="danger" onClick={() => handleExcluir(p.id)}>
-                    Excluir
-                  </button>
+                <div className="presc-actions">
+                  <button className="presc-btn" onClick={() => setEditando(p)}>Editar</button>
+                  <button className="presc-btn" onClick={() => handleImprimir(p)}>Imprimir</button>
+                  <button className="presc-btn danger" onClick={() => handleExcluir(p.id)}>Excluir</button>
                 </div>
               </li>
             ))}
           </ul>
         </section>
 
-        {/* ================= MODAL ================= */}
+        {/* MODAL EDITAR */}
         {editando && (
-          <div className="modal-fundo" onClick={() => setEditando(null)}>
-            <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <div className="presc-modal-backdrop" onClick={() => setEditando(null)}>
+            <div className="presc-modal" onClick={(e) => e.stopPropagation()}>
               <h3>Editar Prescrição</h3>
 
               <select
+                className="presc-select"
                 value={editando.tipo}
-                onChange={(e) =>
-                  setEditando({ ...editando, tipo: e.target.value })
-                }
+                onChange={(e) => setEditando({ ...editando, tipo: e.target.value as TipoPrescricao })}
               >
-                {tiposPrescricao.map((t) => (
-                  <option key={t}>{t}</option>
+                {TIPOS.map((t) => (
+                  <option key={t} value={t}>{t}</option>
                 ))}
               </select>
 
               <textarea
+                className="presc-textarea"
                 value={editando.conteudo}
-                onChange={(e) =>
-                  setEditando({ ...editando, conteudo: e.target.value })
-                }
+                onChange={(e) => setEditando({ ...editando, conteudo: e.target.value })}
               />
 
-              <button onClick={handleSalvarEdicao}>Salvar alterações</button>
+              <button className="presc-btn-primary" onClick={handleSalvarEdicao}>
+                Salvar alterações
+              </button>
             </div>
           </div>
         )}
@@ -318,4 +277,3 @@ const Prescricoes: React.FC = () => {
 };
 
 export default Prescricoes;
-

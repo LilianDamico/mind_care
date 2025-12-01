@@ -1,3 +1,4 @@
+// src/pages/dashboardcliente/DashboardCliente.tsx
 import React, { useEffect, useState, useCallback } from "react";
 import {
   listarConsultasPorCliente,
@@ -12,45 +13,49 @@ import { Navbar } from "../../components/navbar/Navbar";
 import "./DashboardCliente.css";
 
 const DashboardCliente: React.FC = () => {
-  // 🧩 Tenta recuperar o nome real do cliente gravado no login
+  // ---------------------------------------------------------
+  // Obter nome do cliente (token / localStorage)
+  // ---------------------------------------------------------
+  let nomeCliente = "Cliente";
   const rawData = localStorage.getItem("data");
-  let nomeCliente =
-    localStorage.getItem("userNome") ||
-    localStorage.getItem("nome") ||
-    "Cliente";
 
   try {
     if (rawData) {
       const parsed = JSON.parse(rawData);
-      if (parsed?.nome) {
-        nomeCliente = parsed.nome;
-      }
+      if (parsed?.nome) nomeCliente = parsed.nome;
     }
-  } catch {
-    // se der erro no JSON, ignora e usa o que já temos
-  }
+  } catch {}
 
+  nomeCliente =
+    localStorage.getItem("userNome") ||
+    localStorage.getItem("nome") ||
+    nomeCliente;
+
+  // ---------------------------------------------------------
+  // Estados
+  // ---------------------------------------------------------
   const [consultas, setConsultas] = useState<any[]>([]);
-  const [mensagem, setMensagem] = useState<string>("");
+  const [mensagem, setMensagem] = useState("");
 
-  // =====================================================
-  // 🔹 Carregar Consultas do Cliente
-  // =====================================================
+  // ---------------------------------------------------------
+  // Carregar consultas
+  // ---------------------------------------------------------
   const carregarConsultas = useCallback(async () => {
     try {
-      const response = await listarConsultasPorCliente(nomeCliente);
+      const data = await listarConsultasPorCliente(nomeCliente);
 
-      const lista = Array.isArray(response)
-        ? response
-        : Array.isArray(response?.consultas)
-        ? response.consultas
+      const lista = Array.isArray(data)
+        ? data
+        : Array.isArray((data as any)?.consultas)
+        ? (data as any).consultas
         : [];
 
       setConsultas(lista);
       setMensagem("");
     } catch (err) {
       console.error("Erro ao carregar consultas:", err);
-      setMensagem("❌ Erro ao carregar suas consultas.");
+      setConsultas([]);
+      setMensagem("Nenhuma consulta encontrada.");
     }
   }, [nomeCliente]);
 
@@ -58,16 +63,16 @@ const DashboardCliente: React.FC = () => {
     carregarConsultas();
   }, [carregarConsultas]);
 
-  // =====================================================
-  // 🔹 Cancelar Consulta
-  // =====================================================
+  // ---------------------------------------------------------
+  // Cancelar consulta
+  // ---------------------------------------------------------
   const handleDesmarcar = async (id: string) => {
     try {
       await cancelarConsulta(id);
 
       setConsultas((prev) => prev.filter((c) => c.id !== id));
-      setMensagem("✔ Consulta cancelada com sucesso!");
 
+      setMensagem("✔ Consulta cancelada com sucesso!");
       setTimeout(() => setMensagem(""), 3000);
     } catch (err) {
       console.error("Erro ao cancelar consulta:", err);
@@ -75,9 +80,16 @@ const DashboardCliente: React.FC = () => {
     }
   };
 
-  // =====================================================
-  // 🔹 Renderização
-  // =====================================================
+  // ---------------------------------------------------------
+  // Atualizar após agendar
+  // ---------------------------------------------------------
+  const handleConsultaAgendada = () => {
+    carregarConsultas();
+  };
+
+  // ---------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------
   return (
     <div className="layout-dashboard">
       <Navbar />
@@ -89,14 +101,16 @@ const DashboardCliente: React.FC = () => {
         {mensagem && (
           <p
             className={
-              mensagem.startsWith("✔") ? "mensagem-sucesso" : "mensagem-erro"
+              mensagem.startsWith("✔")
+                ? "mensagem-sucesso"
+                : "mensagem-erro"
             }
           >
             {mensagem}
           </p>
         )}
 
-        {/* Consultas do Cliente */}
+        {/* Lista de Consultas */}
         <section className="bloco">
           <h2>📅 Minhas Consultas</h2>
 
@@ -113,10 +127,13 @@ const DashboardCliente: React.FC = () => {
           )}
         </section>
 
-        {/* Marcar Consulta */}
+        {/* Nova Consulta */}
         <section className="bloco">
           <h2>➕ Marcar Nova Consulta</h2>
-          <NovaConsulta nomeCliente={nomeCliente} />
+          <NovaConsulta
+            nomeCliente={nomeCliente}
+            onConsultaAgendada={handleConsultaAgendada}
+          />
         </section>
       </main>
     </div>

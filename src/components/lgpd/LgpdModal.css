@@ -1,0 +1,33 @@
+.lgpd-overlay{
+  position:fixed; inset:0;
+  background:rgba(0,0,0,.6);
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999;
+}
+
+.lgpd-modal{
+  background:white;
+  width:450px; max-width:95%;
+  padding:25px; border-radius:12px;
+  box-shadow:0 0 25px rgba(0,0,0,.25);
+}
+
+.lgpd-scroll{
+  max-height:250px;
+  overflow-y:auto;
+  border-left:4px solid purple;
+  padding-left:12px;
+  margin-bottom:20px;
+}
+
+.lgpd-actions{display:flex;justify-content:space-between;}
+
+.cancel{
+  background:#777;color:white;border:none;
+  border-radius:6px;padding:10px 16px;
+}
+.accept{
+  background:purple;color:white;font-weight:bold;
+  border:none;border-radius:6px;
+  padding:10px 16px;
+}

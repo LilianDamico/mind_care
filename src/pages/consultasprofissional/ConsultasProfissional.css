@@ -1,0 +1,143 @@
+/* ==============================
+   LAYOUT — ÁREA PRINCIPAL
+============================== */
+.cp-wrapper {
+  flex: 1;
+  padding: 40px 60px;
+  background: #f5f0ff;
+  min-height: 100vh;
+  margin-left: 250px; /* respeita sidebar */
+  font-family: "Inter", sans-serif;
+}
+
+/* ==============================
+   TÍTULO
+============================== */
+.cp-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4b0082;
+  margin-bottom: 25px;
+}
+
+/* ==============================
+   MENSAGENS: carregando / vazio
+============================== */
+.cp-msg {
+  font-size: 18px;
+  font-weight: 500;
+  color: #6a42a3;
+  margin-top: 15px;
+}
+
+/* ==============================
+   TABELA
+============================== */
+.cp-table {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  border-collapse: collapse;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+/* Cabeçalho */
+.cp-table thead tr {
+  background: #5a0fb2;
+  color: white;
+}
+
+.cp-table th {
+  padding: 14px 20px;
+  font-size: 16px;
+  text-align: left;
+}
+
+/* Linhas */
+.cp-table td {
+  padding: 14px 20px;
+  font-size: 15px;
+  color: #3e2a6d;
+  border-bottom: 1px solid #ede8ff;
+}
+
+/* Hover suave */
+.cp-table tbody tr {
+  transition: 0.2s;
+}
+.cp-table tbody tr:hover {
+  background: #f2e9ff;
+  transform: scale(1.002);
+}
+
+/* STATUS com badge */
+.cp-table td:last-child {
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #4b0082;
+  background: #ecd8ff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  width: fit-content;
+}
+
+/* ==============================
+   RESPONSIVO
+============================== */
+@media (max-width: 820px) {
+  .cp-wrapper { margin-left: 0; padding: 25px; }
+
+  .cp-table, .cp-table thead, .cp-table tbody, .cp-table tr, .cp-table td, .cp-table th {
+    display: block;
+    width: 100%;
+  }
+
+  .cp-table thead { display: none; }
+
+  .cp-table tr {
+    margin-bottom: 15px;
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  .cp-table td {
+    text-align: right;
+    padding: 10px 14px;
+    position: relative;
+  }
+
+  .cp-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 14px;
+    font-weight: bold;
+    color: #4b0082;
+  }
+}
+
+/* Alerta sutil e elegante */
+.cp-alerta {
+  background: rgba(255, 203, 70, 0.25);
+  border-left: 4px solid #f5b400;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-size: 15px;
+  color: #634800;
+  font-weight: 600;
+  animation: fade .4s ease;
+}
+
+.cp-carregando {
+  color: #6833d6;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+

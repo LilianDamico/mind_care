@@ -1,76 +1,164 @@
-.signupuser-container {
-  width: 460px;
-  min-height: 560px;
-  margin: 60px auto;
-  padding: 36px 32px;
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-  font-family: "Poppins", sans-serif;
+/* ================================
+   🌅 Fundo e container principal
+==================================*/
+
+.signup-container {
+  width: 100%;
+  min-height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #dfc5ff, #f8e9ff, #e9dcff);
+  padding: 40px 14px;
 }
 
-.signup-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+/* ================================
+   🟣 Card principal
+==================================*/
+
+.form-box {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(10px);
+  padding: 40px 42px;
+  border-radius: 18px;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.18);
+  animation: fadeIn 0.7s ease;
 }
 
-.signup-title {
+/* ================================
+   Título
+==================================*/
+
+.titulo-form {
   text-align: center;
-  color: #6d16ad;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #3b0066;
+  margin-bottom: 24px;
+  margin-right: 200px;
+}
+
+/* ================================
+   Inputs e Select
+==================================*/
+
+label {
+  font-size: 0.92rem;
   font-weight: 600;
-  font-size: 1.6rem;
-  margin-bottom: 20px;
+  color: #4c1d78;
+  margin-top: 14px;
+  display: block;
 }
 
-.signup-input,
-.signup-select {
-  padding: 12px 14px;
-  font-size: 1rem;
-  border: 1px solid #bcbcbc;
-  border-radius: 6px;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+input,
+select {
+  width: 100%;
+  padding: 12px 13px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 2px solid #c7a7ff;
+  font-size: 0.95rem;
+  background: #fff;
+  transition: .2s;
 }
 
-.signup-input:focus,
-.signup-select:focus {
-  border-color: #a85dd7;
-  box-shadow: 0 0 4px rgba(168, 93, 215, 0.4);
+input:focus,
+select:focus {
+  border-color: #7c15ff;
+  box-shadow: 0 0 6px rgba(124,21,255,.7);
 }
 
-.signup-select {
-  background: #f9f9f9;
-  cursor: pointer;
+/* 2 colunas com espaçamento */
+.grid-2 {
+  display: flex;
+  gap: 12px;
 }
 
-.signup-button {
-  padding: 13px 0;
-  background: linear-gradient(90deg, #6d16ad, #8e24aa);
-  color: #fff;
-  font-weight: bold;
-  font-size: 1rem;
+/* ================================
+   📄 Botão LGPD
+==================================*/
+
+.btn-lgpd {
+  margin-top: 22px;
+  width: 100%;
+  padding: 13px;
+  background: linear-gradient(90deg,#8200ec,#b000ff);
+  color: white;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: .25s;
   border: none;
-  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
-  transition: all 0.2s ease-in-out;
 }
 
-.signup-button:hover {
-  background: linear-gradient(90deg, #8e24aa, #6d16ad);
-  transform: translateY(-1px);
+.btn-lgpd:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
 }
 
-@media (max-width: 520px) {
-  .signupuser-container {
-    width: 90%;
-    padding: 28px 20px;
-  }
-  .signup-title {
-    font-size: 1.4rem;
-  }
+/* ================================
+   Checkbox alinhado bonito
+==================================*/
+
+.check-lgpd-wrapper {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.check-lgpd-wrapper input {
+  transform: scale(1.2);
+}
+
+.check-lgpd-wrapper span {
+  font-size: 0.85rem;
+  color: #3a2a5c;
+  line-height: 17px;
+  max-width: 260px;
+}
+
+/* ================================
+   Botão principal
+==================================*/
+
+.submit-btn {
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(to right,#b300ff,#7d00ff);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: scale(1.03);
+  filter: brightness(1.12);
+}
+
+.submit-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ================================
+   Responsive
+==================================*/
+
+@media(max-width:600px){
+  .form-box { padding: 32px; }
+  .grid-2 { flex-direction: column; }
+}
+
+/* Fade */
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(12px); }
+  to   { opacity:1; transform: translateY(0); }
 }

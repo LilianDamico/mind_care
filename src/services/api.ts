@@ -1,39 +1,70 @@
-// src/services/api.ts
 import axios, { AxiosError } from "axios";
 
 const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8080";
 
+/** =============================
+ **  TOKEN
+ ** ============================= */
+const getToken = () =>
+  localStorage.getItem("token") ??
+  localStorage.getItem("authToken") ??
+  null;
+
+/** =============================
+ **  AXIOS INSTANCE
+ ** ============================= */
 const api = axios.create({
-  baseURL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  baseURL, // <<<<< sem /api/auth aqui
+  headers: { "Content-Type": "application/json" },
 });
 
+/** =============================
+ **  INTERCEPTOR → Request
+ ** ============================= */
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
-    if (token && config.headers && !config.url?.includes("/login")) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    const token = getToken();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+
+    console.log(`📤 [REQUEST] ${config.method?.toUpperCase()} → ${config.url}`);
     return config;
   },
   (error: AxiosError) => Promise.reject(error)
 );
 
+/** =============================
+ **  INTERCEPTOR → Response
+ ** ============================= */
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log(`📥 [RESPONSE]`, response.status, response.config.url);
+    return response;
+  },
   (error: AxiosError) => {
-    if (error.response?.status === 403) {
-      console.warn("🔒 Acesso negado (403):", error.response.data);
+    const status = error.response?.status;
+    const url = error.config?.url;
+
+    switch (status) {
+      case 401:
+        console.error("🔐 Token inválido ou expirado");
+        localStorage.removeItem("token");
+        break;
+
+      case 403:
+        console.warn("🔒 Sem permissão para acessar:", url);
+        break;
+
+      case 404:
+        console.warn("❗ Endpoint não encontrado:", url);
+        break;
+
+      case 500:
+        console.error("🔥 Erro interno no servidor:", url);
+        break;
     }
-    if (error.response?.status === 404) {
-      console.warn("🚫 Endpoint não encontrado:", error.config?.url);
-    }
+
     return Promise.reject(error);
   }
 );
 
-// 👇 ESSA LINHA É O OURO:
-export const apiUrl = api;
 export default api;

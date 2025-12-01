@@ -16,9 +16,7 @@ const SidebarCliente: React.FC<Props> = ({ nomeUsuario }) => {
 
       <nav className="menu">
         <Link to="/consultas">Minhas Consultas</Link>
-        <Link to="/calendarioprofissional">Marcar Consulta</Link>
-        <Link to="/prescricoes">Prescrições</Link>
-        <Link to="/prontuarios">Prontuários</Link>
+        <Link to="/calendarioprofissional">Marcar Consulta</Link>        
       </nav>
 
       <div className="footer-sidebar">

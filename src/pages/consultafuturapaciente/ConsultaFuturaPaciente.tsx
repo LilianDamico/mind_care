@@ -1,7 +1,7 @@
 // src/pages/consultafuturapaciente/ConsultaFuturaPaciente.tsx
 
 import React, { useEffect, useState } from 'react';
-import { apiUrl } from '../../services/api';
+import api from '../../services/api';
 import './ConsultaFuturaPaciente.css';
 
 interface Consulta {
@@ -19,7 +19,7 @@ const ConsultaFuturaPaciente: React.FC = () => {
     async function carregarConsultas() {
       try {
         const token = localStorage.getItem('token');
-        const resposta = await apiUrl.get('/listaConsultas', {
+        const resposta = await api.get('/listaConsultas', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setConsultas(resposta.data);
@@ -35,7 +35,7 @@ const ConsultaFuturaPaciente: React.FC = () => {
   async function desmarcarConsulta(id: number) {
     try {
       const token = localStorage.getItem('token');
-      await apiUrl.delete(`/agendamentos/${id}`, {
+      await api.delete(`/agendamentos/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMensagem('Consulta desmarcada com sucesso.');

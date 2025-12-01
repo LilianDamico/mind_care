@@ -3,16 +3,20 @@ import "./ListaPrescricoes.css";
 import {
   listarPrescricoesPorUserNome,
   excluirPrescricao,
-} from "../../services/appointmentService";
+} from "../../services/prescricaoService";
 
+// Modelo correto baseado no que o backend realmente envia
 interface Prescricao {
   id: string;
-  descricao: string;
+  tipo: string;
+  conteudo: string;
   criadoEm?: string;
+  paciente?: { nome: string };
+  profissional?: { nome: string };
 }
 
 interface Props {
-  userNome: string; // Agora padronizamos para userNome
+  userNome: string;
 }
 
 const ListaPrescricoes: React.FC<Props> = ({ userNome }) => {
@@ -20,14 +24,16 @@ const ListaPrescricoes: React.FC<Props> = ({ userNome }) => {
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
 
-  // Carrega prescrições do usuário
+  // ================== Carregar prescrições ==================
   useEffect(() => {
     async function carregar() {
       try {
+        setErro(null);
         setLoading(true);
+
         const data = await listarPrescricoesPorUserNome(userNome);
-        setPrescricoes(data);
-      } catch (e) {
+        setPrescricoes(data ?? []);
+      } catch {
         setErro("Falha ao carregar prescrições.");
       } finally {
         setLoading(false);
@@ -37,22 +43,26 @@ const ListaPrescricoes: React.FC<Props> = ({ userNome }) => {
     carregar();
   }, [userNome]);
 
-  // Excluir prescrição
+  // ================== Excluir ==================
   async function handleExcluir(id: string) {
+    const confirmar = window.confirm("Excluir definitivamente?");
+    if (!confirmar) return;
+
     try {
       await excluirPrescricao(id);
       setPrescricoes((prev) => prev.filter((p) => p.id !== id));
-    } catch (e) {
-      alert("Erro ao excluir prescrição.");
+    } catch {
+      setErro("Erro ao excluir prescrição.");
     }
   }
 
+  // ================== Render ==================
   return (
     <div className="lista-prescricoes">
       <h2>Prescrições de {userNome}</h2>
 
-      {loading && <p>Carregando...</p>}
       {erro && <p className="erro">{erro}</p>}
+      {loading && <p>Carregando...</p>}
 
       {!loading && prescricoes.length === 0 && (
         <p>Nenhuma prescrição encontrada.</p>
@@ -63,18 +73,17 @@ const ListaPrescricoes: React.FC<Props> = ({ userNome }) => {
           {prescricoes.map((p) => (
             <li key={p.id}>
               <div className="prescricao-item">
-                <span>{p.descricao}</span>
+                <strong>{p.tipo}</strong>
+                <p className="conteudo">{p.conteudo}</p>
 
-                {p.criadoEm && (
-                  <small className="data">
-                    {new Date(p.criadoEm).toLocaleDateString("pt-BR")}
-                  </small>
-                )}
+                <div className="meta">
+                  {p.paciente && <span>👤 {p.paciente.nome}</span>}
+                  {p.criadoEm && (
+                    <small>{new Date(p.criadoEm).toLocaleDateString("pt-BR")}</small>
+                  )}
+                </div>
 
-                <button
-                  className="btn-excluir"
-                  onClick={() => handleExcluir(p.id)}
-                >
+                <button className="btn-excluir" onClick={() => handleExcluir(p.id)}>
                   Excluir
                 </button>
               </div>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { listarProntuariosPorUsuario } from "../../services/appointmentService";
+import { listarProntuariosPorUsuario } from "../../services/prontuarioService";
 import SidebarProfissional from "../../components/sidebarprofissional/SidebarProfissional";
 import "./Prontuarios.css";
 

@@ -1,45 +1,142 @@
-.nova-consulta {
-  margin-top: 20px;
+/* =============================================================
+   ESTILO MODERNO PARA MARCAR CONSULTA
+   ============================================================= */
+
+.nova-consulta-container {
+  background: #ffffff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  margin-top: 1rem;
+  font-family: "Inter", sans-serif;
 }
 
-.busca-prof {
-  display: flex;
-  gap: 10px;
-}
-
-.busca-prof input {
-  flex: 1;
-  padding: 8px;
-}
-
-.lista-prof li,
-.lista-horarios li {
-  background: #fff;
-  padding: 12px;
-  margin-bottom: 8px;
+/* MENSAGENS */
+.msg-erro {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 0.8rem;
   border-radius: 8px;
-  border-left: 4px solid #7a1cac;
+  border: 1px solid #fecaca;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.msg-sucesso {
+  background: #e0fce3;
+  color: #15803d;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* BUSCA */
+.busca-box {
+  display: flex;
+  gap: 0.7rem;
+  margin-bottom: 1.2rem;
+}
+
+.busca-box input {
+  flex: 1;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.busca-box button {
+  background: #6a0dad;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.busca-box button:hover {
+  background: #4d0a99;
+}
+
+/* LISTA DE PROFISSIONAIS */
+.prof-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prof-item {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 0.6rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-button {
-  background: #7a1cac;
-  border: none;
+.prof-extra {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+.btn-ver-horarios {
+  background: #5b21b6;
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
   cursor: pointer;
 }
 
-button:hover {
-  background: #5d138f;
+.btn-ver-horarios:hover {
+  background: #4c1d95;
 }
 
-.mensagem {
-  padding: 10px;
-  background: #ffe2e2;
-  border-left: 4px solid #d9534f;
-  margin-bottom: 12px;
+/* PROFISSIONAL SELECIONADO */
+.selecionado-label {
+  margin-top: 1rem;
+  margin-bottom: 1.2rem;
+  background: #eef2ff;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border-left: 5px solid #6366f1;
+  font-weight: 600;
+}
+
+/* LISTA DE HORÁRIOS */
+.horarios-lista {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.horario-item {
+  background: #ffffff;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-agendar {
+  background: #059669;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-agendar:hover {
+  background: #047857;
 }

@@ -1,0 +1,169 @@
+/* ================================
+   Layout Geral
+=================================== */
+
+.agendar-container {
+  max-width: 750px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.12);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #4a148c;
+  text-align: center;
+}
+
+/* ================================
+   Campo de busca
+=================================== */
+
+input[type="text"] {
+  width: 70%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #6a1b9a;
+  box-shadow: 0 0 6px rgba(106, 27, 154, 0.4);
+}
+
+button {
+  padding: 10px 18px;
+  margin-left: 10px;
+  background: #6a1b9a;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #4a148c;
+}
+
+/* ================================
+   Mensagens
+=================================== */
+
+.msg {
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  background: #43a047;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ================================
+   Lista de Profissionais
+=================================== */
+
+.lista-prof {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.lista-prof li {
+  background: #f7f5fc;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 5px solid #6a1b9a;
+}
+
+.lista-prof strong {
+  font-size: 1.1rem;
+  color: #4a148c;
+}
+
+.lista-prof button {
+  background: #6a1b9a;
+  padding: 8px 15px;
+}
+
+/* ================================
+   Lista de Horários
+=================================== */
+
+.lista-horarios {
+  margin-top: 25px;
+  list-style: none;
+  padding: 0;
+}
+
+.lista-horarios li {
+  background: #fafafa;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 5px solid #8e24aa;
+}
+
+.lista-horarios span {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.lista-horarios button {
+  background: #8e24aa;
+  padding: 8px 15px;
+}
+
+.lista-horarios button:hover {
+  background: #6a1b9a;
+}
+
+/* ================================
+   Responsividade
+=================================== */
+
+@media (max-width: 620px) {
+  input[type="text"] {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  button {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .lista-prof li,
+  .lista-horarios li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lista-prof button,
+  .lista-horarios button {
+    margin-top: 10px;
+    width: 100%;
+  }
+}

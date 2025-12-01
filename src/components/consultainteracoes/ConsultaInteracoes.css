@@ -1,34 +1,60 @@
 .consulta-interacoes {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
-  }
-  
-  .consulta-interacoes input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  
-  .consulta-interacoes button {
-    padding: 10px 20px;
-    background-color: #7852A5;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .consulta-interacoes .resultado {
-    margin-top: 20px;
-    background: #f4f4f4;
-    padding: 15px;
-    border-left: 4px solid #CA419C;
-    border-radius: 4px;
-  }
-  
-  .consulta-interacoes .erro {
-    color: red;
-    font-weight: bold;
-  }
-  
+  max-width: 900px;
+  margin: 100px;
+  padding: 30px;
+  background: #f7f4ff;
+  border-radius: 10px;
+}
+
+.box-interacao {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.box-interacao input {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #7a33ff;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.box-interacao button {
+  background: #7a33ff;
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.box-interacao button:hover { background: #5a14d7; }
+
+.msg-erro {
+  background: #ffbaba;
+  padding: 10px;
+  border-left: 4px solid red;
+  margin-top: 10px;
+}
+
+.resultado {
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.bula-box {
+  background: #f1eaff;
+  padding: 12px;
+  border-left: 4px solid #7a33ff;
+}
+
+.markdown-output h3, 
+.markdown-output h4 { color:#5a14d7; }
+
+.markdown-output ul { margin-left: 22px; }
+.markdown-output li { margin-bottom: 5px; }
+.markdown-output strong { color:#222; font-weight: 700; }

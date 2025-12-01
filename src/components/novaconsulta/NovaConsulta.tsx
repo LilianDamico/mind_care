@@ -1,15 +1,13 @@
+// src/components/novaconsulta/NovaConsulta.tsx
 import React, { useState } from "react";
-import {
-  buscarProfissionaisPorNome,
-  listarHorariosPorNome,
-  agendarConsulta,
-} from "../../services/appointmentService";
+import { buscarProfissionaisPorNome } from "../../services/professionalService";
+import { listarHorariosPorNome } from "../../services/horarioService";
+import { agendarConsulta } from "../../services/appointmentService";
+
 import "./NovaConsulta.css";
 
 interface Props {
-  /** Nome do cliente logado (por nome mesmo, não id) */
   nomeCliente: string;
-  /** Callback opcional pra recarregar a lista no dashboard */
   onConsultaAgendada?: () => void;
 }
 
@@ -21,92 +19,135 @@ interface Profissional {
 }
 
 interface Horario {
-  id: string;
-  dataHora: string;
-  disponivel?: boolean;
+  id: string;        // ID do slot (deve bater com a FK do backend)
+  dataHora: string;  // ISO string vinda da API
+  disponivel: boolean;
 }
 
 const NovaConsulta: React.FC<Props> = ({ nomeCliente, onConsultaAgendada }) => {
   const [busca, setBusca] = useState("");
   const [profissionais, setProfissionais] = useState<Profissional[]>([]);
-  const [profSelecionado, setProfSelecionado] = useState<Profissional | null>(null);
+  const [profSelecionado, setProfSelecionado] = useState<Profissional | null>(
+    null
+  );
   const [horarios, setHorarios] = useState<Horario[]>([]);
-  const [mensagem, setMensagem] = useState("");
   const [loading, setLoading] = useState(false);
+  const [mensagem, setMensagem] = useState("");
 
+  // -------------------------------------------------------------
+  // BUSCAR PROFISSIONAIS
+  // -------------------------------------------------------------
   const handleBuscar = async () => {
     setMensagem("");
     setProfSelecionado(null);
     setHorarios([]);
-    if (!busca || busca.trim().length < 2) {
-      setMensagem("Digite pelo menos 2 letras para buscar.");
+    setProfissionais([]);
+
+    const termo = busca.trim();
+
+    if (termo.length < 2) {
+      setMensagem("Digite ao menos 2 letras para buscar um profissional.");
       return;
     }
+
     try {
       setLoading(true);
-      const data = await buscarProfissionaisPorNome(busca.trim());
-      setProfissionais(data || []);
-      if (!data || data.length === 0) setMensagem("Nenhum profissional encontrado.");
-    } catch (e) {
+      const resultado = await buscarProfissionaisPorNome(termo);
+
+      if (!resultado || resultado.length === 0) {
+        setMensagem("Nenhum profissional encontrado.");
+        return;
+      }
+
+      setProfissionais(resultado);
+    } catch (err) {
+      console.error("Erro ao buscar profissionais:", err);
       setMensagem("Erro ao buscar profissionais.");
     } finally {
       setLoading(false);
     }
   };
 
+  // -------------------------------------------------------------
+  // CARREGAR HORÁRIOS DO PROFISSIONAL
+  // -------------------------------------------------------------
   const handleVerHorarios = async (p: Profissional) => {
-    setMensagem("");
     setProfSelecionado(p);
     setHorarios([]);
+    setMensagem("");
+
     try {
       setLoading(true);
-      const res = await listarHorariosPorNome(p.nome);
-      setHorarios(res?.horarios || []);
-      if (!res?.horarios || res.horarios.length === 0) {
-        setMensagem("Profissional sem horários disponíveis no momento.");
+
+      const resultado = await listarHorariosPorNome(p.nome);
+
+      if (!Array.isArray(resultado) || resultado.length === 0) {
+        setMensagem("Profissional sem horários disponíveis.");
+        return;
       }
-    } catch (e) {
+
+      setHorarios(resultado);
+    } catch (err) {
+      console.error("Erro ao carregar horários:", err);
       setMensagem("Erro ao carregar horários.");
     } finally {
       setLoading(false);
     }
   };
 
+  // -------------------------------------------------------------
+  // AGENDAR CONSULTA
+  // -------------------------------------------------------------
   const handleAgendar = async (horarioId: string) => {
-    if (!profSelecionado) {
-      setMensagem("Selecione um profissional antes de agendar.");
-      return;
-    }
+    if (!profSelecionado) return;
+
     try {
       setLoading(true);
+
       await agendarConsulta({
         clienteNome: nomeCliente,
         profissionalNome: profSelecionado.nome,
-        horarioId, // ✅ backend espera horarioId (não dataHora)
+        horarioId,
       });
-      setMensagem("✅ Consulta marcada com sucesso!");
-      // limpa UI
+
+      setMensagem("✔ Consulta agendada com sucesso!");
+
+      // reset visual
       setProfSelecionado(null);
       setHorarios([]);
       setProfissionais([]);
       setBusca("");
-      // notifica pai
+
+      // avisar o pai (DashboardCliente) para recarregar
       onConsultaAgendada?.();
-    } catch (e) {
-      setMensagem("Erro ao marcar consulta.");
+    } catch (err) {
+      console.error("Erro ao agendar consulta:", err);
+      setMensagem("Erro ao agendar consulta.");
     } finally {
       setLoading(false);
     }
   };
 
+  // -------------------------------------------------------------
+  // RENDER
+  // -------------------------------------------------------------
   return (
-    <div className="nova-consulta">
-      {mensagem && <p className="mensagem">{mensagem}</p>}
+    <div className="nova-consulta-container">
+      {mensagem && (
+        <div
+          className={
+            mensagem.startsWith("✔") ? "msg-sucesso" : "msg-erro"
+          }
+        >
+          {mensagem}
+        </div>
+      )}
 
-      <div className="busca-prof">
+      {/* BUSCA DE PROFISSIONAL */}
+      <div className="busca-box">
         <input
           type="text"
-          placeholder="Busque pelo nome do profissional…"
+          placeholder="Digite o nome do profissional..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleBuscar()}
@@ -116,18 +157,23 @@ const NovaConsulta: React.FC<Props> = ({ nomeCliente, onConsultaAgendada }) => {
         </button>
       </div>
 
+      {/* LISTA DE PROFISSIONAIS */}
       {profissionais.length > 0 && (
-        <ul className="lista-prof">
+        <ul className="prof-lista">
           {profissionais.map((p) => (
-            <li key={p.id}>
-              <div className="prof-info">
-                <strong>{p.nome}</strong>
-                <span>
-                  {p.especialidade ? ` — ${p.especialidade}` : ""}{" "}
-                  {p.cidade ? ` (${p.cidade})` : ""}
+            <li key={p.id} className="prof-item">
+              <div>
+                <strong>{p.nome}</strong>{" "}
+                <span className="prof-extra">
+                  {p.especialidade ? `— ${p.especialidade}` : ""}{" "}
+                  {p.cidade ? `(${p.cidade})` : ""}
                 </span>
               </div>
-              <button onClick={() => handleVerHorarios(p)} disabled={loading}>
+
+              <button
+                className="btn-ver-horarios"
+                onClick={() => handleVerHorarios(p)}
+              >
                 Ver horários
               </button>
             </li>
@@ -135,20 +181,28 @@ const NovaConsulta: React.FC<Props> = ({ nomeCliente, onConsultaAgendada }) => {
         </ul>
       )}
 
+      {/* PROFISSIONAL SELECIONADO */}
       {profSelecionado && (
-        <div className="selecionado-head">
+        <div className="selecionado-label">
           <span>Profissional selecionado:</span>{" "}
           <strong>{profSelecionado.nome}</strong>
         </div>
       )}
 
+      {/* HORÁRIOS DISPONÍVEIS */}
       {horarios.length > 0 && (
-        <ul className="lista-horarios">
+        <ul className="horarios-lista">
           {horarios.map((h) => (
-            <li key={h.id}>
-              <span>{new Date(h.dataHora).toLocaleString("pt-BR")}</span>
-              <button onClick={() => handleAgendar(h.id)} disabled={loading}>
-                {loading ? "Agendando..." : "Agendar"}
+            <li key={h.id} className="horario-item">
+              <span>
+                {new Date(h.dataHora).toLocaleString("pt-BR")}
+              </span>
+              <button
+                onClick={() => handleAgendar(h.id)}
+                className="btn-agendar"
+                disabled={loading}
+              >
+                Agendar
               </button>
             </li>
           ))}
@@ -159,3 +213,4 @@ const NovaConsulta: React.FC<Props> = ({ nomeCliente, onConsultaAgendada }) => {
 };
 
 export default NovaConsulta;
+

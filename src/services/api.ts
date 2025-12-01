@@ -1,6 +1,8 @@
 import axios, { AxiosError } from "axios";
 
-const baseURL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+const baseURL =
+  process.env.REACT_APP_API_URL?.trim().replace(/\/$/, "") ||
+  "http://localhost:8080";
 
 /** =============================
  **  TOKEN
@@ -14,8 +16,9 @@ const getToken = () =>
  **  AXIOS INSTANCE
  ** ============================= */
 const api = axios.create({
-  baseURL, // <<<<< sem /api/auth aqui
+  baseURL, 
   headers: { "Content-Type": "application/json" },
+  timeout: 15000,
 });
 
 /** =============================
@@ -26,7 +29,7 @@ api.interceptors.request.use(
     const token = getToken();
     if (token) config.headers.Authorization = `Bearer ${token}`;
 
-    console.log(`📤 [REQUEST] ${config.method?.toUpperCase()} → ${config.url}`);
+    console.log(`📤 [REQUEST] ${config.method?.toUpperCase()} → ${config.baseURL}${config.url}`);
     return config;
   },
   (error: AxiosError) => Promise.reject(error)
@@ -37,7 +40,7 @@ api.interceptors.request.use(
  ** ============================= */
 api.interceptors.response.use(
   (response) => {
-    console.log(`📥 [RESPONSE]`, response.status, response.config.url);
+    console.log(`📥 [RESPONSE] ${response.status} ← ${response.config.url}`);
     return response;
   },
   (error: AxiosError) => {

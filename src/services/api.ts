@@ -1,8 +1,12 @@
 import axios, { AxiosError } from "axios";
 
+const LOCAL_BACKEND = "http://localhost:8081";
+const PROD_BACKEND = "https://backend-next-het9.onrender.com";
+
+// Usa REACT_APP_API_URL se existir, senão cai no automático
 const baseURL =
   process.env.REACT_APP_API_URL?.trim().replace(/\/$/, "") ||
-  "http://localhost:8080";
+  (process.env.NODE_ENV === "production" ? PROD_BACKEND : LOCAL_BACKEND);
 
 /** =============================
  **  TOKEN
@@ -16,7 +20,7 @@ const getToken = () =>
  **  AXIOS INSTANCE
  ** ============================= */
 const api = axios.create({
-  baseURL, 
+  baseURL,
   headers: { "Content-Type": "application/json" },
   timeout: 15000,
 });
@@ -29,7 +33,9 @@ api.interceptors.request.use(
     const token = getToken();
     if (token) config.headers.Authorization = `Bearer ${token}`;
 
-    console.log(`📤 [REQUEST] ${config.method?.toUpperCase()} → ${config.baseURL}${config.url}`);
+    console.log(
+      `📤 [REQUEST] ${config.method?.toUpperCase()} → ${config.baseURL}${config.url}`
+    );
     return config;
   },
   (error: AxiosError) => Promise.reject(error)

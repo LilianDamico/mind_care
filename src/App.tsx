@@ -19,6 +19,7 @@ import PlansPage from "./pages/planspage/PlansPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import ConsultasProfissional from "./pages/consultasprofissional/ConsultasProfissional";
 import ConsultaInteracoes from "./components/consultainteracoes/ConsultaInteracoes";
+import TriagemChatPage from "./pages/triagemchatpage/TriagemChatPage";
 
 const App: React.FC = () => {
 
@@ -47,6 +48,7 @@ const App: React.FC = () => {
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/consultas/profissional" element={<PrivateRoute role="PROFISSIONAL"><ConsultasProfissional /></PrivateRoute>} />
         <Route path="consultainteracoes" element={<PrivateRoute role="PROFISSIONAL"><ConsultaInteracoes /></PrivateRoute>} />
+        <Route path="/triagem" element={<TriagemChatPage />} />
       </Routes>
     </>
   );

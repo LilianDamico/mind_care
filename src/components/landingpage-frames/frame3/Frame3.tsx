@@ -22,12 +22,12 @@ const Frame3: React.FC = () => {
     {
       icon: faCircleCheck,
       text: "Confirmação de agendamento",
-      action: () => alert("Função em desenvolvimento!"),
+      action: () => alert("Função em desenvolvimento."),
     },
     {
       icon: faCommentDots,
       text: "Chat interno",
-      action: () => alert("Chat público em breve!"),
+      action: () => navigate("/triagem"),
     },
     {
       icon: faList,

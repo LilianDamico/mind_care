@@ -17,15 +17,17 @@ export default function SignupUserPage() {
     telefone: "",
     endereco: "",
     cidade: "",
-    especialidade: "" // 🔥 novo campo opcional para profissionais
+    especialidade: ""
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   // ============================================================
-  //  SUBMIT — REGISTRA USER → CONSENTIMENTO LGPD → LIMPA FORM
+  // SUBMIT — REGISTRA USER → CONSENTIMENTO LGPD → LIMPA FORM
   // ============================================================
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -38,8 +40,8 @@ export default function SignupUserPage() {
     }
 
     try {
-      // 1) REGISTRO
-      const response = await api.post("api/auth/register", form);
+      // 1) REGISTRO DE USUÁRIO
+      const response = await api.post("/api/auth/register", form);
       const userId = response.data?.user?.id;
 
       if (!userId) {
@@ -47,8 +49,8 @@ export default function SignupUserPage() {
         return;
       }
 
-      // 2) REGISTRO CONSENTIMENTO LGPD
-      await api.post("/lgpd/consentimento", {
+      // 2) REGISTRO LGPD
+      await api.post("/api/lgpd/consentimento", {
         userId,
         versao: "1.0",
         origem: "cadastro-web",
@@ -57,7 +59,7 @@ export default function SignupUserPage() {
 
       alert("🎉 Cadastro concluído com sucesso! LGPD registrado.");
 
-      // 🔥 LIMPAR FORMULÁRIO APÓS CADASTRAR
+      // 3) LIMPAR FORM
       setForm({
         tipo: "CLIENTE",
         nome: "",
@@ -80,53 +82,113 @@ export default function SignupUserPage() {
     setLoading(false);
   }
 
+  // ============================================================
+  // Helper para inputs → padroniza anti-autofill
+  // ============================================================
+  const inputFix = {
+    autoComplete: "new-password",
+    autoCorrect: "off",
+    autoCapitalize: "none",
+    spellCheck: false
+  };
+
   return (
     <div className="signup-container">
-
-      <h2 className="titulo-form"> 📎 Cadastro MindCare 😎</h2>
+      <h2 className="titulo-form">📎 Cadastro MindCare 😎</h2>
 
       <form className="form-box" onSubmit={handleSubmit}>
-
         <label>Tipo de Usuário</label>
-        <select name="tipo" value={form.tipo} onChange={handleChange}>
+        <select
+          name="tipo"
+          value={form.tipo}
+          onChange={handleChange}
+          {...inputFix}
+        >
           <option value="CLIENTE">Cliente</option>
           <option value="PROFISSIONAL">Profissional</option>
         </select>
 
         <label>Nome completo</label>
-        <input name="nome" value={form.nome} onChange={handleChange} placeholder="Maria da Silva" required />
+        <input
+          name="nome"
+          value={form.nome}
+          onChange={handleChange}
+          placeholder="Maria da Silva"
+          required
+          {...inputFix}
+        />
 
         <div className="grid-2">
           <div>
             <label>E-mail</label>
-            <input name="email" value={form.email} onChange={handleChange} placeholder="email@dominio.com" required />
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="email@dominio.com"
+              required
+              {...inputFix}
+            />
           </div>
 
           <div>
             <label>Senha</label>
-            <input name="senha" type="password" value={form.senha} onChange={handleChange} required />
+            <input
+              name="senha"
+              type="password"
+              value={form.senha}
+              onChange={handleChange}
+              required
+              {...inputFix}
+            />
           </div>
         </div>
 
         <div className="grid-2">
           <div>
             <label>CPF</label>
-            <input name="cpf" value={form.cpf} onChange={handleChange} placeholder="00000000000" required />
+            <input
+              name="cpf"
+              value={form.cpf}
+              onChange={handleChange}
+              placeholder="00000000000"
+              required
+              {...inputFix}
+            />
           </div>
 
           <div>
             <label>Telefone</label>
-            <input name="telefone" value={form.telefone} onChange={handleChange} placeholder="(11)99999-9999" />
+            <input
+              name="telefone"
+              value={form.telefone}
+              onChange={handleChange}
+              placeholder="(11)99999-9999"
+              {...inputFix}
+            />
           </div>
         </div>
 
         <label>Endereço</label>
-        <input name="endereco" value={form.endereco} onChange={handleChange} placeholder="Rua X, Nº 123" />
+        <input
+          name="endereco"
+          value={form.endereco}
+          onChange={handleChange}
+          placeholder="Rua X, Nº 123"
+          {...inputFix}
+        />
 
         <label>Cidade</label>
-        <input name="cidade" value={form.cidade} onChange={handleChange} placeholder="São Paulo" />
+        <input
+          name="cidade"
+          value={form.cidade}
+          onChange={handleChange}
+          placeholder="São Paulo"
+          {...inputFix}
+        />
 
-        {/* 🔥 CAMPO QUE SÓ APARECE PARA PROFISSIONAL */}
+        {/* Campo exclusivo do PROFISSIONAL */}
         {form.tipo === "PROFISSIONAL" && (
           <>
             <label>Especialidade</label>
@@ -135,17 +197,27 @@ export default function SignupUserPage() {
               value={form.especialidade}
               onChange={handleChange}
               placeholder="Psicologia clínica, TCC, etc..."
-              required // só exige o campo quando aparecer
+              required
+              {...inputFix}
             />
           </>
         )}
 
-        <button type="button" className="btn-lgpd" onClick={() => setModalOpen(true)}>
+        <button
+          type="button"
+          className="btn-lgpd"
+          onClick={() => setModalOpen(true)}
+        >
           📄 Ler Política de Privacidade
         </button>
 
         <label className="check-lgpd">
-          <input type="checkbox" checked={aceitouLgpd} onChange={() => setAceitouLgpd(!aceitouLgpd)} />
+          <input
+            type="checkbox"
+            checked={aceitouLgpd}
+            onChange={() => setAceitouLgpd(!aceitouLgpd)}
+            {...inputFix}
+          />
           Confirmo que li e aceito a Política de Privacidade e LGPD.
         </label>
 
@@ -157,7 +229,10 @@ export default function SignupUserPage() {
       <LgpdModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onAccept={() => { setAceitouLgpd(true); setModalOpen(false); }}
+        onAccept={() => {
+          setAceitouLgpd(true);
+          setModalOpen(false);
+        }}
       />
     </div>
   );

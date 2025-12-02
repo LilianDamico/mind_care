@@ -42,6 +42,7 @@ export default function SignupUserPage() {
     try {
       // 1) REGISTRO DE USUÁRIO
       const response = await api.post("/api/auth/register", form);
+      console.log("Usuário registrado:", response.data);
       const userId = response.data?.user?.id;
 
       if (!userId) {
@@ -74,9 +75,12 @@ export default function SignupUserPage() {
 
       setAceitouLgpd(false);
 
-    } catch (err) {
-      console.error("❌ Erro ao registrar:", err);
-      alert("Erro ao cadastrar usuário. Tente novamente.");
+    } catch (err: any) {
+      console.error("❌ Erro ao registrar:", err?.response?.data || err);
+
+      const mensagem = err?.response?.error || "Erro inseperado, contudo, usuário pode ter sido criado."
+
+      alert(mensagem);
     }
 
     setLoading(false);

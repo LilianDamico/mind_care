@@ -3,10 +3,11 @@ import axios, { AxiosError } from "axios";
 const LOCAL_BACKEND = "http://localhost:8081";
 const PROD_BACKEND = "https://backend-next-het9.onrender.com";
 
-// Usa REACT_APP_API_URL se existir, senão cai no automático
+// 🔥 BaseURL 100% estável – sem usar REACT_APP_API_URL
 const baseURL =
-  process.env.REACT_APP_API_URL?.trim().replace(/\/$/, "") ||
-  (process.env.NODE_ENV === "production" ? PROD_BACKEND : LOCAL_BACKEND);
+  process.env.NODE_ENV === "production"
+    ? PROD_BACKEND
+    : LOCAL_BACKEND;
 
 /** =============================
  **  TOKEN

@@ -1,6 +1,6 @@
 import api from "./api";
 
-export const listarProfissionaisPublicos = async () => {
+export const listarProfissionaisPublico = async () => {
   const response = await api.get("/public/profissionais");
-  return response.data;
+  return response.data; 
 };

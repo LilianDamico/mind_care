@@ -1,6 +1,6 @@
 // src/pages/profissionais/ProfissionaisPage.tsx
 import React, { useEffect, useState } from "react";
-import { listarProfissionaisPublicos } from "../../services/publicService";
+import { listarProfissionaisPublico } from "../../services/publicService";
 import { useNavigate } from "react-router-dom";
 import "./ProfissionaisPage.css";
 
@@ -20,7 +20,7 @@ const ProfissionaisPage: React.FC = () => {
   useEffect(() => {
     const fetchProfissionais = async () => {
       try {
-        const data = await listarProfissionaisPublicos();
+        const data = await listarProfissionaisPublico();
         setProfissionais(data);
       } catch (error) {
         console.error("Erro ao buscar profissionais:", error);

@@ -62,7 +62,7 @@ const TriagemChatPage: React.FC = () => {
 
     try {
       const response = await api.post<TriagemResponse>(
-        "/api/triagem",
+        "/api/public/triagem",
         {
           mensagem: conteudo,
         }

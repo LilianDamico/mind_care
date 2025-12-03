@@ -1,0 +1,11 @@
+.adm-kpi-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.adm-kpi {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+}

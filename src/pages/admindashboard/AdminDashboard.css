@@ -1,0 +1,27 @@
+.admin-dashboard {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.admin-dash-container {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.admin-dash-header {
+  margin-bottom: 20px;
+}
+
+.admin-dash-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+}
+
+.admin-dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 22px;
+}

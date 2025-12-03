@@ -8,7 +8,7 @@ import "./LoginPage.css";
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [emailOuCpf, setEmailOuCpf] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
 
@@ -18,51 +18,58 @@ const LoginPage: React.FC = () => {
 
     try {
       const response = await api.post("/api/auth/login", {
-        login: email,
+        login: emailOuCpf,
         senha,
       });
 
-      // 🔥 Backend retorna: { token, user: { id, nome, email, tipo } }
+      // Backend retorna: { token, user: { id, nome, email, tipo } }
       const { token, user } = response.data;
 
       if (!token || !user) {
-        setErro("Erro inesperado: usuário ou token não enviados pelo servidor.");
+        setErro("Erro inesperado: resposta inválida do servidor.");
         return;
       }
 
-      // ============================
-      // 🔥 Padronização de armazenamento
-      // ============================
-      localStorage.clear(); // limpa qualquer lixo anterior
+      // =======================================
+      // 🔥 Armazenamento padronizado
+      // =======================================
+      localStorage.clear();
 
       localStorage.setItem("token", token);
       localStorage.setItem("userId", user.id);
-      localStorage.setItem("userNome", response.data.user.nome);
+      localStorage.setItem("userNome", user.nome);
       localStorage.setItem("userTipo", user.tipo);
 
-      console.log("LOGIN OK → Gravado no localStorage:", {
+      console.log("LOGIN OK:", {
         token,
-        id: user.id,
-        nome: user.nome,
         tipo: user.tipo,
+        nome: user.nome,
       });
 
-      // ============================
-      // 🔁 Redirecionamento por tipo
-      // ============================
-      if (user.tipo === "PROFISSIONAL") {
-        navigate("/dashboard-profissional");
-      } else if (user.tipo === "CLIENTE") {
-        navigate("/dashboard-cliente");
-      } else {
-        navigate("/");
+      // =======================================
+      // 🔀 Redirecionamento por tipo de usuário
+      // =======================================
+      switch (user.tipo) {
+        case "ADMIN":
+          navigate("/admindashboard");
+          break;
+
+        case "PROFISSIONAL":
+          navigate("/dashboard-profissional");
+          break;
+
+        case "CLIENTE":
+          navigate("/dashboard-cliente");
+          break;
+
+        default:
+          navigate("/");
+          break;
       }
 
     } catch (err: any) {
       console.error("Erro no login:", err);
-      setErro(
-        err.response?.data?.error || "Login ou senha inválidos. Tente novamente."
-      );
+      setErro(err.response?.data?.error || "Credenciais inválidas.");
     }
   };
 
@@ -74,10 +81,10 @@ const LoginPage: React.FC = () => {
         {erro && <p className="erro">{erro}</p>}
 
         <input
-          type="email"
+          type="text"
           placeholder="E-mail ou CPF"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={emailOuCpf}
+          onChange={(e) => setEmailOuCpf(e.target.value)}
           required
         />
 

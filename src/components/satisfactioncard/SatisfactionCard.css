@@ -1,0 +1,21 @@
+.adm-sat-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.adm-sat-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #7c3aed;
+}
+
+.adm-stars {
+  display: flex;
+  gap: 6px;
+}
+
+.adm-star {
+  width: 22px;
+  height: 22px;
+}

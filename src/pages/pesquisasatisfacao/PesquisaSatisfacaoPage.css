@@ -1,0 +1,54 @@
+.ps-container {
+  max-width: 480px;
+  margin: 60px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+  text-align: center;
+  color: #3a1453;
+}
+
+.ps-stars {
+  font-size: 38px;
+  margin: 16px 0;
+  cursor: pointer;
+}
+
+.star {
+  color: #c8a2db;
+  margin: 0 6px;
+  transition: 0.2s;
+}
+
+.star.active {
+  color: #9333ea;
+}
+
+.ps-textarea {
+  width: 100%;
+  height: 120px;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+  resize: none;
+}
+
+.ps-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #9333ea;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ps-btn:hover {
+  background: #7e22ce;
+}

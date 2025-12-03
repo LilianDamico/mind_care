@@ -21,6 +21,7 @@ import ConsultasProfissional from "./pages/consultasprofissional/ConsultasProfis
 import ConsultaInteracoes from "./components/consultainteracoes/ConsultaInteracoes";
 import TriagemChatPage from "./pages/triagemchatpage/TriagemChatPage";
 import AdminDashboard from "./pages/admindashboard/AdminDashboard";
+import PesquisaSatisfacaoPage from "./pages/pesquisasatisfacao/PesquisaSatisfacaoPage";
 
 const App: React.FC = () => {
 
@@ -51,6 +52,7 @@ const App: React.FC = () => {
         <Route path="consultainteracoes" element={<PrivateRoute role="PROFISSIONAL"><ConsultaInteracoes /></PrivateRoute>} />
         <Route path="/triagem" element={<TriagemChatPage />} />
         <Route path="/admindashboard" element={<PrivateRoute role="ADMIN"><AdminDashboard /></PrivateRoute>} />
+        <Route path="/pesquisa-satisfacao/:consultaId" element={<PesquisaSatisfacaoPage />} />
       </Routes>
     </>
   );

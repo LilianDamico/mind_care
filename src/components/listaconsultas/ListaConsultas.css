@@ -24,3 +24,21 @@
 .btn-cancelar:hover {
   background: #c9302c;
 }
+
+.btn-pesquisa {
+  background: #7c3aed;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.2s ease;
+}
+
+.btn-pesquisa:hover {
+  background: #5b21b6;
+  transform: scale(1.03);
+}
+

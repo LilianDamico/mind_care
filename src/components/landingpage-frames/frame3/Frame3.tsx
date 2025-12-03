@@ -37,7 +37,7 @@ const Frame3: React.FC = () => {
     {
       icon: faStar,
       text: "Pesquisa de satisfação",
-      action: () => alert("Formulário de pesquisa será aberto."),
+      action: () => alert("A pesquisa de satisfação estará disponível após seu atendimento! Você poderá faze-la em sua área do cliente."),
     },
     {
       icon: faSquareEnvelope,
